@@ -1,14 +1,15 @@
 <template>
   <div id="app">
+    <account></account>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-
+import Account from "./components/Account"
 export default Vue.extend({
   name: "App",
-  components: {},
+  components: {Account},
 });
 </script>
 
