@@ -3,13 +3,15 @@
 </template>
 
 <script lang="ts">
-
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import Authereum from "authereum";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import firebase from "../firebaseConfig";
+const db = firebase.firestore();
+
 export default defineComponent({
   data() {
     return {
@@ -93,18 +95,22 @@ export default defineComponent({
       let plain =
         "NFT Viewer - proof of ownership. Please sign this message to prove ownership over your Ethereum account.";
       let msg = this.web3.utils.asciiToHex(plain);
-      let hash = this.web3.utils.keccak256(
+      /* let hash = this.web3.utils.keccak256(
         "\x19Ethereum Signed Message:\n" + plain.length + plain
-      );
-      console.log("msg", msg);
-      console.log("HASH", hash);
-      console.log("this.web3_account", this.address);
+      ); */
       this.signature = await this.web3.eth.personal.sign(msg, this.address, "");
-      //GetAccountInfo(true);
+      this.getAccountInfo();
+    },
+    // create one if it doesn't exist
+    async getAccountInfo() {
+      db.collection("account")
+        .add({ name: "some name" })
+        .catch((err: string) => {
+          console.error(err);
+        });
     },
   },
 });
 </script>
-
 <style>
 </style>
