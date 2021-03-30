@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Account from "./components/Account"
-export default Vue.extend({
+import { defineComponent } from 'vue';
+import Account from "./components/Account.vue";
+export default defineComponent({
   name: "App",
-  components: {Account},
+  components: { Account },
 });
 </script>
 

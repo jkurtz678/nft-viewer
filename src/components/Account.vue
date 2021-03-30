@@ -3,16 +3,17 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+
+import {defineComponent} from "vue";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import Authereum from "authereum"
-import WalletConnectProvider from "@walletconnect/web3-provider"
-export default Vue.extend({
+import Authereum from "authereum";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+export default defineComponent({
   data() {
     return {
-      web3: {} as Web3, 
+      web3: {} as Web3,
       web3_modal: {} as Web3Modal, // modal used to authenticate with metamask, etc.
       address: "", // address that is used to sign data
       signature: "",
@@ -52,22 +53,22 @@ export default Vue.extend({
 
       // Subscribe to accounts change
       provider.on("accountsChanged", () => {
-        this.setWeb3Account();
+        this.setWeb3Account(provider);
       });
 
       // Subscribe to chainId change
       provider.on("chainChanged", () => {
-        this.setWeb3Account();
+        this.setWeb3Account(provider);
       });
 
       // Subscribe to networkId change
       provider.on("networkChanged", () => {
-        this.setWeb3Account();
+        this.setWeb3Account(provider);
       });
 
       await this.setWeb3Account(provider);
     },
-    async setWeb3Account(provider) {
+    async setWeb3Account(provider: any) {
       console.log("set web3 account...", provider);
       this.web3 = new Web3(provider);
       const web3_account = (await this.web3.eth.getAccounts())[0];
@@ -79,9 +80,9 @@ export default Vue.extend({
     async attemptReverse() {
       console.log("attempt reverse...");
       let provider = new ethers.providers.Web3Provider(
-        this.web3.currentProvider
+        this.web3.currentProvider as ethers.providers.ExternalProvider
       );
-      provider.lookupAddress(this.address).then(function (ensName) {
+      provider.lookupAddress(this.address).then((ensName) => {
         if (ensName != null) {
           this.address = ensName;
         }
@@ -97,11 +98,8 @@ export default Vue.extend({
       );
       console.log("msg", msg);
       console.log("HASH", hash);
-      console.log("this.web3_account", this.web3_account)
-      this.signature = await this.web3.eth.personal.sign(
-        msg,
-        this.address
-      );
+      console.log("this.web3_account", this.address);
+      this.signature = await this.web3.eth.personal.sign(msg, this.address, "");
       //GetAccountInfo(true);
     },
   },
