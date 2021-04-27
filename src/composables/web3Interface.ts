@@ -3,14 +3,13 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import Authereum from "authereum";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import firebase from "../firebaseConfig";
-const db = firebase.firestore();
+import {ref} from 'vue'
 
 export default function web3Interface() {
   let web3: Web3;
   let web3_modal: Web3Modal;
-  let address: string = "";
-  let signature: string = "";
+  const address = ref("");
+  const signature = ref("");
 
   const setupWeb3Modal = () => {
     console.log("setup v3 modal...");
@@ -18,7 +17,7 @@ export default function web3Interface() {
       console.error("must use https");
       return;
     } */
-    web3_modal = new Web3Modal({
+    return web3_modal = new Web3Modal({
       providerOptions: {
         authereum: {
           package: Authereum, // required
@@ -26,7 +25,7 @@ export default function web3Interface() {
         walletconnect: {
           package: WalletConnectProvider.default,
           options: {
-            infuraId: "9d5e849c49914b7092581cc71e3c2580",
+            infuraId: "e132974b42d54791bd631e7bcd88572b", // infura.io Mainnet endpoint
           },
         },
       },
@@ -55,51 +54,44 @@ export default function web3Interface() {
       setWeb3Account(provider);
     });
 
-    await setWeb3Account(provider);
+    return setWeb3Account(provider);
   };
   const setWeb3Account = async (provider: any) => {
     console.log("set web3 account...", provider);
     web3 = new Web3(provider);
     const web3_account = (await web3.eth.getAccounts())[0];
     console.log("web3_account", web3_account);
-    address = web3_account;
+    address.value = web3_account;
     attemptReverse();
-    await getSignature();
+    return getSignature();
   };
   const attemptReverse = async () => {
     console.log("attempt reverse...");
     const provider = new ethers.providers.Web3Provider(
       web3.currentProvider as ethers.providers.ExternalProvider
     );
-    provider.lookupAddress(address).then((ensName) => {
+    provider.lookupAddress(address.value).then((ensName) => {
       if (ensName != null) {
-        address = ensName;
+        address.value = ensName;
       }
     });
   };
   const getSignature = async () => {
-    console.log("get signature...");
+    console.log("get signature address", address);
     const plain =
       "NFT Viewer - proof of ownership. Please sign this message to prove ownership over your Ethereum account.";
     const msg = web3.utils.asciiToHex(plain);
     /* let hash = this.web3.utils.keccak256(
       "\x19Ethereum Signed Message:\n" + plain.length + plain
     ); */
-    signature = await web3.eth.personal.sign(msg, address, "");
-    getAccountInfo();
+    signature.value = await web3.eth.personal.sign(msg, address.value, "");
   };
-  // create one if it doesn't exist
-  const getAccountInfo = async () => {
-    db.collection("account")
-      .add({ name: "some name" })
-      .catch((err: string) => {
-        console.error(err);
-      });
-  };
+ 
 
   return {
     setupWeb3Modal,
     connectWallet,
     signature,
+    address,
   };
 }
