@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <account></account>
+    <router-link to="/">Controller</router-link> |
+    <router-link to="/display">Display</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Account from "./components/Account.vue";
 export default defineComponent({
   name: "App",
-  components: { Account },
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <button @click="connectAccount">Connect wallet</button>
-  <div>Address: {{account.address}}</div>
+  <div v-if="account">Address: {{account.address}}</div>
 </template>
 
 <script lang="ts">
