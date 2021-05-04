@@ -7,7 +7,7 @@ import {ref} from 'vue'
 
 export default function web3Interface() {
   let web3: Web3;
-  let web3_modal: Web3Modal;
+  const web3_modal = ref<Web3Modal>();
   const address = ref("");
   const signature = ref("");
 
@@ -17,7 +17,7 @@ export default function web3Interface() {
       console.error("must use https");
       return;
     } */
-    return web3_modal = new Web3Modal({
+    return web3_modal.value = new Web3Modal({
       providerOptions: {
         authereum: {
           package: Authereum, // required
@@ -35,7 +35,11 @@ export default function web3Interface() {
   };
   const connectWallet = async () => {
     console.log("connecting wallet...");
-    const provider = await web3_modal.connect().catch((err) => {
+    if(!web3_modal.value) {
+      alert("Tried to connect wallet but web3 modal not loaded!")
+      return
+    }
+    const provider = await web3_modal?.value?.connect().catch((err) => {
       console.error(err);
     });
 
@@ -93,5 +97,6 @@ export default function web3Interface() {
     connectWallet,
     signature,
     address,
+    web3_modal
   };
 }

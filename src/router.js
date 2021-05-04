@@ -4,7 +4,7 @@ import Display from "./components/Display.vue"
 
 const routes = [
     { path: '/', name: "Controller", component: Controller},
-    { path: '/display', name: "Display", component: Display }
+    { path: '/display', name: "Display", component: Display, props: true }
 ]
 
 const router = createRouter({
