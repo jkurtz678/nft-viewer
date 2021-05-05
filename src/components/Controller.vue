@@ -3,7 +3,7 @@
   <div :style="{color: signature ? '#4CAF50' : '#F44336'}">Metamask</div>
   <div :style="{color: account ? '#4CAF50' : '#F44336'}">Account</div>
   <div :style="{color: displays ? '#4CAF50' : '#F44336'}">Displays</div>
-  <button @click="connectAccount">Connect wallet</button>
+  <Button label="Connect" icon="pi pi-check"  @click="connectAccount"/>
 </template>
 
 <script lang="ts">
