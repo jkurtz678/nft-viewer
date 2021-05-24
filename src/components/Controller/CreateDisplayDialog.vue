@@ -7,29 +7,31 @@
     style="min-width: 500px;"
   >
     <template #header>New Display</template>
-    <span
-      class="p-float-label"
-      style="margin-top: 20px"
-    >
-      <InputText
-        id="name"
-        v-model="name"
-        type="text"
-      />
-      <label for="name">Name</label>
-    </span>
+    <div>
+      <span
+        class="p-float-label"
+        style="margin-top: 20px"
+      >
+        <InputText
+          id="name"
+          v-model="name"
+          type="text"
+        />
+        <label for="name">Name</label>
+      </span>
 
-    <span
-      class="p-float-label"
-      style="margin-top: 30px"
-    >
-      <InputText
-        id="code"
-        v-model="code"
-        type="number"
-      ></InputText>
-      <label for="code">Code</label>
-    </span>
+      <span
+        class="p-float-label"
+        style="margin-top: 30px"
+      >
+        <InputText
+          id="code"
+          v-model="code"
+          type="number"
+        ></InputText>
+        <label for="code">Code</label>
+      </span>
+    </div>
     <template #footer>
       <Button
         label="Save"

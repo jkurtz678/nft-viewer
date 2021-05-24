@@ -11,7 +11,12 @@
             :icon="loading_account ? 'pi pi-spin pi-spinner' : 'pi pi-wifi'"
             @click="connectAccount"
           />
-          <Button v-else class="p-button-text" icon="pi pi-check" label="Connected"></Button>
+          <Button
+            v-else
+            class="p-button-text"
+            icon="pi pi-check"
+            label="Connected"
+          ></Button>
         </div>
       </template>
       <template #content>
@@ -34,30 +39,7 @@
         </div>
       </template>
     </Card>
-    <Card class="controller-card">
-      <template #header>
-        <div class="p-d-flex p-ai-center p-px-3">
-          <h2>Displays</h2>
-          <div style="flex-grow: 1"></div>
-          <Button
-            label="New display"
-            icon="pi pi-plus"
-            @click="openDialog"
-            :disabled="!account"
-            style="height: 0%;"
-          />
-        </div>
-      </template>
-      <template #content>
-        <div :style="{color: displays ? '#4CAF50' : '#F44336'}">{{displays ? displays.length : ''}} Displays</div>
-        <CreateDisplay
-          v-if="account"
-          v-model="show_dialog"
-          :createDisplay="createDisplay"
-          :account_id="account.id"
-        ></CreateDisplay>
-      </template>
-    </Card>
+    <DisplayController :account_id="account?.id"></DisplayController>
   </div>
 </template>
 
@@ -66,13 +48,11 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
-import displayManagement from "@/composables/displayManagement";
-import CreateDisplay from "@/components/CreateDisplay.vue";
+import DisplayController from "@/components/Controller/DisplayController.vue"
 export default defineComponent({
-  components: { CreateDisplay },
+  components: {DisplayController},
   setup() {
     // set refs
-    const show_dialog = ref(false);
     const loading_account = ref(false);
     // load composables
     const {
@@ -83,7 +63,6 @@ export default defineComponent({
       web3_modal,
     } = web3Interface();
     const { account, loadAccount } = accountManagement();
-    const { displays, loadDisplays, createDisplay } = displayManagement();
 
     // connect to web3 wallet, and setup firebase account details
     const connectAccount = async () => {
@@ -96,29 +75,17 @@ export default defineComponent({
       await loadAccount(address.value, signature.value);
 
       loading_account.value = false;
-      if (account.value) {
-        await loadDisplays(account.value.id);
-      } else {
-        alert("Tried to load displays but had no account");
-      }
     };
 
-    const openDialog = () => {
-      show_dialog.value = true;
-      console.log("OPEN DIALOG", show_dialog.value);
-    };
+    
 
     //getAccountInfo(address, signature);
     return {
       connectAccount,
-      createDisplay,
       account,
       web3_modal,
-      displays,
       signature,
-      openDialog,
-      show_dialog,
-      loading_account
+      loading_account,
     };
   },
 });
@@ -126,7 +93,7 @@ export default defineComponent({
 <style>
 .controller-card {
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 600px;
   margin-bottom: 15px;
 }
 </style>

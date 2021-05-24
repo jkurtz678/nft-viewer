@@ -34,5 +34,6 @@ export interface Account extends BaseDocument {
 export interface Display extends BaseDocument {
     account_id: string;
     name: string;
-    token_media_url: string;
+    code: string;
+    media_url: string;
 }

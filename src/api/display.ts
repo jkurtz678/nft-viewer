@@ -3,11 +3,12 @@ import { FirestoreDocument, BaseEntity, Display } from "../types/types"
 const db = firebase.firestore();
 
 // creates a new display and returns it
-export const createDisplay = async (account_id: string, name: string): Promise<FirestoreDocument<Display>> => {
+export const createDisplay = async (account_id: string, name: string, code: string): Promise<FirestoreDocument<Display>> => {
     const document = await db.collection("display").add({
         ...BaseEntity.createBaseEntity(),
         account_id,
-        name
+        name,
+        code
     })
     const snapshot = await document.get()
     return { id: snapshot.id, entity: snapshot.data() as Display }
