@@ -6,6 +6,7 @@ import Button from "primevue/button"
 import Card from "primevue/card"
 import Dialog from "primevue/dialog"
 import InputText from "primevue/inputtext"
+import Chip from "primevue/chip"
 
 import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
@@ -20,4 +21,5 @@ app.component('Button', Button)
 app.component('Card', Card)
 app.component('Dialog', Dialog)
 app.component('InputText', InputText)
+app.component('Chip', Chip)
 app.mount('#app')

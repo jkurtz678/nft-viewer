@@ -1,18 +1,37 @@
 <template>
   <div>
     <Card class="controller-card">
-      <template #title>Account</template>
-      <template #content>
-        <div :style="{color: web3_modal ? '#4CAF50' : '#F44336'}">Web3</div>
-        <div :style="{color: signature ? '#4CAF50' : '#F44336'}">Metamask</div>
-        <div :style="{color: account ? '#4CAF50' : '#F44336'}">Firebase</div>
+      <template #header>
+        <div class="p-d-flex p-ai-center p-px-3">
+          <h2>Account</h2>
+          <div style="flex-grow: 1"></div>
+          <Button
+            v-if="!(web3_modal && signature && account)"
+            label="Connect"
+            :icon="loading_account ? 'pi pi-spin pi-spinner' : 'pi pi-wifi'"
+            @click="connectAccount"
+          />
+          <Button v-else class="p-button-text" icon="pi pi-check" label="Connected"></Button>
+        </div>
       </template>
-      <template #footer>
-        <Button
-          label="Connect"
-          icon="pi pi-check"
-          @click="connectAccount"
-        />
+      <template #content>
+        <div class="p-d-flex p-jc-around">
+          <Chip
+            label="Web3"
+            :icon="web3_modal ? 'pi pi-check' : 'pi pi-times'"
+            :style="{color: web3_modal ? '#4CAF50' : '#F44336'}"
+          ></Chip>
+          <Chip
+            label="Metamask"
+            :icon="signature ? 'pi pi-check' : 'pi pi-times'"
+            :style="{color: signature ? '#4CAF50' : '#F44336'}"
+          ></Chip>
+          <Chip
+            label="Firebase"
+            :icon="account ? 'pi pi-check' : 'pi pi-times'"
+            :style="{color: account ? '#4CAF50' : '#F44336'}"
+          ></Chip>
+        </div>
       </template>
     </Card>
     <Card class="controller-card">
@@ -43,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
@@ -54,6 +73,7 @@ export default defineComponent({
   setup() {
     // set refs
     const show_dialog = ref(false);
+    const loading_account = ref(false);
     // load composables
     const {
       connectWallet,
@@ -65,14 +85,17 @@ export default defineComponent({
     const { account, loadAccount } = accountManagement();
     const { displays, loadDisplays, createDisplay } = displayManagement();
 
-    onMounted(setupWeb3Modal);
-
     // connect to web3 wallet, and setup firebase account details
     const connectAccount = async () => {
+      loading_account.value = true;
+      await setupWeb3Modal();
+
       await connectWallet();
       // signature and account should now be set properly
 
       await loadAccount(address.value, signature.value);
+
+      loading_account.value = false;
       if (account.value) {
         await loadDisplays(account.value.id);
       } else {
@@ -95,6 +118,7 @@ export default defineComponent({
       signature,
       openDialog,
       show_dialog,
+      loading_account
     };
   },
 });
