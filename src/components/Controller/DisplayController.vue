@@ -15,9 +15,8 @@
     </template>
     <template #content>
       <div v-if="!displays_loaded">Connect an account to load your displays</div>
-      <div class="p-d-flex">
+      <div v-if="displays_loaded" class="p-d-flex p-flex-wrap">
         <DisplayItem
-          v-if="displays_loaded"
           v-for="display in displays"
           :key="display.id"
           :name="display.entity.name"
@@ -25,12 +24,12 @@
         ></DisplayItem>
       </div>
       <div v-if="displays_loaded && displays.length == 0">No displays found</div>
-      <CreateDisplayDialog
+      <EditDisplayDialog
         v-if="account_id"
         v-model="show_dialog"
         :createDisplay="createDisplay"
         :account_id="account_id"
-      ></CreateDisplayDialog>
+      ></EditDisplayDialog>
     </template>
   </Card>
 </template>
@@ -38,14 +37,14 @@
 <script lang="ts">
 import { defineComponent, watch, ref } from "vue";
 import displayManagement from "@/composables/displayManagement";
-import CreateDisplayDialog from "@/components/Controller/CreateDisplayDialog.vue";
+import EditDisplayDialog from "@/components/Controller/EditDisplayDialog.vue";
 import DisplayItem from "@/components/Controller/DisplayItem.vue";
 
 export default defineComponent({
   props: {
     account_id: String,
   },
-  components: { CreateDisplayDialog, DisplayItem },
+  components: { EditDisplayDialog, DisplayItem },
   /* if (account.value) {
         await loadDisplays(account.value.id);
       } else {

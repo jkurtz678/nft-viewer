@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { FirestoreDocument, Display } from '@/types/types'
 import * as display_api from "../api/display";
+import { customAlphabet } from 'nanoid';
 
 export default function displayManagement() {
     const displays = ref<Array<FirestoreDocument<Display>>>([])
@@ -14,7 +15,9 @@ export default function displayManagement() {
             displays_loaded.value = true;
         }
     }
-    const createDisplay = async (account_id: string, name: string, code: string) => {
+    const createDisplay = async (account_id: string, name: string) => {
+        const nanoid = customAlphabet("1234567890", 6)
+        const code = nanoid()
         const ret = await display_api.createDisplay(account_id, name, code).catch(alert)
         if (ret) {
             displays.value.push(ret);

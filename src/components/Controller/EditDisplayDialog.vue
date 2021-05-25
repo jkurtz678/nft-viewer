@@ -7,29 +7,18 @@
     style="min-width: 500px;"
   >
     <template #header>New Display</template>
-    <div>
+    <div class="p-d-flex p-jc-center" >
       <span
         class="p-float-label"
-        style="margin-top: 20px"
+        style="margin-top: 20px;"
       >
         <InputText
           id="name"
           v-model="name"
           type="text"
+          style="margin: 0 auto;"
         />
         <label for="name">Name</label>
-      </span>
-
-      <span
-        class="p-float-label"
-        style="margin-top: 30px"
-      >
-        <InputText
-          id="code"
-          v-model="code"
-          type="number"
-        ></InputText>
-        <label for="code">Code</label>
       </span>
     </div>
     <template #footer>
@@ -69,7 +58,7 @@ export default defineComponent({
     const code = ref("");
 
     const handleSave = async () => {
-      props.createDisplay(props.account_id, name.value, code.value);
+      props.createDisplay(props.account_id, name.value);
       emit("update:modelValue", false);
     };
 

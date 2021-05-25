@@ -1,5 +1,5 @@
 <template>
-    <Card class="p-m-2" style="width: 150px;">
+    <Card class="p-m-2" style="width: 150px;" @click="$emit('editDisplay')">
         <template #footer>
             <div class="p-text-bold">{{name}}</div>
             <div>{{code}}</div>

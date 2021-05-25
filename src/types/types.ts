@@ -37,3 +37,9 @@ export interface Display extends BaseDocument {
     code: string;
     media_url: string;
 }
+
+export interface Token {
+    image_url: string;
+    image_thumbnail_url: string;
+    name: string;
+}

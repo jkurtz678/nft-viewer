@@ -1,10 +1,12 @@
 import { ref } from 'vue'
-import { FirestoreDocument, Account } from "../types/types";
+import { FirestoreDocument, Account, Token } from "../types/types";
 import * as account_api from "../api/account";
+import * as token_api from "../api/token";
 
 export default function manageAccounts() {
     const loading_account = ref(false)
     const account = ref<FirestoreDocument<Account> | null>()
+    const tokens = ref<Array<Token>>()
 
     // gets account for address, creating if it does not exist
     const loadAccount = async (address: string, signature: string) => {
@@ -24,5 +26,9 @@ export default function manageAccounts() {
         loading_account.value = false
     };
 
-    return { account, loading_account, loadAccount }
+    const loadTokens = async (address: string) => {
+        tokens.value = await token_api.loadTokens(address)
+    }
+
+    return { account, loading_account, tokens, loadAccount, loadTokens}
 }

@@ -3,7 +3,7 @@
     <Card class="controller-card">
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
-          <h2>Account</h2>
+          <h2>Wallet</h2>
           <div style="flex-grow: 1"></div>
           <Button
             v-if="!(web3_modal && signature && account)"
@@ -37,6 +37,14 @@
             :style="{color: account ? '#4CAF50' : '#F44336'}"
           ></Chip>
         </div>
+        <div v-if="tokens">
+          <div
+            v-for="token of tokens"
+            :key="token.name"
+          >
+            {{token.name}}
+          </div>
+        </div>
       </template>
     </Card>
     <DisplayController :account_id="account?.id"></DisplayController>
@@ -48,9 +56,9 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
-import DisplayController from "@/components/Controller/DisplayController.vue"
+import DisplayController from "@/components/Controller/DisplayController.vue";
 export default defineComponent({
-  components: {DisplayController},
+  components: { DisplayController },
   setup() {
     // set refs
     const loading_account = ref(false);
@@ -62,7 +70,7 @@ export default defineComponent({
       address,
       web3_modal,
     } = web3Interface();
-    const { account, loadAccount } = accountManagement();
+    const { account, tokens, loadAccount, loadTokens } = accountManagement();
 
     // connect to web3 wallet, and setup firebase account details
     const connectAccount = async () => {
@@ -74,10 +82,10 @@ export default defineComponent({
 
       await loadAccount(address.value, signature.value);
 
+      await loadTokens(address.value);
+
       loading_account.value = false;
     };
-
-    
 
     //getAccountInfo(address, signature);
     return {
@@ -86,6 +94,7 @@ export default defineComponent({
       web3_modal,
       signature,
       loading_account,
+      tokens,
     };
   },
 });
