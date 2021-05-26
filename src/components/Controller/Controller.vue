@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card class="controller-card">
+    <Card class="controller-card" >
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
           <h2>Wallet</h2>
@@ -37,13 +37,12 @@
             :style="{color: account ? '#4CAF50' : '#F44336'}"
           ></Chip>
         </div>
-        <div v-if="tokens">
-          <div
+        <div v-if="tokens" class="p-mt-4">
+          <TokenItem
             v-for="token of tokens"
             :key="token.name"
-          >
-            {{token.name}}
-          </div>
+            :token="token"
+          ></TokenItem>
         </div>
       </template>
     </Card>
@@ -57,8 +56,10 @@ import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
 import DisplayController from "@/components/Controller/DisplayController.vue";
+import TokenItem from "@/components/Controller/TokenItem.vue";
+
 export default defineComponent({
-  components: { DisplayController },
+  components: { DisplayController, TokenItem },
   setup() {
     // set refs
     const loading_account = ref(false);
@@ -104,5 +105,6 @@ export default defineComponent({
   margin: 0 auto;
   max-width: 600px;
   margin-bottom: 15px;
+  box-shadow: none !important;
 }
 </style>
