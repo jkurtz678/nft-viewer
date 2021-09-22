@@ -9,11 +9,10 @@ export default function displayManagement() {
 
     // loads saved displays for an account_id and sets the state
     const loadDisplays = async (account_id: string) => {
-        const ret = await display_api.getDisplaysByAccountID(account_id).catch(alert)
-        if (ret) {
-            displays.value = ret;
+        return display_api.getDisplaysByAccountIDWithListener(account_id, (displayArr: Array<FirestoreDocument<Display>>) => {
+            displays.value = displayArr
             displays_loaded.value = true;
-        }
+        }).catch(alert)
     }
     const createDisplay = async (account_id: string, name: string) => {
         const nanoid = customAlphabet("1234567890", 6)

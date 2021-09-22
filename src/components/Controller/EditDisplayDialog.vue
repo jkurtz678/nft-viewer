@@ -1,20 +1,20 @@
 <template>
   <Dialog
     header="Header"
-    :visible="modelValue"
+    :visible="display_id != null"
     :modal="true"
-    @update:visible="$emit('update:modelValue', false)"
+    @update:visible="$emit('update:display_id', null)"
     style="min-width: 500px;"
   >
     <template #header>New Display</template>
-    <div class="p-d-flex p-jc-center" >
+    <div class="p-d-flex">
       <span
         class="p-float-label"
         style="margin-top: 20px;"
       >
         <InputText
           id="name"
-          v-model="name"
+          v-model="display.entity.name"
           type="text"
           style="margin: 0 auto;"
         />
@@ -29,7 +29,7 @@
       <Button
         class="p-button-text"
         label="Cancel"
-        @click="$emit('update:modelValue', false)"
+        @click="$emit('update:display_id', null)"
       ></Button>
     </template>
   </Dialog>
@@ -37,35 +37,42 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ref } from "vue";
+import { Display, FirestoreDocument } from "../../types/types";
+import { ref, watch} from "vue";
+import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
+
 export default defineComponent({
   props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-    account_id: {
-      type: String,
-      required: true,
-    },
     createDisplay: {
       type: Function,
       required: true,
     },
+    display_id: {
+      type: String,
+      required: false,
+    },
   },
   setup(props, { emit }) {
-    const name = ref("");
-    const code = ref("");
+    const display = ref<FirestoreDocument<Display>>({ id: "", entity: { name: "" } as Display });
 
     const handleSave = async () => {
-      props.createDisplay(props.account_id, name.value);
-      emit("update:modelValue", false);
+      //props.createDisplay(props.account_id, name.value);
+      await updateDisplay(display.value)
+      emit("update:display_id", null);
     };
+    watch(props, () => {
+      if (props.display_id) {
+        getDisplayByDisplayID(props.display_id).then((ret_display) => {
+          display.value = ret_display;
+        });
+      } else {
+        display.value = { id: "", entity: { name: "" } as Display };
+      }
+    }, {immediate: true});
 
     return {
       handleSave,
-      name,
-      code,
+      display,
     };
   },
 });

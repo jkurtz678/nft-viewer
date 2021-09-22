@@ -22,6 +22,7 @@
 <script lang="ts">
 import { ref, computed } from "vue";
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 import { FirestoreDocument, Display } from "@/types/types";
 import {
   createDisplayWithListener,
@@ -40,18 +41,22 @@ export default defineComponent({
     Loading,
   },
   setup(props) {
+    const router = useRouter();
     const display = ref<FirestoreDocument<Display> | null>();
     const loading = ref(true);
     const initDisplay = (d: FirestoreDocument<Display>) => {
-      console.log("DISPLAY LOADED", d);
+      router.push({ path: "/display", query: { display_id: d.id } });
       display.value = d;
       window.localStorage.setItem("nft_display_id", d.id);
       loading.value = false;
     };
 
-    const display_controller_url = computed(
-      () => `http://localhost:8080/#/controller?display_id=${display.value.id}`
-    );
+    const display_controller_url = computed(() => {
+      if (display.value) {
+        return `http://localhost:8080/#/controller?display_id=${display.value.id}`;
+      }
+      return "";
+    });
 
     if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);

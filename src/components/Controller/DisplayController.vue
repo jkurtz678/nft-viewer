@@ -7,7 +7,6 @@
         <Button
           label="New display"
           icon="pi pi-plus"
-          @click="openDialog"
           :disabled="!account_id"
           style="height: 0%;"
         />
@@ -15,20 +14,24 @@
     </template>
     <template #content>
       <div v-if="!displays_loaded">Connect an account to load your displays</div>
-      <div v-if="displays_loaded" class="p-d-flex p-flex-wrap">
+      <div
+        v-if="displays_loaded"
+        class="p-d-flex p-flex-wrap"
+      >
         <DisplayItem
           v-for="display in displays"
           :key="display.id"
           :name="display.entity.name"
           :code="display.entity.code"
+          @editDisplay="editDisplay(display.id)"
         ></DisplayItem>
       </div>
       <div v-if="displays_loaded && displays.length == 0">No displays found</div>
       <EditDisplayDialog
         v-if="account_id"
-        v-model="show_dialog"
         :createDisplay="createDisplay"
         :account_id="account_id"
+        v-model:display_id="edit_display_id"
       ></EditDisplayDialog>
     </template>
   </Card>
@@ -52,32 +55,36 @@ export default defineComponent({
       } */
 
   setup(props) {
-    const show_dialog = ref(false);
+    const edit_display_id = ref<String | null>(null);
+    const { displays, displays_loaded, loadDisplays, createDisplay } =
+      displayManagement();
 
-    const {
-      displays,
-      displays_loaded,
-      loadDisplays,
-      createDisplay,
-    } = displayManagement();
-
-    watch(() => props.account_id, async (account_id) => {
-      if (account_id) {
-        await loadDisplays(account_id);
-      } else {
-        alert("Tried to load displays but had no account");
+    watch(
+      () => props.account_id,
+      async (account_id) => {
+        if (account_id) {
+          await loadDisplays(account_id);
+        } else {
+          alert("Tried to load displays but had no account");
+        }
       }
-    });
+    );
 
-    const openDialog = () => {
+    /* const openDialog = () => {
       show_dialog.value = true;
+    }; */
+    const editDisplay = (display_id: string) => {
+      console.log("EDIT DISPLAY", display_id);
+      //show_dialog.value = true;
+      edit_display_id.value = display_id;
     };
+
     return {
       createDisplay,
       displays,
       displays_loaded,
-      openDialog,
-      show_dialog,
+      editDisplay,
+      edit_display_id,
     };
   },
 });
