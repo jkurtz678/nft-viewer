@@ -57,6 +57,8 @@ export default defineComponent({
       }
       return "";
     });
+    
+    console.log("PROPS", props.display_id)
 
     if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
