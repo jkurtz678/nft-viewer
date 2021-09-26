@@ -5,8 +5,8 @@
       :active="true"
     ></loading>
     <template v-else>
-      <template v-if="display.entity.media_url">
-        <img :src="display.entity.media_url" />
+      <template v-if="token">
+        <img :src="token.image_url" />
       </template>
       <template v-else>
         <qrcode-vue
@@ -23,6 +23,7 @@
 import { ref, computed } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import { loadToken } from "@/api/token"
 import { FirestoreDocument, Display, Token} from "@/types/types";
 import {
   createDisplayWithListener,
@@ -45,10 +46,17 @@ export default defineComponent({
     const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<Token | null>();
     const loading = ref(true);
-    const initDisplay = (d: FirestoreDocument<Display>) => {
+
+    const initDisplay = async (d: FirestoreDocument<Display>) => {
+      console.log("INIT DISPLAY", d)
       router.push({ path: "/display", query: { display_id: d.id } });
       display.value = d;
       window.localStorage.setItem("nft_display_id", d.id);
+      if(d.entity.token_id && d.entity.asset_contract_address) {
+        token.value = await loadToken(d.entity.asset_contract_address, d.entity.token_id)
+      } else {
+        token.value = null;
+      }
       loading.value = false;
     };
 

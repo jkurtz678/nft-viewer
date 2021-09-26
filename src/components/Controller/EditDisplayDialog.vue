@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 import { Display, FirestoreDocument } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
@@ -113,12 +113,18 @@ export default defineComponent({
       { immediate: true }
     );
 
-    watch(display, (v) => {
-      if (!v.entity.token_id) {
+    const token_id = computed(() => {
+      return display.value.entity.token_id
+    })
+
+    watch(token_id, (v) => {
+      console.log("WATCH", v)
+      if (!v) {
         display.value.entity.asset_contract_address = "";
         return;
       }
-      const token = store.getters.token(v.entity.token_id);
+      const token = store.getters.token(v);
+      console.log("RET TOKEN", token)
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
     });
