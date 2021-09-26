@@ -35,11 +35,14 @@ export interface Display extends BaseDocument {
     account_id: string;
     name: string;
     code: string;
-    media_url: string;
+    asset_contract_address: string;
+    token_id: string;
 }
 
 export interface Token {
     image_url: string;
     image_thumbnail_url: string;
     name: string;
+    asset_contract: Object;
+    token_id: string;
 }

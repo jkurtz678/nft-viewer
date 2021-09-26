@@ -35,10 +35,13 @@
         ></Button>
       </div>
       <div class="p-col">
-        <display-item name="test"></display-item>
+        <display-item
+          :name="display.entity.name"
+          :token_id="display.entity.token_id"
+        ></display-item>
       </div>
     </div>
-
+    <TokenList v-model:selected_token_id="display.entity.token_id"></TokenList>
     <template #footer>
       <Button
         label="Save"
@@ -54,14 +57,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, watch } from "vue";
+import { useStore } from "vuex";
 import { Display, FirestoreDocument } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
-import { ref, watch } from "vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
+import TokenList from "../Controller/TokenList.vue";
 
 export default defineComponent({
-  components: { DisplayItem },
+  components: { DisplayItem, TokenList },
   props: {
     createDisplay: {
       type: Function,
@@ -77,6 +81,7 @@ export default defineComponent({
       id: "",
       entity: { name: "" } as Display,
     });
+    const store = useStore();
 
     const handleSave = async () => {
       //props.createDisplay(props.account_id, name.value);
@@ -85,13 +90,15 @@ export default defineComponent({
     };
     const forgetDisplay = async () => {
       display.value.entity.account_id = "";
-      display.value.entity.media_url = "";
+      display.value.entity.token_id = "";
+      display.value.entity.asset_contract_address = "";
       await updateDisplay(display.value);
       emit("update:display_id", null);
     };
     const openDisplayInBrowser = async () => {
       window.open(`/#/display?display_id=${props.display_id}`);
     };
+
     watch(
       props,
       () => {
@@ -105,6 +112,16 @@ export default defineComponent({
       },
       { immediate: true }
     );
+
+    watch(display, (v) => {
+      if (!v.entity.token_id) {
+        display.value.entity.asset_contract_address = "";
+        return;
+      }
+      const token = store.getters.token(v.entity.token_id);
+      display.value.entity.asset_contract_address =
+        token.asset_contract.address;
+    });
 
     return {
       handleSave,

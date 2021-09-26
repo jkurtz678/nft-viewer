@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card class="controller-card" >
+    <Card class="controller-card">
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
           <h2>Wallet</h2>
@@ -37,12 +37,11 @@
             :style="{color: account ? '#4CAF50' : '#F44336'}"
           ></Chip>
         </div>
-        <div v-if="tokens" class="p-mt-4">
-          <TokenItem
-            v-for="token of tokens"
-            :key="token.name"
-            :token="token"
-          ></TokenItem>
+        <div
+          v-if="tokens"
+          class="p-mt-4"
+        >
+          {{`${tokens.length} token${tokens.length == 1 ? '' : 's'} loaded from OpenSea account.`}}
         </div>
       </template>
     </Card>
@@ -56,23 +55,16 @@ import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
 import DisplayController from "@/components/Controller/DisplayController.vue";
-import TokenItem from "@/components/Controller/TokenItem.vue";
 
 export default defineComponent({
-  components: { DisplayController, TokenItem },
+  components: { DisplayController },
   setup() {
     // set refs
     const loading_account = ref(false);
     // load composables
-    const {
-      connectWallet,
-      setupWeb3Modal,
-      signature,
-      address,
-      web3_modal,
-    } = web3Interface();
+    const { connectWallet, setupWeb3Modal, signature, address, web3_modal } =
+      web3Interface();
     const { account, tokens, loadAccount, loadTokens } = accountManagement();
-
     // connect to web3 wallet, and setup firebase account details
     const connectAccount = async () => {
       loading_account.value = true;

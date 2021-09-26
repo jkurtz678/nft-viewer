@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card style="width: 150px; padding: 0px;">
+    <Card style="width: 150px; padding: 0px; text-align: center;" :style="selected ? 'border-style: solid;' : ''">
       <template #content>
         <img :src="token.image_thumbnail_url" />
       </template>
@@ -17,6 +17,7 @@ import { Token } from "../../types/types";
 export default defineComponent({
   props: {
     token: Object as () => Token,
+    selected: Boolean
   },
 });
 </script>

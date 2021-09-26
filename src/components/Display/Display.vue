@@ -23,7 +23,7 @@
 import { ref, computed } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { FirestoreDocument, Display } from "@/types/types";
+import { FirestoreDocument, Display, Token} from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
@@ -43,6 +43,7 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const display = ref<FirestoreDocument<Display> | null>();
+    const token = ref<Token | null>();
     const loading = ref(true);
     const initDisplay = (d: FirestoreDocument<Display>) => {
       router.push({ path: "/display", query: { display_id: d.id } });
@@ -58,8 +59,6 @@ export default defineComponent({
       return "";
     });
     
-    console.log("PROPS", props.display_id)
-
     if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
@@ -71,7 +70,7 @@ export default defineComponent({
       }
     }
 
-    return { display, loading, display_controller_url };
+    return { display, loading, display_controller_url, token };
   },
 });
 </script>

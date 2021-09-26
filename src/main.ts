@@ -8,6 +8,8 @@ import Dialog from "primevue/dialog"
 import InputText from "primevue/inputtext"
 import Chip from "primevue/chip"
 
+import store from "./store"
+
 import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                           //icons
@@ -15,6 +17,7 @@ import 'primeicons/primeicons.css'                           //icons
 import 'primeflex/primeflex.css';
 
 const app = createApp(App)
+app.use(store)
 app.use(router)
 app.use(PrimeVue)
 app.component('Button', Button)

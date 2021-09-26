@@ -22,7 +22,7 @@
           v-for="display in displays"
           :key="display.id"
           :name="display.entity.name"
-          :code="display.entity.code"
+          :token_id="display.entity.token_id"
           @editDisplay="editDisplay(display.id)"
         ></DisplayItem>
       </div>

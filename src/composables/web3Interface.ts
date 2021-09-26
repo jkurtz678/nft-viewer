@@ -3,13 +3,15 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import Authereum from "authereum";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import {ref} from 'vue'
+import { ref } from 'vue'
+import { useStore } from "vuex";
 
 export default function web3Interface() {
   let web3: Web3;
   const web3_modal = ref<Web3Modal>();
   const address = ref("");
   const signature = ref("");
+  const store = useStore();
 
   const setupWeb3Modal = () => {
     console.log("setup v3 modal...");
@@ -35,7 +37,7 @@ export default function web3Interface() {
   };
   const connectWallet = async () => {
     console.log("connecting wallet...");
-    if(!web3_modal.value) {
+    if (!web3_modal.value) {
       alert("Tried to connect wallet but web3 modal not loaded!")
       return
     }
@@ -61,16 +63,14 @@ export default function web3Interface() {
     return setWeb3Account(provider);
   };
   const setWeb3Account = async (provider: any) => {
-    console.log("set web3 account...", provider);
     web3 = new Web3(provider);
     const web3_account = (await web3.eth.getAccounts())[0];
-    console.log("web3_account", web3_account);
     address.value = web3_account;
+    store.commit("setAddress", web3_account);
     attemptReverse();
     return getSignature();
   };
   const attemptReverse = async () => {
-    console.log("attempt reverse...");
     const provider = new ethers.providers.Web3Provider(
       web3.currentProvider as ethers.providers.ExternalProvider
     );
@@ -81,16 +81,19 @@ export default function web3Interface() {
     });
   };
   const getSignature = async () => {
-    console.log("get signature address", address);
+    const local_signature = window.localStorage.getItem("web3_signature")
+    if (local_signature) {
+      signature.value = local_signature;
+      return;
+    }
     const plain =
       "NFT Viewer - proof of ownership. Please sign this message to prove ownership over your Ethereum account.";
     const msg = web3.utils.asciiToHex(plain);
-    /* let hash = this.web3.utils.keccak256(
-      "\x19Ethereum Signed Message:\n" + plain.length + plain
-    ); */
+
     signature.value = await web3.eth.personal.sign(msg, address.value, "");
+    window.localStorage.setItem("web3_signature", signature.value);
   };
- 
+
 
   return {
     setupWeb3Modal,
