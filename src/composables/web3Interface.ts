@@ -21,9 +21,6 @@ export default function web3Interface() {
     } */
     return web3_modal.value = new Web3Modal({
       providerOptions: {
-        authereum: {
-          package: Authereum, // required
-        },
         walletconnect: {
           package: WalletConnectProvider.default,
           options: {
