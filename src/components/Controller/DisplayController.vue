@@ -90,5 +90,8 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+.p-card::v-deep .p-card-body {
+  padding: 0.8rem;
+}
 </style>

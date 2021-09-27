@@ -6,6 +6,7 @@ import Display from "./components/Display/Display.vue"
 const routes = [
     { path: '/controller', name: "Controller", component: Controller },
     { path: '/display', name: "Display", component: Display, props: route => ({ display_id: route.query.display_id }) },
+    { path: '/', redirect: "/controller"}
 ]
 
 const router = createRouter({

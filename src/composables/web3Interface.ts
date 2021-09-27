@@ -1,10 +1,11 @@
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import Authereum from "authereum";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ref } from 'vue'
 import { useStore } from "vuex";
+import Fortmatic from "fortmatic";
+
 
 export default function web3Interface() {
   let web3: Web3;
@@ -15,18 +16,25 @@ export default function web3Interface() {
 
   const setupWeb3Modal = () => {
     console.log("setup v3 modal...");
-    /* if (location.protocol !== "https:") {
+    /* if(location.protocol !== "https:") {
       console.error("must use https");
       return;
     } */
     return web3_modal.value = new Web3Modal({
       providerOptions: {
         walletconnect: {
-          package: WalletConnectProvider.default,
+          package: WalletConnectProvider,
           options: {
             infuraId: "e132974b42d54791bd631e7bcd88572b", // infura.io Mainnet endpoint
           },
         },
+        fortmatic: {
+          package: Fortmatic,
+          options: {
+            // Mikko's TESTNET api key
+            key: "pk_test_391E26A3B43A3350"
+          }
+        }
       },
       cacheProvider: true,
       disableInjectedProvider: false,
@@ -38,9 +46,12 @@ export default function web3Interface() {
       alert("Tried to connect wallet but web3 modal not loaded!")
       return
     }
+
+    web3_modal.value.clearCachedProvider();
     const provider = await web3_modal?.value?.connect().catch((err) => {
       console.error(err);
     });
+    console.log("AFTER CONNECT", provider)
 
     // Subscribe to accounts change
     provider.on("accountsChanged", () => {
@@ -60,6 +71,7 @@ export default function web3Interface() {
     return setWeb3Account(provider);
   };
   const setWeb3Account = async (provider: any) => {
+    console.log("setWeb3Account", provider)
     web3 = new Web3(provider);
     const web3_account = (await web3.eth.getAccounts())[0];
     address.value = web3_account;

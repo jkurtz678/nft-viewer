@@ -61,8 +61,9 @@ export default defineComponent({
     };
 
     const display_controller_url = computed(() => {
+      console.log("document", document)
       if (display.value) {
-        return `http://localhost:8080/#/controller?display_id=${display.value.id}`;
+        return `${document.location.origin}${document.location.pathname}#/controller?display_id=${display.value.id}`;
       }
       return "";
     });

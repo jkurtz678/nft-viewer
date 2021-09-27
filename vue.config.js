@@ -1,3 +1,5 @@
 module.exports = {
-    publicPath: '/nft-viewer'
-}
+    publicPath: process.env.NODE_ENV === 'production'
+      ? '/nft-viewer'
+      : '/'
+  }

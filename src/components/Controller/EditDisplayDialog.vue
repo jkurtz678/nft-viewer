@@ -4,10 +4,10 @@
     :visible="display_id != null"
     :modal="true"
     @update:visible="$emit('update:display_id', null)"
-    style="min-width: 500px;"
+    style="min-width: 350px;"
   >
     <template #header>New Display</template>
-    <div class="p-grid">
+    <div class="p-grid" style="flex-wrap: nowrap">
       <div class="p-col">
         <span
           class="p-float-label"
@@ -17,7 +17,7 @@
             id="name"
             v-model="display.entity.name"
             type="text"
-            style="margin: 0 auto;"
+            style="margin: 0 auto; max-width: 150px;"
           />
           <label for="name">Name</label>
         </span>
