@@ -55,10 +55,12 @@ import { ref } from "vue";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
 import DisplayController from "@/components/Controller/DisplayController.vue";
+import {getDisplayByDisplayID, updateDisplay} from "@/api/display";
 
 export default defineComponent({
   components: { DisplayController },
-  setup() {
+  props: { display_id: String },
+  setup(props) {
     // set refs
     const loading_account = ref(false);
     // load composables
@@ -74,6 +76,13 @@ export default defineComponent({
       // signature and account should now be set properly
 
       await loadAccount(address.value, signature.value);
+
+      // add display if connected
+      if(props.display_id) {
+        const display = await getDisplayByDisplayID(props.display_id)
+        display.entity.account_id = account.value?.id || "";
+        await updateDisplay(display)
+      }
 
       await loadTokens(address.value);
 

@@ -96,7 +96,7 @@ export default defineComponent({
       emit("update:display_id", null);
     };
     const openDisplayInBrowser = async () => {
-      window.open(`/#/display?display_id=${props.display_id}`);
+      window.open(`${window.location.origin}${window.location.pathname}/#/display?display_id=${props.display_id}`);
     };
 
     watch(
