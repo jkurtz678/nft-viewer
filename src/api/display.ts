@@ -52,8 +52,14 @@ export const getDisplayByDisplayIDWithListener = async (display_id: string, onCh
     })
 }
 
-export const updateDisplay = async (display: FirestoreDocument<Display>) => {
+export const updateDisplay = async (display: FirestoreDocument<Display>): Promise<FirestoreDocument<Display>> => {
     await db.collection("display").doc(display.id).update(display.entity)
     const snapshot = await db.collection("display").doc(display.id).get()
+    return { id: snapshot.id, entity: snapshot.data() as Display }
+}
+
+export const addAccountToDisplay = async(display_id: string, account_id: string): Promise<FirestoreDocument<Display>> => {
+    await db.collection("display").doc(display_id).update({account_id})
+    const snapshot = await db.collection("display").doc(display_id).get()
     return { id: snapshot.id, entity: snapshot.data() as Display }
 }
