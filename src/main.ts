@@ -15,11 +15,14 @@ import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                           //icons
 
 import 'primeflex/primeflex.css';
+import 'viewerjs/dist/viewer.css'
+import VueViewer from 'v-viewer'
 
 const app = createApp(App)
 app.use(store)
 app.use(router)
 app.use(PrimeVue)
+app.use(VueViewer)
 app.component('Button', Button)
 app.component('Card', Card)
 app.component('Dialog', Dialog)

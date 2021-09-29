@@ -86,8 +86,6 @@ export default defineComponent({
     );
 
     const editDisplay = (display_id: string) => {
-      console.log("EDIT DISPLAY", display_id);
-      //show_dialog.value = true;
       edit_display_id.value = display_id;
     };
 

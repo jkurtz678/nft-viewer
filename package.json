@@ -20,6 +20,7 @@
     "primevue": "^3.7.2",
     "qrcode-reader-vue3": "^3.1.2",
     "qrcode.vue": "^3.3.2",
+    "v-viewer": "^3.0.10",
     "vue": "^3.2.19",
     "vue-loading-overlay": "^4.0.4",
     "vue-qrcode-reader": "^3.1.0-vue3-compatibility.2",
