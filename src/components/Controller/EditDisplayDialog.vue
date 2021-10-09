@@ -4,7 +4,7 @@
     :visible="display_id != null"
     :modal="true"
     @update:visible="$emit('update:display_id', null)"
-    style="min-width: 350px;"
+    style="width: 100%; max-width: 700px;"
   >
     <template #header>New Display</template>
     <div class="p-grid" style="flex-wrap: nowrap">

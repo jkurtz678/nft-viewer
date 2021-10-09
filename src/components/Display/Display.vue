@@ -6,10 +6,10 @@
     ></loading>
     <template v-else>
       <template v-if="token">
-        <!--  <viewer :images="[token.image_url]" :options="{fullscreen: true, show: true}">
-          
-        </viewer> -->
-        <div v-if="token.animation_url" class="video-container">
+        <div
+          v-if="token.animation_url"
+          class="video-container"
+        >
           <video
             class="center"
             autoplay
@@ -18,7 +18,6 @@
             :src="token.animation_url"
           ></video>
         </div>
-
       </template>
       <template v-else>
         <div
@@ -80,24 +79,24 @@ export default defineComponent({
 
     const displayImage = (image_url: string) => {
       viewer.value = viewerApi({
-          images: [image_url],
-          options: {
-            inline: false,
-            button: false,
-            navbar: false,
-            title: false,
-            toolbar: false,
-            tooltip: false,
-            movable: false,
-            zoomable: false,
-            rotatable: false,
-            scalable: true,
-            transition: true,
-            fullscreen: true,
-            keyboard: false,
-          },
-        });
-    }
+        images: [image_url],
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: false,
+          tooltip: false,
+          movable: false,
+          zoomable: false,
+          rotatable: false,
+          scalable: true,
+          transition: true,
+          fullscreen: true,
+          keyboard: false,
+        },
+      });
+    };
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       console.log("INIT DISPLAY", d);
@@ -110,12 +109,15 @@ export default defineComponent({
           d.entity.token_id
         );
         token.value = token_resp;
-        
+
         // if token has no video media, display the image using viewer
-        if(!token_resp.animation_url) {
+        if (token_resp.animation_url) {
+          if (viewer.value) {
+            viewer.value.hide();
+          }
+        } else {
           displayImage(token_resp.image_url);
         }
-        
       } else {
         token.value = null;
         if (viewer.value) {
@@ -162,12 +164,12 @@ export default defineComponent({
   top: 0;
   bottom: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   overflow: hidden;
   background-color: black;
 }
 .video-container video {
-  max-height: 100%; 
+  max-height: 100%;
   max-width: 100%;
 }
 </style>

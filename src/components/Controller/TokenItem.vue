@@ -1,11 +1,16 @@
 <template>
   <div>
-    <Card style="width: 150px; padding: 0px; text-align: center;" :style="selected ? 'border-style: solid;' : ''">
+    <Card
+      style="width: 100%; margin-bottom: 10px; text-align: center;"
+      :style="selected ? 'border-style: solid;' : ''"
+    >
       <template #content>
-        <img :src="token.image_thumbnail_url" />
-      </template>
-      <template #footer>
-          {{token.name}}
+        <div class="p-grid">
+          <div class="p-col" style="margin: auto; text-align: left; padding-left: 40px">{{token.name}}</div>
+          <div class="p-col">
+            <img :src="token.image_thumbnail_url" style="height: 100px;"/>
+          </div>
+        </div>
       </template>
     </Card>
   </div>
@@ -17,7 +22,7 @@ import { Token } from "../../types/types";
 export default defineComponent({
   props: {
     token: Object as () => Token,
-    selected: Boolean
+    selected: Boolean,
   },
 });
 </script>
@@ -29,7 +34,7 @@ export default defineComponent({
 .p-card::v-deep .p-card-footer {
   padding: 10px 0px 10px 0px;
 }
-.p-card::v-deep .p-card-content{
+.p-card::v-deep .p-card-content {
   padding-bottom: 0px;
 }
 </style>
