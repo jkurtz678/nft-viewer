@@ -105,6 +105,7 @@ export default defineComponent({
 .controller-card {
   margin: 0 auto;
   max-width: 600px;
+  margin-top: 40px;
   margin-bottom: 15px;
   box-shadow: none !important;
 }

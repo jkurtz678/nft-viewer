@@ -9,19 +9,37 @@
         <!--  <viewer :images="[token.image_url]" :options="{fullscreen: true, show: true}">
           
         </viewer> -->
+        <div v-if="token.animation_url" class="video-container">
+          <video
+            class="center"
+            autoplay
+            muted
+            loop
+            :src="token.animation_url"
+          ></video>
+        </div>
+
       </template>
       <template v-else>
         <div
           v-if="display.entity.account_id"
           class="center"
           style="font-size: 40px"
-        >No token selected</div>
-        <qrcode-vue
-          v-else
-          :value="display_controller_url"
-          :size='300'
-          :level="'H'"
-        />
+        >Connected - No token selected</div>
+        <template v-else>
+          <div
+            class="center"
+            style="font-size: 40px"
+          >
+            <qrcode-vue
+              :value="display_controller_url"
+              :size='300'
+              :level="'H'"
+            />
+            <div style="margin-top: 40px">Scan to cast NFTs</div>
+          </div>
+        </template>
+
       </template>
     </template>
   </div>
@@ -40,7 +58,7 @@ import {
 import QrcodeVue from "qrcode.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import VueViewer, { api as viewerApi } from "v-viewer";
+import VueViewer, { api as viewerApi, Viewer } from "v-viewer";
 VueViewer.setDefaults({
   zIndex: 2021,
 });
@@ -58,20 +76,11 @@ export default defineComponent({
     const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<Token | null>();
     const loading = ref(true);
+    const viewer = ref<Viewer>();
 
-    const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("INIT DISPLAY", d);
-      router.push({ path: "/display", query: { display_id: d.id } });
-      display.value = d;
-      window.localStorage.setItem("nft_display_id", d.id);
-      if (d.entity.token_id && d.entity.asset_contract_address) {
-        token.value = await loadToken(
-          d.entity.asset_contract_address,
-          d.entity.token_id
-        );
-        const $viewer = viewerApi({
-          //images: [token.value.image_url],
-          images: ["https://cdn.wallpapersafari.com/99/95/EYC9Zn.jpg"],
+    const displayImage = (image_url: string) => {
+      viewer.value = viewerApi({
+          images: [image_url],
           options: {
             inline: false,
             button: false,
@@ -82,15 +91,36 @@ export default defineComponent({
             movable: false,
             zoomable: false,
             rotatable: false,
-            scalable: false,
+            scalable: true,
             transition: true,
             fullscreen: true,
             keyboard: false,
           },
         });
-        console.log("VIEWER", $viewer)
+    }
+
+    const initDisplay = async (d: FirestoreDocument<Display>) => {
+      console.log("INIT DISPLAY", d);
+      router.push({ path: "/display", query: { display_id: d.id } });
+      display.value = d;
+      window.localStorage.setItem("nft_display_id", d.id);
+      if (d.entity.token_id && d.entity.asset_contract_address) {
+        const token_resp = await loadToken(
+          d.entity.asset_contract_address,
+          d.entity.token_id
+        );
+        token.value = token_resp;
+        
+        // if token has no video media, display the image using viewer
+        if(!token_resp.animation_url) {
+          displayImage(token_resp.image_url);
+        }
+        
       } else {
         token.value = null;
+        if (viewer.value) {
+          viewer.value.hide();
+        }
       }
       loading.value = false;
     };
@@ -113,7 +143,6 @@ export default defineComponent({
         createDisplayWithListener("", "", "", initDisplay);
       }
     }
-
     return { display, loading, display_controller_url, token };
   },
 });
@@ -127,5 +156,18 @@ export default defineComponent({
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.video-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%; 
+  overflow: hidden;
+  background-color: black;
+}
+.video-container video {
+  max-height: 100%; 
+  max-width: 100%;
 }
 </style>

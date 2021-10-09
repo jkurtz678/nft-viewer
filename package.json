@@ -25,6 +25,7 @@
     "vue-loading-overlay": "^4.0.4",
     "vue-qrcode-reader": "^3.1.0-vue3-compatibility.2",
     "vue-router": "^4.0.11",
+    "vue3-player-video": "^1.2.5",
     "vuex": "^4.0.2",
     "web3": "^1.5.3",
     "web3modal": "^1.9.4"

@@ -42,6 +42,7 @@ export interface Display extends BaseDocument {
 export interface Token {
     image_url: string;
     image_thumbnail_url: string;
+    animation_url: string;
     name: string;
     asset_contract: Object;
     token_id: string;
