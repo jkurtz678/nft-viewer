@@ -13,30 +13,36 @@
     class="center"
     style="font-size: 40px;"
   >No media loaded</div>
-  <div v-else style='text-align: left' class="center p-px-6">
-    <div style="font-size: 40px;">
-      {{token.name}}
-    </div>
-    <div
-      class="p-grid"
-    >
-
-      <div
-        class="p-col"
-        style="min-width: 270px;"
-      >
-
-        <div style="margin-bottom: 8px">{{token.creator.user.username}}</div>
-        <div>{{token.description}}</div>
+  <div
+    v-else
+    class="center p-px-6"
+    style="text-align: left; width: 100%"
+  >
+    <div style="max-width: 800px; margin-left: auto; margin-right: auto">
+      <div style="font-size: 40px;">
+        {{token.name}}
       </div>
+      <div class="p-grid">
+        <div
+          class="p-col"
+          style="min-width: 350px;"
+        >
 
-      <div class="p-col" style="text-align: center;">
-        <qrcode-vue
-          :value="token.permalink"
-          :size='200'
-          :level="'M'"
-        />
-        <div style="font-size: 20px;">View on OpenSea</div>
+          <div style="margin-bottom: 8px">{{token.creator.user.username}}</div>
+          <div>{{token.description}}</div>
+        </div>
+
+        <div
+          class="p-col"
+          style="text-align: center;"
+        >
+          <qrcode-vue
+            :value="token.permalink"
+            :size='200'
+            :level="'M'"
+          />
+          <div style="font-size: 20px;">View on OpenSea</div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,10 +109,11 @@ export default defineComponent({
 
 <style scoped>
 .center {
-  margin: 0;
+   margin: 0;
   position: absolute;
   top: 50%;
-  -ms-transform: translate(0%, -50%);
-  transform: translate(0%, -50%);
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>

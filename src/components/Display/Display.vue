@@ -15,7 +15,7 @@
             autoplay
             muted
             loop
-            :src="token.animation_url"
+            :src="media_url"
           ></video>
         </div>
       </template>
@@ -48,7 +48,7 @@
 import { ref, computed } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { loadToken } from "@/api/token";
+import { loadToken, loadArchiveMedia } from "@/api/token";
 import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
@@ -76,6 +76,7 @@ export default defineComponent({
     const token = ref<Token | null>();
     const loading = ref(true);
     const viewer = ref<Viewer>();
+    const archive_media_url = ref<string | null>();
 
     const displayImage = (image_url: string) => {
       viewer.value = viewerApi({
@@ -110,6 +111,10 @@ export default defineComponent({
         );
         token.value = token_resp;
 
+
+        archive_media_url.value = await loadArchiveMedia(token_resp.token_id + ".mp4")
+        console.log("ARCHIVE MEDIA", archive_media_url.value)
+
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {
           if (viewer.value) {
@@ -135,6 +140,19 @@ export default defineComponent({
       return "";
     });
 
+    const media_url = computed(() => {
+      if(archive_media_url.value) {
+        return archive_media_url.value
+      } 
+      if(token.value?.animation_url) {
+        return token.value.animation_url
+      }
+      if(token.value?.image_url) {
+        return token.value.image_url;
+      }
+      return null;
+    })
+
     if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
@@ -145,7 +163,7 @@ export default defineComponent({
         createDisplayWithListener("", "", "", initDisplay);
       }
     }
-    return { display, loading, display_controller_url, token };
+    return { display, loading, display_controller_url, token, media_url };
   },
 });
 </script>
