@@ -49,6 +49,7 @@ import { ref, computed } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken, loadArchiveMedia } from "@/api/token";
+//mport { loadToken} from "@/api/token";
 import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
@@ -113,7 +114,7 @@ export default defineComponent({
 
 
         archive_media_url.value = await loadArchiveMedia(token_resp.token_id + ".mp4")
-        console.log("ARCHIVE MEDIA", archive_media_url.value)
+        console.log("ARCHIVE MEDIA", archive_media_url.value) 
 
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {

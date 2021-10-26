@@ -7,6 +7,7 @@ import Card from "primevue/card"
 import Dialog from "primevue/dialog"
 import InputText from "primevue/inputtext"
 import Chip from "primevue/chip"
+import InputSwitch from 'primevue/inputswitch';
 
 import store from "./store"
 
@@ -24,6 +25,7 @@ app.use(router)
 app.use(PrimeVue)
 app.use(VueViewer)
 app.component('Button', Button)
+app.component('InputSwitch', InputSwitch)
 app.component('Card', Card)
 app.component('Dialog', Dialog)
 app.component('InputText', InputText)

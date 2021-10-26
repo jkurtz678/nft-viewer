@@ -7,7 +7,10 @@
     style="width: 100%; max-width: 700px;"
   >
     <template #header>New Display</template>
-    <div class="p-grid" style="flex-wrap: nowrap">
+    <div
+      class="p-grid"
+      style="flex-wrap: nowrap"
+    >
       <div class="p-col">
         <span
           class="p-float-label"
@@ -27,6 +30,17 @@
           @click="openDisplayInBrowser"
           style="display: block;"
         ></Button>
+        <div
+          class="p-mt-2"
+          style="display: flex; align-items: center;"
+        >
+          <InputSwitch
+            v-model="display.entity.plaque_dark_mode"
+            label="Plaque Dark Mode"
+            class="p-mr-2"
+          ></InputSwitch>
+          Plaque dark mode
+        </div>
         <Button
           class="p-button-danger p-button-sm p-mt-2"
           label="Forget display"
@@ -96,7 +110,9 @@ export default defineComponent({
       emit("update:display_id", null);
     };
     const openDisplayInBrowser = async () => {
-      window.open(`${window.location.origin}${window.location.pathname}/#/display?display_id=${props.display_id}`);
+      window.open(
+        `${window.location.origin}${window.location.pathname}/#/display?display_id=${props.display_id}`
+      );
     };
 
     watch(
@@ -114,17 +130,17 @@ export default defineComponent({
     );
 
     const token_id = computed(() => {
-      return display.value.entity.token_id
-    })
+      return display.value.entity.token_id;
+    });
 
     watch(token_id, (v) => {
-      console.log("WATCH", v)
+      console.log("WATCH", v);
       if (!v) {
         display.value.entity.asset_contract_address = "";
         return;
       }
       const token = store.getters.token(v);
-      console.log("RET TOKEN", token)
+      console.log("RET TOKEN", token);
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
     });

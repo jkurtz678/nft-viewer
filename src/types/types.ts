@@ -37,6 +37,7 @@ export interface Display extends BaseDocument {
     code: string;
     asset_contract_address: string;
     token_id: string;
+    plaque_dark_mode: boolean;
 }
 
 export interface Token {
