@@ -31,6 +31,13 @@ export default function manageAccounts() {
     const loadTokens = async (address: string) => {
         tokens.value = await token_api.loadTokens(address)
         store.commit("setTokens", tokens.value)
+
+        const demo_tokens_ids = ["108937609937296399194171997007219888570303265273129286037198106280101045862401",
+            "110614174873130096455215643576563166931009400526083623190709896448926885609473",
+            "97869798444724883384927327569229813102508220427212553862986279205550369538049",
+            "17600030009"];
+        const demo_tokens = await token_api.loadTokensByTokenIDs(demo_tokens_ids)
+        store.commit("setDemoTokens", demo_tokens)
     }
 
     return { account, loading_account, tokens, loadAccount, loadTokens }

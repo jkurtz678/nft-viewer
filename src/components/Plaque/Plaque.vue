@@ -29,7 +29,7 @@
             style="min-width: 350px;"
           >
 
-            <div style="margin-bottom: 8px">{{token.creator.user.username}}</div>
+            <div style="margin-bottom: 8px">{{token?.creator?.user?.username}}</div>
             <div>{{token.description}}</div>
           </div>
 
@@ -73,15 +73,12 @@ export default defineComponent({
     const display_id = ref(window.localStorage.getItem("nft_display_id"));
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("DISPLAY", d)
       display.value = d;
-      console.log("d", d);
       if (d.entity.token_id && d.entity.asset_contract_address) {
         const token_resp = await loadToken(
           d.entity.asset_contract_address,
           d.entity.token_id
         );
-        console.log("TOKEN RESP", token_resp);
         token.value = token_resp;
       }
       loading.value = false;
@@ -94,7 +91,6 @@ export default defineComponent({
     watch(
       () => display_id.value,
       async () => {
-        console.log("DISPALY ID", display_id.value);
         loading.value = true;
         if (display_id.value) {
           getDisplayByDisplayIDWithListener(display_id.value, initDisplay);

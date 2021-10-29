@@ -8,6 +8,8 @@ import Dialog from "primevue/dialog"
 import InputText from "primevue/inputtext"
 import Chip from "primevue/chip"
 import InputSwitch from 'primevue/inputswitch';
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
 
 import store from "./store"
 
@@ -25,6 +27,8 @@ app.use(router)
 app.use(PrimeVue)
 app.use(VueViewer)
 app.component('Button', Button)
+app.component('TabPanel', TabPanel)
+app.component('TabView', TabView)
 app.component('InputSwitch', InputSwitch)
 app.component('Card', Card)
 app.component('Dialog', Dialog)

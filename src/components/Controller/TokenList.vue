@@ -3,13 +3,26 @@
     v-if="$store.getters.tokens"
     class="p-mt-4"
   >
-    <TokenItem
-      v-for="token of $store.getters.tokens"
-      :key="token.name"
-      :token="token"
-      :selected="token.token_id == selected_token_id"
-      @click="selectToken(token.token_id)"
-    ></TokenItem>
+    <TabView>
+      <TabPanel header="My tokens">
+        <TokenItem
+          v-for="token of $store.getters.tokens"
+          :key="token.name"
+          :token="token"
+          :selected="token.token_id == selected_token_id"
+          @click="selectToken(token.token_id)"
+        ></TokenItem>
+      </TabPanel>
+      <TabPanel header="Demo tokens">
+        <TokenItem
+          v-for="token of $store.getters.demo_tokens"
+          :key="token.name"
+          :token="token"
+          :selected="token.token_id == selected_token_id"
+          @click="selectToken(token.token_id)"
+        ></TokenItem>
+      </TabPanel>
+    </TabView>
   </div>
 </template>
 
@@ -23,6 +36,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const selectToken = (token_id: string) => {
+      console.log("SELECT TOKEN", token_id);
       if (token_id == props.selected_token_id) {
         emit("update:selected_token_id", "");
       } else {

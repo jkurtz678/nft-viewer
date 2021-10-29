@@ -1,14 +1,19 @@
 <template>
   <div>
     <Card
-      style="width: 100%; margin-bottom: 10px; text-align: center;"
       :style="selected ? 'border-style: solid;' : ''"
     >
       <template #content>
         <div class="p-grid">
-          <div class="p-col" style="margin: auto; text-align: left; padding-left: 40px">{{token.name}}</div>
+          <div
+            class="p-col"
+            style="margin: auto; text-align: left; padding-left: 40px"
+          >{{token.name}}</div>
           <div class="p-col">
-            <img :src="token.image_thumbnail_url" style="height: 100px;"/>
+            <img
+              :src="token.image_thumbnail_url"
+              style="height: 100px;"
+            />
           </div>
         </div>
       </template>
@@ -28,6 +33,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.p-card {
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+  box-shadow: none;
+}
 .p-card::v-deep .p-card-body {
   padding: 0px;
 }
