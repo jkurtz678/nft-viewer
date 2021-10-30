@@ -22,12 +22,13 @@ export default function web3Interface() {
     } */
     return web3_modal.value = new Web3Modal({
       providerOptions: {
-        /* walletconnect: {
+        walletconnect: {
           package: WalletConnectProvider,
           options: {
             infuraId: "e132974b42d54791bd631e7bcd88572b", // infura.io Mainnet endpoint
           },
         },
+        /*
         fortmatic: {
           package: Fortmatic,
           options: {
