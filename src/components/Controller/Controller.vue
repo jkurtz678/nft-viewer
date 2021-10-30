@@ -1,7 +1,7 @@
 <template>
   <qr-scan v-if="store.getters.camera_scan_mode" :account_id="account?.id">
   </qr-scan>
-  <div v-else>
+  <div v-show="!store.getters.camera_scan_mode">
     <Card class="controller-card">
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
