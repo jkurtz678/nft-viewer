@@ -1,13 +1,6 @@
 <template>
-  <div v-if="store.getters.camera_scan_mode" style="text-align: right;">
-    <Button
-      label="Cancel scanning"
-      icon="pi pi-ban"
-      class="p-m-3"
-      @click="store.commit('setCameraScanMode', false)"
-    />
-    <qrcode-stream @decode="onDecode"></qrcode-stream>
-  </div>
+  <qr-scan v-if="store.getters.camera_scan_mode" :account_id="account?.id">
+  </qr-scan>
   <div v-else>
     <Card class="controller-card">
       <template #header>
@@ -65,15 +58,11 @@ import { useStore } from "vuex";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
 import DisplayController from "@/components/Controller/DisplayController.vue";
-import { QrcodeStream } from "vue-qrcode-reader";
-import {
-  getDisplayByDisplayID,
-  updateDisplay,
-  addAccountToDisplay,
-} from "@/api/display";
+import { getDisplayByDisplayID, updateDisplay } from "@/api/display";
+import QrScan from "@/components/Controller/QrScan.vue"
 
 export default defineComponent({
-  components: { DisplayController, QrcodeStream },
+  components: { DisplayController, QrScan },
   props: { display_id: String },
   setup(props) {
     const store = useStore();
@@ -104,16 +93,6 @@ export default defineComponent({
 
       loading_account.value = false;
     };
-
-    const onDecode = async (qr_code_link: string) => {
-      const display_id_index = qr_code_link.indexOf("display_id=");
-      if (display_id_index > -1) {
-        const display_id = qr_code_link.slice(display_id_index + 11);
-        await addAccountToDisplay(display_id, account.value?.id || "");
-      }
-      store.commit("setCameraScanMode", false);
-    };
-
     connectAccount();
 
     //getAccountInfo(address, signature);
@@ -124,7 +103,6 @@ export default defineComponent({
       signature,
       loading_account,
       tokens,
-      onDecode,
       store,
     };
   },
