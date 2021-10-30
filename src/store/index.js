@@ -5,6 +5,7 @@ const store = createStore({
         address: "",
         tokens: [],
         demo_tokens: [],
+        camera_scan_mode: false,
     },
     getters: {
         address: state => {
@@ -23,6 +24,9 @@ const store = createStore({
         },
         demo_tokens: state => {
             return state.demo_tokens; 
+        },
+        camera_scan_mode: state => {
+            return state.camera_scan_mode;
         }
     },
     mutations: {
@@ -34,6 +38,9 @@ const store = createStore({
         },
         setDemoTokens(state, tokens) {
             state.demo_tokens = tokens;
+        },
+        setCameraScanMode(state, show) {
+            state.camera_scan_mode = show;
         }
     }
 })

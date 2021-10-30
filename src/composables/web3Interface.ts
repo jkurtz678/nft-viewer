@@ -22,7 +22,7 @@ export default function web3Interface() {
     } */
     return web3_modal.value = new Web3Modal({
       providerOptions: {
-        walletconnect: {
+        /* walletconnect: {
           package: WalletConnectProvider,
           options: {
             infuraId: "e132974b42d54791bd631e7bcd88572b", // infura.io Mainnet endpoint
@@ -34,7 +34,7 @@ export default function web3Interface() {
             // Mikko's TESTNET api key
             key: "pk_test_391E26A3B43A3350"
           }
-        }
+        } */
       },
       cacheProvider: true,
       disableInjectedProvider: false,

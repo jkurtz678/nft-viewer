@@ -5,28 +5,18 @@
         <h2>Displays</h2>
         <div style="flex-grow: 1"></div>
         <Button
-          v-if="scan_qr"
-          label="Cancel scanning"
-          icon="pi pi-ban"
-          :disabled="!account_id"
-          style="height: 0%;"
-          @click="scan_qr = false"
-        />
-        <Button
-          v-else
           label="Scan display"
           icon="pi pi-camera"
           :disabled="!account_id"
           style="height: 0%;"
-          @click="scan_qr = true"
+          @click="store.commit('setCameraScanMode', true)"
         />
       </div>
     </template>
     <template #content>
       <div v-if="!displays_loaded">Connect an account to load your displays</div>
-      <qrcode-stream v-if="scan_qr" @decode="onDecode"></qrcode-stream>
       <div
-        v-else-if="displays_loaded"
+        v-else
         class="p-d-flex p-flex-wrap"
       >
         <DisplayItem
@@ -53,14 +43,13 @@ import { defineComponent, watch, ref } from "vue";
 import displayManagement from "@/composables/displayManagement";
 import EditDisplayDialog from "@/components/Controller/EditDisplayDialog.vue";
 import DisplayItem from "@/components/Controller/DisplayItem.vue";
-import { QrcodeStream } from "vue-qrcode-reader";
-import {addAccountToDisplay} from "@/api/display"
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
     account_id: String,
   },
-  components: { EditDisplayDialog, DisplayItem, QrcodeStream },
+  components: { EditDisplayDialog, DisplayItem },
   /* if (account.value) {
         await loadDisplays(account.value.id);
       } else {
@@ -68,8 +57,8 @@ export default defineComponent({
       } */
 
   setup(props) {
+    const store = useStore();
     const edit_display_id = ref<String | null>(null);
-    const scan_qr = ref(false);
     
     const { displays, displays_loaded, loadDisplays, createDisplay } =
       displayManagement();
@@ -89,14 +78,7 @@ export default defineComponent({
       edit_display_id.value = display_id;
     };
 
-    const onDecode = async (qr_code_link: string) => {
-      const display_id_index = qr_code_link.indexOf("display_id=")
-      if(display_id_index > -1) {
-        const display_id = qr_code_link.slice(display_id_index + 11);
-        await addAccountToDisplay(display_id, props.account_id || "")
-      }
-      scan_qr.value = false;
-    }
+    
 
     return {
       createDisplay,
@@ -104,8 +86,7 @@ export default defineComponent({
       displays_loaded,
       editDisplay,
       edit_display_id,
-      scan_qr,
-      onDecode
+      store
     };
   },
 });

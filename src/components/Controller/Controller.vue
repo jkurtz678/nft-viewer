@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <div v-if="store.getters.camera_scan_mode" style="text-align: right;">
+    <Button
+      label="Cancel scanning"
+      icon="pi pi-ban"
+      class="p-m-3"
+      @click="store.commit('setCameraScanMode', false)"
+    />
+    <qrcode-stream @decode="onDecode"></qrcode-stream>
+  </div>
+  <div v-else>
     <Card class="controller-card">
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
@@ -52,15 +61,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
 import web3Interface from "@/composables/web3Interface";
 import accountManagement from "@/composables/accountManagement";
 import DisplayController from "@/components/Controller/DisplayController.vue";
-import {getDisplayByDisplayID, updateDisplay} from "@/api/display";
+import { QrcodeStream } from "vue-qrcode-reader";
+import {
+  getDisplayByDisplayID,
+  updateDisplay,
+  addAccountToDisplay,
+} from "@/api/display";
 
 export default defineComponent({
-  components: { DisplayController },
+  components: { DisplayController, QrcodeStream },
   props: { display_id: String },
   setup(props) {
+    const store = useStore();
     // set refs
     const loading_account = ref(false);
     // load composables
@@ -78,16 +94,27 @@ export default defineComponent({
       await loadAccount(address.value, signature.value);
 
       // add display if connected
-      if(props.display_id) {
-        const display = await getDisplayByDisplayID(props.display_id)
+      if (props.display_id) {
+        const display = await getDisplayByDisplayID(props.display_id);
         display.entity.account_id = account.value?.id || "";
-        await updateDisplay(display)
+        await updateDisplay(display);
       }
 
       await loadTokens(address.value);
 
       loading_account.value = false;
     };
+
+    const onDecode = async (qr_code_link: string) => {
+      const display_id_index = qr_code_link.indexOf("display_id=");
+      if (display_id_index > -1) {
+        const display_id = qr_code_link.slice(display_id_index + 11);
+        await addAccountToDisplay(display_id, account.value?.id || "");
+      }
+      store.commit("setCameraScanMode", false);
+    };
+
+    connectAccount();
 
     //getAccountInfo(address, signature);
     return {
@@ -97,6 +124,8 @@ export default defineComponent({
       signature,
       loading_account,
       tokens,
+      onDecode,
+      store,
     };
   },
 });
