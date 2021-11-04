@@ -48,3 +48,8 @@ export interface Token {
     asset_contract: Object;
     token_id: string;
 }
+
+export interface DemoToken {
+    token_id: String;
+    asset_contract_address: String;
+}

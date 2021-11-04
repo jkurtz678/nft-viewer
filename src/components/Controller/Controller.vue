@@ -2,7 +2,7 @@
   <qr-scan v-if="store.getters.camera_scan_mode" :account_id="account?.id">
   </qr-scan>
   <div v-show="!store.getters.camera_scan_mode">
-    <Card class="controller-card">
+    <Card class="controller-card" style="margin-top:20px;">
       <template #header>
         <div class="p-d-flex p-ai-center p-px-3">
           <h2>Wallet</h2>
@@ -112,8 +112,6 @@ export default defineComponent({
 .controller-card {
   margin: 0 auto;
   max-width: 600px;
-  margin-top: 40px;
-  margin-bottom: 15px;
   box-shadow: none !important;
 }
 </style>

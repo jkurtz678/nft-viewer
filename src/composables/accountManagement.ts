@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { FirestoreDocument, Account, Token } from "../types/types";
+import { FirestoreDocument, Account, Token, DemoToken } from "../types/types";
 import * as account_api from "../api/account";
 import * as token_api from "../api/token";
 import { useStore } from "vuex";
@@ -32,11 +32,12 @@ export default function manageAccounts() {
         tokens.value = await token_api.loadTokens(address)
         store.commit("setTokens", tokens.value)
 
-        const demo_tokens_ids = ["108937609937296399194171997007219888570303265273129286037198106280101045862401",
-            "110614174873130096455215643576563166931009400526083623190709896448926885609473",
-            "97869798444724883384927327569229813102508220427212553862986279205550369538049",
-            "17600030009"];
-        const demo_tokens = await token_api.loadTokensByTokenIDs(demo_tokens_ids)
+        const demo_tokens_ids: Array<DemoToken> = [
+            { token_id: "18706", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
+            { token_id: "19046", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
+            { token_id: "20188", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
+            { token_id: "21942", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" }];
+        const demo_tokens = await token_api.loadTokensByTokenIDAndAssetContract(demo_tokens_ids)
         store.commit("setDemoTokens", demo_tokens)
     }
 

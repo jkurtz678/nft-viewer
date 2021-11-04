@@ -140,6 +140,11 @@ export default defineComponent({
         return;
       }
       const token = store.getters.token(v);
+      // token may be null the display is set to the token the user does not have
+      if(!token) {
+        console.log("TOKEN NOT FOUND FOR token_id = ", v)
+        return
+      }
       console.log("RET TOKEN", token);
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
