@@ -34,7 +34,7 @@
             :style="{color: signature ? '#4CAF50' : '#F44336'}"
           ></Chip>
           <Chip
-            label="Firebase"
+            label="Moda Archives"
             :icon="account ? 'pi pi-check' : 'pi pi-times'"
             :style="{color: account ? '#4CAF50' : '#F44336'}"
           ></Chip>
@@ -43,7 +43,7 @@
           v-if="tokens"
           class="p-mt-4"
         >
-          {{`${tokens.length} token${tokens.length == 1 ? '' : 's'} loaded from OpenSea account.`}}
+          {{`${tokens.length} token${tokens.length == 1 ? '' : 's'} loaded from OpenSea.`}}
         </div>
       </template>
     </Card>

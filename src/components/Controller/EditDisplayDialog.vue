@@ -36,10 +36,19 @@
         >
           <InputSwitch
             v-model="display.entity.plaque_dark_mode"
-            label="Plaque Dark Mode"
             class="p-mr-2"
           ></InputSwitch>
           Plaque dark mode
+        </div>
+        <div
+          class="p-mt-2"
+          style="display: flex; align-items: center;"
+        >
+          <InputSwitch
+            v-model="demo_token_playlist"
+            class="p-mr-2"
+          ></InputSwitch>
+          Demo token playlist 
         </div>
         <Button
           class="p-button-danger p-button-sm p-mt-2"
@@ -73,7 +82,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
-import { Display, FirestoreDocument } from "../../types/types";
+import { Display, FirestoreDocument, Token } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
 import TokenList from "../Controller/TokenList.vue";
@@ -132,9 +141,23 @@ export default defineComponent({
     const token_id = computed(() => {
       return display.value.entity.token_id;
     });
+    const demo_token_playlist = computed({
+      get(): boolean {
+        if(!display.value.entity.playlist_tokens){
+          return false;
+        }
+        return display.value.entity.playlist_tokens.length > 0 
+      },
+      set(v): void{
+        if(v) {
+          display.value.entity.playlist_tokens = store.getters.demo_tokens.map((t: Token) => ({asset_contract_address: t?.asset_contract?.address, token_id: t.token_id}))
+        } else {
+          display.value.entity.playlist_tokens = [];
+        }
+      }
+    })
 
     watch(token_id, (v) => {
-      console.log("WATCH", v);
       if (!v) {
         display.value.entity.asset_contract_address = "";
         return;
@@ -145,7 +168,6 @@ export default defineComponent({
         console.log("TOKEN NOT FOUND FOR token_id = ", v)
         return
       }
-      console.log("RET TOKEN", token);
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
     });
@@ -155,6 +177,7 @@ export default defineComponent({
       forgetDisplay,
       display,
       openDisplayInBrowser,
+      demo_token_playlist
     };
   },
 });

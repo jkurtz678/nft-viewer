@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { FirestoreDocument, Account, Token, DemoToken } from "../types/types";
+import { FirestoreDocument, Account, Token, AddressTokenPair } from "../types/types";
 import * as account_api from "../api/account";
 import * as token_api from "../api/token";
 import { useStore } from "vuex";
@@ -32,7 +32,7 @@ export default function manageAccounts() {
         tokens.value = await token_api.loadTokens(address)
         store.commit("setTokens", tokens.value)
 
-        const demo_tokens_ids: Array<DemoToken> = [
+        const demo_tokens_ids: Array<AddressTokenPair> = [
             { token_id: "18706", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
             { token_id: "19046", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
             { token_id: "20188", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },

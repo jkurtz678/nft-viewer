@@ -54,6 +54,7 @@ import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
+  updateDisplay
 } from "@/api/display";
 import QrcodeVue from "qrcode.vue";
 import Loading from "vue-loading-overlay";
@@ -112,9 +113,10 @@ export default defineComponent({
         );
         token.value = token_resp;
 
-
-        archive_media_url.value = await loadArchiveMedia(token_resp.token_id + ".mp4")
-        console.log("ARCHIVE MEDIA", archive_media_url.value) 
+        archive_media_url.value = await loadArchiveMedia(
+          token_resp.token_id + ".mp4"
+        );
+        console.log("ARCHIVE MEDIA", archive_media_url.value);
 
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {
@@ -142,20 +144,20 @@ export default defineComponent({
     });
 
     const media_url = computed(() => {
-      if(archive_media_url.value) {
-        return archive_media_url.value
-      } 
-      if(token.value?.animation_url) {
-        return token.value.animation_url
+      if (archive_media_url.value) {
+        return archive_media_url.value;
       }
-      if(token.value?.image_url) {
+      if (token.value?.animation_url) {
+        return token.value.animation_url;
+      }
+      if (token.value?.image_url) {
         return token.value.image_url;
       }
       return null;
-    })
+    });
 
     if (props.display_id) {
-      getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
+    getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
       const nft_display_id = localStorage.getItem("nft_display_id");
       if (nft_display_id) {
@@ -164,6 +166,25 @@ export default defineComponent({
         createDisplayWithListener("", "", "", initDisplay);
       }
     }
+
+    // if running a playlist, change to the next token in the list after x seconds
+    window.setInterval(() => {
+      if(!display.value?.entity?.playlist_tokens?.length) {
+        return
+      }
+      // find new index of next playlist item
+      let new_index = display.value.entity.playlist_tokens.findIndex(t => t.token_id == token.value?.token_id) + 1;      
+      if(new_index == -1 || new_index >= display.value.entity.playlist_tokens.length) {
+        new_index = 0;
+      }
+
+      display.value.entity.token_id = display.value.entity.playlist_tokens[new_index].token_id
+      display.value.entity.asset_contract_address = display.value.entity.playlist_tokens[new_index].asset_contract_address
+
+      updateDisplay(display.value);
+
+    }, 45000);
+
     return { display, loading, display_controller_url, token, media_url };
   },
 });

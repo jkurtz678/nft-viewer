@@ -38,6 +38,7 @@ export interface Display extends BaseDocument {
     asset_contract_address: string;
     token_id: string;
     plaque_dark_mode: boolean;
+    playlist_tokens: Array<AddressTokenPair>;
 }
 
 export interface Token {
@@ -45,11 +46,15 @@ export interface Token {
     image_thumbnail_url: string;
     animation_url: string;
     name: string;
-    asset_contract: Object;
+    asset_contract: AssetContract;
     token_id: string;
 }
 
-export interface DemoToken {
-    token_id: String;
-    asset_contract_address: String;
+export interface AssetContract {
+    address: string;
+}
+
+export interface AddressTokenPair {
+    token_id: string;
+    asset_contract_address: string;
 }
