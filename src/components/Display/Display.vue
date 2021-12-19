@@ -112,11 +112,9 @@ export default defineComponent({
     // monitor loading of archive media, abandoning if taking too long
     const initArchiveMediaCheckInterval = async () => {
       const checkInterval = 50.0; // check every 50 ms (do not use lower values)
-      //let lastPlayPos = 0;
       let time_elapsed = 0;
       let currentPlayPos = 0;
       const max_load_time_for_archive = 3000; // time in milliseconds that browser will attempt to load archive media, otherwise will switch to low quality version
-      //var bufferingDetected = false;
 
       const interval = setInterval(checkBuffering, checkInterval);
       function checkBuffering() {
@@ -127,42 +125,18 @@ export default defineComponent({
 
         currentPlayPos = player.value.currentTime;
 
-        if(currentPlayPos == 0 && time_elapsed > max_load_time_for_archive) {
-          console.log("Internet connection too weak! Cannot load archive media.")
-          archive_media_url.value = null;
+        if( time_elapsed > max_load_time_for_archive ) {
+          if( currentPlayPos == 0) {
+            console.log("Internet connection too weak! Cannot load archive media.")
+            archive_media_url.value = null;
+          } 
           clearInterval(interval)
+          return
         }
-        time_elapsed += checkInterval;
-
-        // checking offset should be at most the check interval
-        // but allow for some margin
-        //const offset = (checkInterval - 20) / 1000;
-
-        // if no buffering is currently detected,
-        // and the position does not seem to increase
-        // and the player isn't manually paused...
-       /*  if (
-          //!bufferingDetected &&
-          currentPlayPos < lastPlayPos + offset &&
-          !player.value.paused
-        ) {
-          console.log("buffering");
-          bufferingDetected = true;
-        }
-
-        // if we were buffering but the player has advanced,
-        // then there is no buffering
-        if (
-          bufferingDetected &&
-          currentPlayPos > lastPlayPos + offset &&
-          !player.value.paused
-        ) {
-          console.log("not buffering anymore");
-          bufferingDetected = false;
-        }
-        lastPlayPos = currentPlayPos; */
+        time_elapsed += checkInterval; 
       }
     };
+
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       console.log("INIT DISPLAY", d);
