@@ -11,6 +11,7 @@
           class="video-container"
         >
           <video
+            ref="player"
             class="center"
             autoplay
             muted
@@ -45,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken, loadArchiveMedia } from "@/api/token";
@@ -54,7 +55,7 @@ import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
-  updateDisplay
+  updateDisplay,
 } from "@/api/display";
 import QrcodeVue from "qrcode.vue";
 import Loading from "vue-loading-overlay";
@@ -79,6 +80,7 @@ export default defineComponent({
     const loading = ref(true);
     const viewer = ref<Viewer>();
     const archive_media_url = ref<string | null>();
+    const player = ref<HTMLVideoElement>();
 
     const displayImage = (image_url: string) => {
       viewer.value = viewerApi({
@@ -100,9 +102,71 @@ export default defineComponent({
         },
       });
     };
+    onMounted(() => {
+      console.log("mounted!");
+      nextTick(() => {
+        console.log("this.$refs");
+      });
+    });
+
+    // monitor loading of archive media, abandoning if taking too long
+    const initArchiveMediaCheckInterval = async () => {
+      const checkInterval = 50.0; // check every 50 ms (do not use lower values)
+      //let lastPlayPos = 0;
+      let time_elapsed = 0;
+      let currentPlayPos = 0;
+      const max_load_time_for_archive = 3000; // time in milliseconds that browser will attempt to load archive media, otherwise will switch to low quality version
+      //var bufferingDetected = false;
+
+      const interval = setInterval(checkBuffering, checkInterval);
+      function checkBuffering() {
+        if (!player.value) {
+          console.log("ERROR: Display video player not found.");
+          return;
+        }
+
+        currentPlayPos = player.value.currentTime;
+
+        if(currentPlayPos == 0 && time_elapsed > max_load_time_for_archive) {
+          console.log("Internet connection too weak! Cannot load archive media.")
+          archive_media_url.value = null;
+          clearInterval(interval)
+        }
+        time_elapsed += checkInterval;
+
+        // checking offset should be at most the check interval
+        // but allow for some margin
+        //const offset = (checkInterval - 20) / 1000;
+
+        // if no buffering is currently detected,
+        // and the position does not seem to increase
+        // and the player isn't manually paused...
+       /*  if (
+          //!bufferingDetected &&
+          currentPlayPos < lastPlayPos + offset &&
+          !player.value.paused
+        ) {
+          console.log("buffering");
+          bufferingDetected = true;
+        }
+
+        // if we were buffering but the player has advanced,
+        // then there is no buffering
+        if (
+          bufferingDetected &&
+          currentPlayPos > lastPlayPos + offset &&
+          !player.value.paused
+        ) {
+          console.log("not buffering anymore");
+          bufferingDetected = false;
+        }
+        lastPlayPos = currentPlayPos; */
+      }
+    };
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       console.log("INIT DISPLAY", d);
+
       router.push({ path: "/display", query: { display_id: d.id } });
       display.value = d;
       window.localStorage.setItem("nft_display_id", d.id);
@@ -117,6 +181,9 @@ export default defineComponent({
           token_resp.token_id + ".mp4"
         );
         console.log("ARCHIVE MEDIA", archive_media_url.value);
+        if (archive_media_url.value) {
+          initArchiveMediaCheckInterval();
+        }
 
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {
@@ -157,7 +224,7 @@ export default defineComponent({
     });
 
     if (props.display_id) {
-    getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
+      getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
       const nft_display_id = localStorage.getItem("nft_display_id");
       if (nft_display_id) {
@@ -169,23 +236,37 @@ export default defineComponent({
 
     // if running a playlist, change to the next token in the list after x seconds
     window.setInterval(() => {
-      if(!display.value?.entity?.playlist_tokens?.length) {
-        return
+      if (!display.value?.entity?.playlist_tokens?.length) {
+        return;
       }
       // find new index of next playlist item
-      let new_index = display.value.entity.playlist_tokens.findIndex(t => t.token_id == token.value?.token_id) + 1;      
-      if(new_index == -1 || new_index >= display.value.entity.playlist_tokens.length) {
+      let new_index =
+        display.value.entity.playlist_tokens.findIndex(
+          (t) => t.token_id == token.value?.token_id
+        ) + 1;
+      if (
+        new_index == -1 ||
+        new_index >= display.value.entity.playlist_tokens.length
+      ) {
         new_index = 0;
       }
 
-      display.value.entity.token_id = display.value.entity.playlist_tokens[new_index].token_id
-      display.value.entity.asset_contract_address = display.value.entity.playlist_tokens[new_index].asset_contract_address
+      display.value.entity.token_id =
+        display.value.entity.playlist_tokens[new_index].token_id;
+      display.value.entity.asset_contract_address =
+        display.value.entity.playlist_tokens[new_index].asset_contract_address;
 
       updateDisplay(display.value);
-
     }, 45000);
 
-    return { display, loading, display_controller_url, token, media_url };
+    return {
+      display,
+      loading,
+      display_controller_url,
+      token,
+      media_url,
+      player,
+    };
   },
 });
 </script>
