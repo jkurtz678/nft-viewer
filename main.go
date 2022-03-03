@@ -1,14 +1,14 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"math/rand"
 	"net/http"
+
+	"github.com/jkurtz678/nft-viewer/api"
+	"github.com/jkurtz678/nft-viewer/mediamanager"
+	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -16,24 +16,16 @@ func main() {
 	flag.IntVar(&port, "port", 8081, "The port to listen on")
 	flag.Parse()
 
-	frontendFS := http.FileServer(http.Dir("./frontend/dist/"))
-	http.Handle("/", frontendFS)
-	http.Handle("/api/random", http.HandlerFunc(getRandom))
-	log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
-}
+	mediaManager := mediamanager.NewMediaManager("nft-viewer.appspot.com", "./serviceAccountKey.json", "./media")
+	mediaAPIHandler := api.NewMediaAPIHandler(mediaManager)
 
-func getRandom(w http.ResponseWriter, r *http.Request) {
-	random := rand.Intn(5)
-	type Return struct {
-		Val int `json:"val"`
-	}
-	ret := Return{
-		Val: random,
-	}
-	j, err := json.Marshal(ret)
-	if err != nil {
-		http.Error(w, "failed to get random number", http.StatusInternalServerError)
-	}
-	w.Header().Set("Content-Type", "application/json")
-	io.Copy(w, bytes.NewReader(j))
+	log.Println("Starting server...")
+	router := httprouter.New()
+	router.GET("/api/media/:file_url", mediaAPIHandler.GetMedia)
+
+	static := httprouter.New()
+	static.ServeFiles("/*filepath", http.Dir("frontend/dist"))
+	router.NotFound = static
+
+	log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
 }
