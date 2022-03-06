@@ -16,13 +16,13 @@
             autoplay
             muted
             loop
-            :src="'http://localhost:8080/skate.mp4'"
+            :src="media_url"
           ></video>
         </div>
       </template>
       <template v-else>
         <div
-          v-if="display.entity.account_id"
+          v-if="display?.entity?.account_id"
           class="center"
           style="font-size: 40px"
         >Connected - No token selected</div>
@@ -49,14 +49,15 @@
 import { ref, computed, onMounted, nextTick } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { loadToken, loadArchiveMedia } from "@/api/token";
-//mport { loadToken} from "@/api/token";
+import { loadToken } from "@/api/token";
+import { getLocalFileURL, hasLocalFile} from "@/api/local-files"
 import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
   updateDisplay,
 } from "@/api/display";
+
 import QrcodeVue from "qrcode.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -79,7 +80,8 @@ export default defineComponent({
     const token = ref<Token | null>();
     const loading = ref(true);
     const viewer = ref<Viewer>();
-    const archive_media_url = ref<string | null>();
+    //const archive_media_url = ref<string | null>();
+    const has_local_file = ref<boolean>();
     const player = ref<HTMLVideoElement>();
 
     const displayImage = (image_url: string) => {
@@ -110,7 +112,7 @@ export default defineComponent({
     });
 
     // monitor loading of archive media, abandoning if taking too long
-    const initArchiveMediaCheckInterval = async () => {
+    /* const initArchiveMediaCheckInterval = async () => {
       const checkInterval = 50.0; // check every 50 ms (do not use lower values)
       let time_elapsed = 0;
       let currentPlayPos = 0;
@@ -135,7 +137,7 @@ export default defineComponent({
         }
         time_elapsed += checkInterval; 
       }
-    };
+    }; */
 
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
@@ -151,13 +153,14 @@ export default defineComponent({
         );
         token.value = token_resp;
 
-        archive_media_url.value = await loadArchiveMedia(
+        /* archive_media_url.value = await loadArchiveMedia(
           token_resp.token_id + ".mp4"
         );
         console.log("ARCHIVE MEDIA", archive_media_url.value);
         if (archive_media_url.value) {
           initArchiveMediaCheckInterval();
-        }
+        } */
+        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4")
 
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {
@@ -169,6 +172,7 @@ export default defineComponent({
         }
       } else {
         token.value = null;
+        has_local_file.value = false
         if (viewer.value) {
           viewer.value.hide();
         }
@@ -185,8 +189,11 @@ export default defineComponent({
     });
 
     const media_url = computed(() => {
-      if (archive_media_url.value) {
+      /* if (archive_media_url.value) {
         return archive_media_url.value;
+      } */
+      if (has_local_file.value && token.value?.token_id){
+        return getLocalFileURL(token.value.token_id + ".mp4")
       }
       if (token.value?.animation_url) {
         return token.value.animation_url;

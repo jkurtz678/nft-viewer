@@ -21,7 +21,8 @@ func main() {
 
 	log.Println("Starting server...")
 	router := httprouter.New()
-	router.GET("/api/media/:file_url", mediaAPIHandler.GetMedia)
+	router.GET("/api/media/download/:file_url", mediaAPIHandler.DownloadMedia)
+	router.ServeFiles("/media/*filepath", http.Dir("media"))
 
 	static := httprouter.New()
 	static.ServeFiles("/*filepath", http.Dir("frontend/dist"))
