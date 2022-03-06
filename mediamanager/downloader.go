@@ -16,18 +16,29 @@ func (fm *MediaManager) downloadFromQueue() {
 		localPath := filepath.Join(fm.mediaDir, fileURI)
 		log.Printf("MediaManager.downloadFromQueue – %s", fileURI)
 
-		data, err := fm.retrieveFileFromFirebase(fileURI)
+		exists, err := fileExists(localPath)
 		if err != nil {
-			log.Printf("MediaManager.performDownload - retrieveFile %s error %s", fileURI, err)
+			log.Printf("MediaManager.downloadFromQueue - error checking file status %s", err)
+			continue
+		}
+		if exists {
+			log.Println("MediaManager.downloadFromQueue - File already exists, skipping download")
 			continue
 		}
 
-		log.Println("Writing file...")
+		data, err := fm.retrieveFileFromFirebase(fileURI)
+		if err != nil {
+			log.Printf("MediaManager.downloadFromQueue - retrieveFile %s error %s", fileURI, err)
+			continue
+		}
+
+		log.Println("MediaManager.downloadFromQueue - Writing file...")
 		err = os.WriteFile(localPath, data, 0644)
 		if err != nil {
 			log.Printf("MediaManager.performDownload - WriteFile %s error %s", fileURI, err)
 			continue
 		}
+		log.Printf("MediaManager.downloadFromQueue - download complete for file %s", localPath)
 	}
 }
 
@@ -51,7 +62,7 @@ func (fm *MediaManager) retrieveFileFromFirebase(fileURI string) ([]byte, error)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("MediaManager.retrieveFileFromFirebase - ")
+	log.Println("MediaManager.retrieveFileFromFirebase - reading from bucket")
 
 	rc, err := bucket.Object(fileURI).NewReader(context.Background())
 	if err != nil {

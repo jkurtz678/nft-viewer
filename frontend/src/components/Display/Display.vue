@@ -11,6 +11,7 @@
           class="video-container"
         >
           <video
+            :class="show_video ? 'show-opacity' : 'hide-opacity'"
             ref="player"
             class="center"
             autoplay
@@ -20,7 +21,7 @@
           ></video>
         </div>
       </template>
-      <template v-else>
+      <template v-if="!loading && !token">
         <div
           v-if="display?.entity?.account_id"
           class="center"
@@ -39,7 +40,6 @@
             <div style="margin-top: 40px">Scan to cast NFTs</div>
           </div>
         </template>
-
       </template>
     </template>
   </div>
@@ -50,12 +50,12 @@ import { ref, computed, onMounted, nextTick } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken } from "@/api/token";
-import { getLocalFileURL, hasLocalFile} from "@/api/local-files"
+import { getLocalFileURL, hasLocalFile } from "@/api/local-files";
 import { FirestoreDocument, Display, Token } from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
-  updateDisplay,
+  updateDisplay
 } from "@/api/display";
 
 import QrcodeVue from "qrcode.vue";
@@ -63,22 +63,23 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import VueViewer, { api as viewerApi, Viewer } from "v-viewer";
 VueViewer.setDefaults({
-  zIndex: 2021,
+  zIndex: 2021
 });
 
 export default defineComponent({
   props: {
-    display_id: String,
+    display_id: String
   },
   components: {
     QrcodeVue,
-    Loading,
+    Loading
   },
   setup(props) {
     const router = useRouter();
     const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<Token | null>();
     const loading = ref(true);
+    const show_video = ref(false);
     const viewer = ref<Viewer>();
     //const archive_media_url = ref<string | null>();
     const has_local_file = ref<boolean>();
@@ -100,12 +101,11 @@ export default defineComponent({
           scalable: true,
           transition: true,
           fullscreen: true,
-          keyboard: false,
-        },
+          keyboard: false
+        }
       });
     };
     onMounted(() => {
-      console.log("mounted!");
       nextTick(() => {
         console.log("this.$refs");
       });
@@ -139,10 +139,28 @@ export default defineComponent({
       }
     }; */
 
+    const checkVideoLoading = () => {
+      const checkInterval = 50.0; // check every 50 ms (do not use lower values)
+      let current_play_pos = 0;
+
+      const interval = setInterval(checkBuffering, checkInterval);
+      function checkBuffering() {
+        if (!player.value) {
+          console.log("ERROR: Display video player not found.");
+          return;
+        }
+
+        current_play_pos = player.value.currentTime;
+        if (current_play_pos > 0) {
+          clearInterval(interval);
+          show_video.value = true;
+        }
+      }
+    };
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("INIT DISPLAY", d);
-
+      show_video.value = false;
+      await new Promise(r => setTimeout(r, 800));
       router.push({ path: "/display", query: { display_id: d.id } });
       display.value = d;
       window.localStorage.setItem("nft_display_id", d.id);
@@ -160,7 +178,8 @@ export default defineComponent({
         if (archive_media_url.value) {
           initArchiveMediaCheckInterval();
         } */
-        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4")
+        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+        checkVideoLoading();
 
         // if token has no video media, display the image using viewer
         if (token_resp.animation_url) {
@@ -172,7 +191,7 @@ export default defineComponent({
         }
       } else {
         token.value = null;
-        has_local_file.value = false
+        has_local_file.value = false;
         if (viewer.value) {
           viewer.value.hide();
         }
@@ -192,8 +211,8 @@ export default defineComponent({
       /* if (archive_media_url.value) {
         return archive_media_url.value;
       } */
-      if (has_local_file.value && token.value?.token_id){
-        return getLocalFileURL(token.value.token_id + ".mp4")
+      if (has_local_file.value && token.value?.token_id) {
+        return getLocalFileURL(token.value.token_id + ".mp4");
       }
       if (token.value?.animation_url) {
         return token.value.animation_url;
@@ -223,7 +242,7 @@ export default defineComponent({
       // find new index of next playlist item
       let new_index =
         display.value.entity.playlist_tokens.findIndex(
-          (t) => t.token_id == token.value?.token_id
+          t => t.token_id == token.value?.token_id
         ) + 1;
       if (
         new_index == -1 ||
@@ -243,12 +262,13 @@ export default defineComponent({
     return {
       display,
       loading,
+      show_video,
       display_controller_url,
       token,
       media_url,
-      player,
+      player
     };
-  },
+  }
 });
 </script>
 
@@ -262,6 +282,7 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 }
 .video-container {
+  transition: opacity ease-in 0.8s;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -270,7 +291,14 @@ export default defineComponent({
   overflow: hidden;
   background-color: black;
 }
+.hide-opacity {
+  opacity: 0%;
+}
+.show-opacity {
+  opacity: 100%;
+}
 .video-container video {
+  transition: opacity ease-in 0.8s;
   max-height: 100%;
   max-width: 100%;
 }

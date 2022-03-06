@@ -1,10 +1,8 @@
 package mediamanager
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"os"
 	"path/filepath"
 )
 
@@ -34,11 +32,11 @@ func (fm *MediaManager) AttemptDownloadFromFirebase(fileURI string) (bool, error
 	localPath := filepath.Join(fm.mediaDir, fileURI)
 	log.Printf("MediaManager.DownloadFileFromFirebase – attempting download %s", localPath)
 
-	_, err := os.Stat(localPath)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return false, fmt.Errorf("error checking file %s", err)
+	exists, err := fileExists(localPath)
+	if err != nil {
+		return false, err
 	}
-	if err == nil {
+	if exists {
 		fmt.Println("File already exists, skipping download")
 		return false, nil
 	}
