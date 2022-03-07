@@ -154,12 +154,14 @@ export default defineComponent({
         if (current_play_pos > 0) {
           clearInterval(interval);
           show_video.value = true;
+          window.localStorage.setItem("nft_video_loaded", 'true');
         }
       }
     };
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       show_video.value = false;
+      window.localStorage.setItem("nft_video_loaded", 'false'); // set key so that plaque knows when to show text
       await new Promise(r => setTimeout(r, 800));
       router.push({ path: "/display", query: { display_id: d.id } });
       display.value = d;

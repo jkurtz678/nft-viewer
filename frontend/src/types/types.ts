@@ -49,6 +49,9 @@ export interface Token {
     name: string;
     asset_contract: AssetContract;
     token_id: string;
+    description: string;
+    permalink: string;
+    creator: any;
 }
 
 export interface AssetContract {
