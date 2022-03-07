@@ -37,6 +37,7 @@
               style="min-width: 350px;"
             >
               <div style="margin-bottom: 8px">{{token?.creator?.user?.username}}</div>
+              <div v-if="top_bid" style="margin-bottom: 8px">{{top_bid}}</div>
               <div>{{token?.description}}</div>
             </div>
 
@@ -100,6 +101,17 @@ export default defineComponent({
       return display?.value?.entity.plaque_dark_mode;
     });
 
+    const top_bid = computed(() => {
+      const orders = token?.value?.orders;
+      if (orders == null || orders?.length == 0) {
+        return "";
+      }
+      const highest_order = orders[orders.length - 1];
+      const bid = highest_order.base_price / Math.pow(10, highest_order.payment_token_contract.decimals);
+
+      return `Top bid: ${bid} ${highest_order.payment_token_contract.symbol}`
+    })
+
     watch(
       () => display_id.value,
       async () => {
@@ -118,7 +130,7 @@ export default defineComponent({
       display_id.value = window.localStorage.getItem("nft_display_id");
       show_text.value = window.localStorage.getItem("nft_video_loaded") == 'true';
     });
-    return { loading, token, display, dark_mode, show_text };
+    return { loading, token, display, dark_mode, show_text, top_bid };
   }
 });
 </script>

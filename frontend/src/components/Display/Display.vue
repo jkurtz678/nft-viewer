@@ -104,6 +104,7 @@ export default defineComponent({
           keyboard: false
         }
       });
+      window.localStorage.setItem("nft_video_loaded", 'true');
     };
     onMounted(() => {
       nextTick(() => {

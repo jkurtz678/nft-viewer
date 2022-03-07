@@ -52,6 +52,7 @@ export interface Token {
     description: string;
     permalink: string;
     creator: any;
+    orders: Array<any>;
 }
 
 export interface AssetContract {
