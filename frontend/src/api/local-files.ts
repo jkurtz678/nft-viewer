@@ -6,6 +6,10 @@ export const getLocalFileURL = (file_name: string) : string => {
 }
 
 export const hasLocalFile = async (file_name: string) : Promise<boolean> => {
-    const res = await fetch(getLocalFileURL(file_name))
-    return res.status < 400;
+    try {
+        const res = await fetch(getLocalFileURL(file_name))
+        return res.status < 400;
+    } catch (err) {
+        return false
+    }
 }

@@ -160,7 +160,12 @@ export default defineComponent({
       const token_resp = await loadToken(contract_address, token_id);
       token.value = token_resp;
 
-      has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+      try {
+        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+      } catch (err) {
+        has_local_file.value = false;
+        console.log(err)
+      }
 
       // if token has no video media, display the image using viewer
       if (media_is_video.value) {
@@ -219,7 +224,6 @@ export default defineComponent({
 
     // nextPlaylistToken will update the display to the next token in the playlist
     const nextPlaylistToken = () => {
-      console.log("NEXT PLAYLIST TOKEN");
       if (!display.value?.entity?.playlist_tokens?.length) {
         return;
       }
@@ -234,7 +238,6 @@ export default defineComponent({
       ) {
         new_index = 0;
       }
-      console.log("NEXT PLAYLIST TOKEN INDEX", new_index);
 
       display.value.entity.token_id =
         display.value.entity.playlist_tokens[new_index].token_id;
@@ -289,10 +292,10 @@ export default defineComponent({
   background-color: black;
 }
 .hide-opacity {
-  opacity: 0%;
+  opacity: 0;
 }
 .show-opacity {
-  opacity: 100%;
+  opacity: 1;
 }
 .video-container video {
   transition: opacity ease-in 0.8s;

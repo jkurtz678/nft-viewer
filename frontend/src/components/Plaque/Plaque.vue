@@ -153,9 +153,9 @@ export default defineComponent({
 }
 
 .hide-opacity {
-  opacity: 0%;
+  opacity: 0;
 }
 .show-opacity {
-  opacity: 100%;
+  opacity: 1;
 }
 </style>
