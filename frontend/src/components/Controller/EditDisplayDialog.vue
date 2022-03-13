@@ -40,7 +40,7 @@
           ></InputSwitch>
           Plaque dark mode
         </div>
-        <div
+        <!-- <div
           class="p-mt-2"
           style="display: flex; align-items: center;"
         >
@@ -48,9 +48,9 @@
             v-model="demo_token_playlist"
             class="p-mr-2"
           ></InputSwitch>
-          Demo token playlist 
-        </div>
-       <!--  <Button
+          Demo token playlist
+        </div> -->
+        <!--  <Button
           class="p-button-sm p-mt-2"
           label="Share and remember display"
           style="display: block;"
@@ -73,7 +73,10 @@
         </div>
       </div>
     </div>
-    <TokenList v-model:selected_token_id="display.entity.token_id"></TokenList>
+    <TokenList
+      v-model:selected_token_id="display.entity.token_id"
+      v-model:playlist_tokens="display.entity.playlist_tokens"
+    ></TokenList>
     <template #footer>
       <Button
         label="Save"
@@ -102,17 +105,17 @@ export default defineComponent({
   props: {
     createDisplay: {
       type: Function,
-      required: true,
+      required: true
     },
     display_id: {
       type: String,
-      required: false,
-    },
+      required: false
+    }
   },
   setup(props, { emit }) {
     const display = ref<FirestoreDocument<Display>>({
       id: "",
-      entity: { name: "" } as Display,
+      entity: { name: "" } as Display
     });
     const store = useStore();
 
@@ -131,7 +134,10 @@ export default defineComponent({
 
     const shareAndRemember = async () => {
       const account: FirestoreDocument<Account> = store.getters.account;
-      if(props.display_id && !account.entity.saved_display_ids.includes(props.display_id)){
+      if (
+        props.display_id &&
+        !account.entity.saved_display_ids.includes(props.display_id)
+      ) {
         account.entity.saved_display_ids.push(props.display_id);
         await updateAccount(account);
       }
@@ -141,7 +147,7 @@ export default defineComponent({
       display.value.entity.asset_contract_address = "";
       await updateDisplay(display.value);
       emit("update:display_id", null);
-    }
+    };
 
     const openDisplayInBrowser = async () => {
       window.open(
@@ -153,7 +159,7 @@ export default defineComponent({
       props,
       () => {
         if (props.display_id) {
-          getDisplayByDisplayID(props.display_id).then((ret_display) => {
+          getDisplayByDisplayID(props.display_id).then(ret_display => {
             display.value = ret_display;
           });
         } else {
@@ -166,32 +172,37 @@ export default defineComponent({
     const token_id = computed(() => {
       return display.value.entity.token_id;
     });
-    const demo_token_playlist = computed({
+    /* const demo_token_playlist = computed({
       get(): boolean {
-        if(!display.value.entity.playlist_tokens){
+        if (!display.value.entity.playlist_tokens) {
           return false;
         }
-        return display.value.entity.playlist_tokens.length > 0 
+        return display.value.entity.playlist_tokens.length > 0;
       },
-      set(v): void{
-        if(v) {
-          display.value.entity.playlist_tokens = store.getters.demo_tokens.map((t: Token) => ({asset_contract_address: t?.asset_contract?.address, token_id: t.token_id}))
+      set(v): void {
+        if (v) {
+          display.value.entity.playlist_tokens = store.getters.demo_tokens.map(
+            (t: Token) => ({
+              asset_contract_address: t?.asset_contract?.address,
+              token_id: t.token_id
+            })
+          );
         } else {
           display.value.entity.playlist_tokens = [];
         }
       }
-    })
+    }); */
 
-    watch(token_id, (v) => {
+    watch(token_id, v => {
       if (!v) {
         display.value.entity.asset_contract_address = "";
         return;
       }
       const token = store.getters.token(v);
       // token may be null the display is set to the token the user does not have
-      if(!token) {
-        console.log("TOKEN NOT FOUND FOR token_id = ", v)
-        return
+      if (!token) {
+        console.log("TOKEN NOT FOUND FOR token_id = ", v);
+        return;
       }
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
@@ -203,9 +214,9 @@ export default defineComponent({
       shareAndRemember,
       display,
       openDisplayInBrowser,
-      demo_token_playlist
+      //demo_token_playlist
     };
-  },
+  }
 });
 </script>
 
