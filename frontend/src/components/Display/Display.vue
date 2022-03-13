@@ -16,7 +16,7 @@
             class="center"
             autoplay
             muted
-            loop
+            :loop="video_should_loop"
             :src="media_url"
           ></video>
         </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, nextTick } from "vue";
+import { ref, computed, watch } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken } from "@/api/token";
@@ -81,36 +81,54 @@ export default defineComponent({
     const loading = ref(true);
     const show_video = ref(false);
     const viewer = ref<Viewer>();
-    //const archive_media_url = ref<string | null>();
     const has_local_file = ref<boolean>();
     const player = ref<HTMLVideoElement>();
 
-    const displayImage = (image_url: string) => {
-      viewer.value = viewerApi({
-        images: [image_url],
-        options: {
-          inline: false,
-          button: false,
-          navbar: false,
-          title: false,
-          toolbar: false,
-          tooltip: false,
-          movable: false,
-          zoomable: false,
-          rotatable: false,
-          scalable: true,
-          transition: true,
-          fullscreen: true,
-          keyboard: false
-        }
-      });
-      window.localStorage.setItem("nft_video_loaded", "true");
-    };
-    onMounted(() => {
-      nextTick(() => {
-        console.log("this.$refs");
-      });
+    /* START COMPUTED */
+    // media_is_video determines if token media is video (true) or an image/gif (false)
+    const media_is_video = computed((): boolean => {
+      return !!token.value?.animation_url;
     });
+
+    // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
+    const display_controller_url = computed((): string => {
+      if (display.value) {
+        return `${document.location.origin}${document.location.pathname}#/controller?display_id=${display.value.id}`;
+      }
+      return "";
+    });
+
+    // media_url decides which url should be used for the media display
+    const media_url = computed((): string | null => {
+      if (has_local_file.value && token.value?.token_id) {
+        return getLocalFileURL(token.value.token_id + ".mp4");
+      }
+      if (token.value?.animation_url) {
+        return token.value.animation_url;
+      }
+      if (token.value?.image_url) {
+        return token.value.image_url;
+      }
+      return null;
+    });
+
+    // video_should_loop will be true by default, false if any playlist tokens exist
+    const video_should_loop = computed((): boolean => {
+      const playlist_tokens = display.value?.entity?.playlist_tokens;
+      return playlist_tokens == null || playlist_tokens.length == 0;
+    });
+    /* END COMPUTED */
+
+    /* START WATCHERS */
+
+    // wait until html player loads to add the video ended event listener
+    watch(player, v => {
+      if (v) {
+        player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+        player.value?.addEventListener("ended", nextPlaylistToken);
+      }
+    });
+    /* END WATCHERS */
 
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
@@ -142,15 +160,14 @@ export default defineComponent({
       const token_resp = await loadToken(contract_address, token_id);
       token.value = token_resp;
 
-
       has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
-      waitToShowVideo();
 
       // if token has no video media, display the image using viewer
-      if (media_is_video) {
+      if (media_is_video.value) {
         if (viewer.value) {
           viewer.value.hide();
         }
+        waitToShowVideo();
       } else {
         displayImage(token_resp.image_url);
       }
@@ -178,45 +195,31 @@ export default defineComponent({
       }
     };
 
-    const media_is_video = computed(() => {
-      return !!token.value?.animation_url;
-    });
+    const displayImage = (image_url: string) => {
+      viewer.value = viewerApi({
+        images: [image_url],
+        options: {
+          inline: false,
+          button: false,
+          navbar: false,
+          title: false,
+          toolbar: false,
+          tooltip: false,
+          movable: false,
+          zoomable: false,
+          rotatable: false,
+          scalable: true,
+          transition: true,
+          fullscreen: true,
+          keyboard: false
+        }
+      });
+      window.localStorage.setItem("nft_video_loaded", "true");
+    };
 
-    // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
-    const display_controller_url = computed(() => {
-      if (display.value) {
-        return `${document.location.origin}${document.location.pathname}#/controller?display_id=${display.value.id}`;
-      }
-      return "";
-    });
-
-    // media_url decides which url should be used for the media display
-    const media_url = computed(() => {
-      if (has_local_file.value && token.value?.token_id) {
-        return getLocalFileURL(token.value.token_id + ".mp4");
-      }
-      if (token.value?.animation_url) {
-        return token.value.animation_url;
-      }
-      if (token.value?.image_url) {
-        return token.value.image_url;
-      }
-      return null;
-    });
-
-    if (props.display_id) {
-      getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
-    } else {
-      const nft_display_id = localStorage.getItem("nft_display_id");
-      if (nft_display_id) {
-        getDisplayByDisplayIDWithListener(nft_display_id, initDisplay);
-      } else {
-        createDisplayWithListener("", "", "", initDisplay);
-      }
-    }
-
-    // if running a playlist, change to the next token in the list after x seconds
-    window.setInterval(() => {
+    // nextPlaylistToken will update the display to the next token in the playlist
+    const nextPlaylistToken = () => {
+      console.log("NEXT PLAYLIST TOKEN");
       if (!display.value?.entity?.playlist_tokens?.length) {
         return;
       }
@@ -231,6 +234,7 @@ export default defineComponent({
       ) {
         new_index = 0;
       }
+      console.log("NEXT PLAYLIST TOKEN INDEX", new_index);
 
       display.value.entity.token_id =
         display.value.entity.playlist_tokens[new_index].token_id;
@@ -238,7 +242,18 @@ export default defineComponent({
         display.value.entity.playlist_tokens[new_index].asset_contract_address;
 
       updateDisplay(display.value);
-    }, 45000);
+    };
+
+    if (props.display_id) {
+      getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
+    } else {
+      const nft_display_id = localStorage.getItem("nft_display_id");
+      if (nft_display_id) {
+        getDisplayByDisplayIDWithListener(nft_display_id, initDisplay);
+      } else {
+        createDisplayWithListener("", "", "", initDisplay);
+      }
+    }
 
     return {
       display,
@@ -247,7 +262,8 @@ export default defineComponent({
       display_controller_url,
       token,
       media_url,
-      player
+      player,
+      video_should_loop
     };
   }
 });
