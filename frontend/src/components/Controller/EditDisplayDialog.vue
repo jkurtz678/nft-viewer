@@ -94,7 +94,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
-import { Display, FirestoreDocument, Token, Account } from "../../types/types";
+import { Display, FirestoreDocument, Account } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
 import { updateAccount } from "../../api/account";
