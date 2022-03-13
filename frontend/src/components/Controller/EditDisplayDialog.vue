@@ -50,12 +50,12 @@
           ></InputSwitch>
           Demo token playlist 
         </div>
-        <Button
+       <!--  <Button
           class="p-button-sm p-mt-2"
           label="Share and remember display"
           style="display: block;"
           @click="shareAndRemember"
-        ></Button>
+        ></Button> -->
         <Button
           class="p-button-danger p-button-sm p-mt-2"
           label="Forget display"
@@ -68,6 +68,9 @@
           :name="display.entity.name"
           :token_id="display.entity.token_id"
         ></display-item>
+        <div class="p-ml-2">
+          {{`${display?.entity?.playlist_tokens?.length || 0} token${display?.entity?.playlist_tokens?.length == 1 ? '' : 's'} in playlist`}}
+        </div>
       </div>
     </div>
     <TokenList v-model:selected_token_id="display.entity.token_id"></TokenList>

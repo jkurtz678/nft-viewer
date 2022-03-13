@@ -1,13 +1,14 @@
 <template>
   <Card
     class="p-m-2"
-    style="width: 150px; padding: 0px; text-align: center;"
+    style="width: 130px; padding: 0px; text-align: center;"
     @click="$emit('editDisplay')"
   >
     <template #content>
       <img
         v-if="asset_url"
         :src="asset_url"
+        style="height: 50px;"
       />
       <div v-else>No token</div>
     </template>
@@ -25,7 +26,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   props: {
     name: String,
-    token_id: String,
+    token_id: String
   },
   setup(props) {
     const store = useStore();
@@ -37,19 +38,19 @@ export default defineComponent({
       return "";
     });
     return { asset_url };
-  },
+  }
 });
 </script>
 
 <style scoped>
-.p-card::v-deep .p-card-body {
+.p-card :deep(.p-card-body) {
   padding: 0px;
-  min-height: 185px;
+  min-height: 130px;
 }
-.p-card::v-deep .p-card-footer {
+.p-card :deep(.p-card-footer) {
   padding: 10px 0px 10px 0px;
 }
-.p-card::v-deep .p-card-content{
+.p-card :deep(.p-card-content) {
   padding-bottom: 0px;
 }
 </style>
