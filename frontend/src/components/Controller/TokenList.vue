@@ -54,7 +54,6 @@ export default defineComponent({
       }
     };
     const togglePlaylistToken = (token: Token, toggle: boolean) => {
-      console.log("TOGGLE PLAYLIST", token, toggle)
       let new_playlist: Array<any> = [];
       if (props.playlist_tokens) {
         new_playlist = JSON.parse(JSON.stringify(props.playlist_tokens));
@@ -65,7 +64,6 @@ export default defineComponent({
       } else {
         new_playlist = new_playlist.filter( t => t.token_id != token.token_id)
       }
-      console.log("EMIT PLAYLIST TOKENS", new_playlist)
       emit("update:playlist_tokens", new_playlist)
     }
     return { selectToken, store, togglePlaylistToken};
