@@ -92,6 +92,7 @@ export default defineComponent({
           d.entity.asset_contract_address,
           d.entity.token_id
         );
+        console.log("token_resp", token_resp);
         token.value = token_resp;
       }
       loading.value = false;
@@ -106,7 +107,13 @@ export default defineComponent({
       if (orders == null || orders?.length == 0) {
         return "";
       }
-      const highest_order = orders[orders.length - 1];
+      let highest_order = orders[0];
+      orders.forEach(o => {
+        if(o.base_price > highest_order.base_price) {
+          highest_order = o;
+        }
+      })
+      //highest_order = orders[orders.length - 1];
       const bid = highest_order.base_price / Math.pow(10, highest_order.payment_token_contract.decimals);
 
       return `Top bid: ${bid} ${highest_order.payment_token_contract.symbol}`

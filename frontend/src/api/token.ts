@@ -24,7 +24,7 @@ export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<AddressT
 } 
 
 export const loadToken = async (asset_contract_address: string, token_id: string): Promise<Token> => {
-    const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}`)
+    const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)
     const res_json = await res.json()
     return res_json;
 }

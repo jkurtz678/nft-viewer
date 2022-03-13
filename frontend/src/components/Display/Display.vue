@@ -104,7 +104,7 @@ export default defineComponent({
           keyboard: false
         }
       });
-      window.localStorage.setItem("nft_video_loaded", 'true');
+      window.localStorage.setItem("nft_video_loaded", "true");
     };
     onMounted(() => {
       nextTick(() => {
@@ -112,36 +112,54 @@ export default defineComponent({
       });
     });
 
-    // monitor loading of archive media, abandoning if taking too long
-    /* const initArchiveMediaCheckInterval = async () => {
-      const checkInterval = 50.0; // check every 50 ms (do not use lower values)
-      let time_elapsed = 0;
-      let currentPlayPos = 0;
-      const max_load_time_for_archive = 3000; // time in milliseconds that browser will attempt to load archive media, otherwise will switch to low quality version
+    // initDisplay will handle changes made to the data of a display, showing/hiding media
+    const initDisplay = async (d: FirestoreDocument<Display>) => {
+      show_video.value = false; // tells display to start fade out
+      window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
+      await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
-      const interval = setInterval(checkBuffering, checkInterval);
-      function checkBuffering() {
-        if (!player.value) {
-          console.log("ERROR: Display video player not found.");
-          return;
+      router.push({ path: "/display", query: { display_id: d.id } });
+      display.value = d;
+      window.localStorage.setItem("nft_display_id", d.id);
+
+      // to load a token, we need both the token id and the contract address. if the display is missing one of these, clear out the token from display
+      if (!d.entity.token_id || !d.entity.asset_contract_address) {
+        token.value = null;
+        has_local_file.value = false;
+        if (viewer.value) {
+          viewer.value.hide();
         }
-
-        currentPlayPos = player.value.currentTime;
-
-        if( time_elapsed > max_load_time_for_archive ) {
-          if( currentPlayPos == 0) {
-            console.log("Internet connection too weak! Cannot load archive media.")
-            archive_media_url.value = null;
-          } 
-          clearInterval(interval)
-          return
-        }
-        time_elapsed += checkInterval; 
+        loading.value = false;
+        return;
       }
-    }; */
 
-    const checkVideoLoading = () => {
-      const checkInterval = 50.0; // check every 50 ms (do not use lower values)
+      // now its safe to load and show the token media
+      showToken(d.entity.asset_contract_address, d.entity.token_id);
+    };
+
+    // showToken will load a token from opensea and display its associated media. Different behaviors for videos and images/gifs
+    const showToken = async (contract_address: string, token_id: string) => {
+      const token_resp = await loadToken(contract_address, token_id);
+      token.value = token_resp;
+
+
+      has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+      waitToShowVideo();
+
+      // if token has no video media, display the image using viewer
+      if (media_is_video) {
+        if (viewer.value) {
+          viewer.value.hide();
+        }
+      } else {
+        displayImage(token_resp.image_url);
+      }
+      loading.value = false;
+    };
+
+    // waitToShowVideo waits until video has started playing before fading it in
+    const waitToShowVideo = () => {
+      const checkInterval = 50.0; // check every 50 ms to see if video has started playing
       let current_play_pos = 0;
 
       const interval = setInterval(checkBuffering, checkInterval);
@@ -155,65 +173,25 @@ export default defineComponent({
         if (current_play_pos > 0) {
           clearInterval(interval);
           show_video.value = true;
-          window.localStorage.setItem("nft_video_loaded", 'true');
+          window.localStorage.setItem("nft_video_loaded", "true");
         }
       }
     };
 
-    const initDisplay = async (d: FirestoreDocument<Display>) => {
-      show_video.value = false;
-      window.localStorage.setItem("nft_video_loaded", 'false'); // set key so that plaque knows when to show text
-      await new Promise(r => setTimeout(r, 800));
-      router.push({ path: "/display", query: { display_id: d.id } });
-      display.value = d;
-      window.localStorage.setItem("nft_display_id", d.id);
-      if (d.entity.token_id && d.entity.asset_contract_address) {
-        const token_resp = await loadToken(
-          d.entity.asset_contract_address,
-          d.entity.token_id
-        );
-        token.value = token_resp;
+    const media_is_video = computed(() => {
+      return !!token.value?.animation_url;
+    });
 
-        /* archive_media_url.value = await loadArchiveMedia(
-          token_resp.token_id + ".mp4"
-        );
-        console.log("ARCHIVE MEDIA", archive_media_url.value);
-        if (archive_media_url.value) {
-          initArchiveMediaCheckInterval();
-        } */
-        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
-        checkVideoLoading();
-
-        // if token has no video media, display the image using viewer
-        if (token_resp.animation_url) {
-          if (viewer.value) {
-            viewer.value.hide();
-          }
-        } else {
-          displayImage(token_resp.image_url);
-        }
-      } else {
-        token.value = null;
-        has_local_file.value = false;
-        if (viewer.value) {
-          viewer.value.hide();
-        }
-      }
-      loading.value = false;
-    };
-
+    // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
     const display_controller_url = computed(() => {
-      console.log("document", document);
       if (display.value) {
         return `${document.location.origin}${document.location.pathname}#/controller?display_id=${display.value.id}`;
       }
       return "";
     });
 
+    // media_url decides which url should be used for the media display
     const media_url = computed(() => {
-      /* if (archive_media_url.value) {
-        return archive_media_url.value;
-      } */
       if (has_local_file.value && token.value?.token_id) {
         return getLocalFileURL(token.value.token_id + ".mp4");
       }
