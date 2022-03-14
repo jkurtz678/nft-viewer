@@ -83,6 +83,7 @@ export default defineComponent({
     const viewer = ref<Viewer>();
     const has_local_file = ref<boolean>();
     const player = ref<HTMLVideoElement>();
+    const image_timer = ref<ReturnType<typeof setTimeout>>();
 
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
@@ -129,10 +130,15 @@ export default defineComponent({
     });
     /* END WATCHERS */
 
+
+    /* START METHODS */
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
+      if(image_timer.value) {
+        clearTimeout(image_timer.value)
+      }
       await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
       router.push({ path: "/display", query: { display_id: d.id } });
@@ -174,6 +180,9 @@ export default defineComponent({
         waitToShowVideo();
       } else {
         displayImage(token_resp.image_url);
+        image_timer.value = setTimeout(() => {
+          nextPlaylistToken();
+        }, 1000 * 45)
       }
       loading.value = false;
     };
@@ -245,6 +254,7 @@ export default defineComponent({
 
       updateDisplay(display.value);
     };
+    /* END METHODS */
 
     if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
