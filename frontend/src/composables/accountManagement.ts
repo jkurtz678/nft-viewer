@@ -33,15 +33,8 @@ export default function manageAccounts() {
     const loadTokens = async (address: string) => {
         tokens.value = await token_api.loadTokens(address)
         store.commit("setTokens", tokens.value)
-
-        const demo_tokens_ids: Array<AddressTokenPair> = [
-            { token_id: "18706", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
-            { token_id: "19046", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
-            { token_id: "20188", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
-            { token_id: "21942", asset_contract_address: "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0" },
-            { token_id: "1752", asset_contract_address: "0x59468516a8259058bad1ca5f8f4bff190d30e066" },
-        ];
-        const demo_tokens = await token_api.loadTokensByTokenIDAndAssetContract(demo_tokens_ids)
+        const demo_token_ids  = await token_api.loadDemoTokenIDs();
+        const demo_tokens = await token_api.loadTokensByTokenIDAndAssetContract(demo_token_ids.map(t => t.entity))
         store.commit("setDemoTokens", demo_tokens)
     }
 

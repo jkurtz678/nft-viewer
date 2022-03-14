@@ -1,5 +1,7 @@
-import { AddressTokenPair, Token} from "../types/types"
+import { AddressTokenPair, FirestoreDocument, Token } from "../types/types"
 import firebase from "../firebaseConfig";
+
+const db = firebase.firestore();
 
 // returns all tokens associated with this web3 account
 export const loadTokens = async (web3_account_id: string): Promise<Array<Token>> => {
@@ -7,6 +9,14 @@ export const loadTokens = async (web3_account_id: string): Promise<Array<Token>>
     const res_json = await res.json();
 
     return res_json.assets;
+}
+
+// loadDemoTokenIDs returns a list of demo tokens which all controllers have access to
+export const loadDemoTokenIDs = async (): Promise<Array<FirestoreDocument<AddressTokenPair>>> => {
+    const query_snapshot = await db.collection("demo_tokens").get();
+    return query_snapshot.docs.map(s => ({
+        id: s.id, entity: s.data() as AddressTokenPair,
+    }))
 }
 
 export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<AddressTokenPair>): Promise<Array<Token>> => {

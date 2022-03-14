@@ -59,7 +59,7 @@ export interface AssetContract {
     address: string;
 }
 
-export interface AddressTokenPair {
+export interface AddressTokenPair extends BaseDocument {
     token_id: string;
     asset_contract_address: string;
 }
