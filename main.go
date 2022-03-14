@@ -16,10 +16,10 @@ func main() {
 	flag.IntVar(&port, "port", 8081, "The port to listen on")
 	flag.Parse()
 
+	log.Println("Starting server...")
 	mediaManager := mediamanager.NewMediaManager("nft-viewer.appspot.com", "./serviceAccountKey.json", "./media")
 	mediaAPIHandler := api.NewMediaAPIHandler(mediaManager)
 
-	log.Println("Starting server...")
 	router := httprouter.New()
 	router.GET("/api/media/download/:file_url", mediaAPIHandler.DownloadMedia)
 	router.ServeFiles("/media/*filepath", http.Dir("media"))
@@ -28,5 +28,6 @@ func main() {
 	static.ServeFiles("/*filepath", http.Dir("frontend/dist"))
 	router.NotFound = static
 
+	log.Printf("Now serving on localhost:%v", port)
 	log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
 }

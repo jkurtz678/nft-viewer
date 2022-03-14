@@ -33,6 +33,14 @@ func (fm *MediaManager) downloadFromQueue() {
 		}
 
 		log.Println("MediaManager.downloadFromQueue - Writing file...")
+
+		// create media dir if it does not exist, does nothing if already exists
+		err = os.MkdirAll(fm.mediaDir, os.ModePerm)
+		if err != nil {
+			log.Printf("MediaManager.performDownload - Failed to create media dir %s error %s", fm.mediaDir, err)
+			continue
+		}
+
 		err = os.WriteFile(localPath, data, 0644)
 		if err != nil {
 			log.Printf("MediaManager.performDownload - WriteFile %s error %s", fileURI, err)

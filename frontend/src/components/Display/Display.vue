@@ -120,7 +120,6 @@ export default defineComponent({
     /* END COMPUTED */
 
     /* START WATCHERS */
-
     // wait until html player loads to add the video ended event listener
     watch(player, v => {
       if (v) {

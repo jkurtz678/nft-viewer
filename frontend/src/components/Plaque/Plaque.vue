@@ -116,7 +116,7 @@ export default defineComponent({
       //highest_order = orders[orders.length - 1];
       const bid = highest_order.base_price / Math.pow(10, highest_order.payment_token_contract.decimals);
 
-      return `Top bid: ${bid} ${highest_order.payment_token_contract.symbol}`
+      return `Top bid: ${bid.toFixed(3)} ${highest_order.payment_token_contract.symbol}`
     })
 
     watch(
