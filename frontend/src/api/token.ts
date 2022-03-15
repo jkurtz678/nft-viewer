@@ -1,25 +1,25 @@
-import { AddressTokenPair, FirestoreDocument, Token } from "../types/types"
+import { TokenMeta, FirestoreDocument, OpenseaToken } from "../types/types"
 import firebase from "../firebaseConfig";
 
 const db = firebase.firestore();
 
 // returns all tokens associated with this web3 account
-export const loadTokens = async (web3_account_id: string): Promise<Array<Token>> => {
+export const loadTokens = async (web3_account_id: string): Promise<Array<OpenseaToken>> => {
     const res = await fetch(`https://api.opensea.io/api/v1/assets/?owner=${web3_account_id}`);
     const res_json = await res.json();
 
     return res_json.assets;
 }
 
-// loadDemoTokenIDs returns a list of demo tokens which all controllers have access to
-export const loadDemoTokenIDs = async (): Promise<Array<FirestoreDocument<AddressTokenPair>>> => {
+// loadDemoTokenMetas returns a list of demo tokens which all controllers have access to
+export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<TokenMeta>>> => {
     const query_snapshot = await db.collection("demo_tokens").get();
     return query_snapshot.docs.map(s => ({
-        id: s.id, entity: s.data() as AddressTokenPair,
+        id: s.id, entity: s.data() as TokenMeta,
     }))
 }
 
-export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<AddressTokenPair>): Promise<Array<Token>> => {
+export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<TokenMeta>): Promise<Array<OpenseaToken>> => {
     let url = `https://api.opensea.io/api/v1/assets/?`
     tokens.forEach(t => {
         url += `asset_contract_addresses=${t.asset_contract_address}&token_ids=${t.token_id}&`
@@ -33,7 +33,7 @@ export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<AddressT
     return res_json.assets;
 } 
 
-export const loadToken = async (asset_contract_address: string, token_id: string): Promise<Token> => {
+export const loadToken = async (asset_contract_address: string, token_id: string): Promise<OpenseaToken> => {
     const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)
     const res_json = await res.json()
     return res_json;

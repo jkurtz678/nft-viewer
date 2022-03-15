@@ -182,7 +182,7 @@ export default defineComponent({
       set(v): void {
         if (v) {
           display.value.entity.playlist_tokens = store.getters.demo_tokens.map(
-            (t: Token) => ({
+            (t: OpenseaToken) => ({
               asset_contract_address: t?.asset_contract?.address,
               token_id: t.token_id
             })

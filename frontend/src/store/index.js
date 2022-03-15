@@ -6,6 +6,7 @@ const store = createStore({
         account: {},
         tokens: [],
         demo_tokens: [],
+        demo_token_metas: [],
         camera_scan_mode: false,
     },
     getters: {
@@ -14,6 +15,9 @@ const store = createStore({
         },
         account: state => {
             return state.account;
+        },
+        demo_token_metas: state => {
+            return state.demo_token_metas
         },
         tokens: state => {
             return state.tokens;
@@ -46,6 +50,9 @@ const store = createStore({
         setDemoTokens(state, tokens) {
             state.demo_tokens = tokens;
         },
+        setDemoTokenMetas(state, token_metas) {
+            state.demo_token_metas = token_metas
+        }, 
         setCameraScanMode(state, show) {
             state.camera_scan_mode = show;
         }

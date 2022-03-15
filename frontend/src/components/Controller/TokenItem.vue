@@ -40,10 +40,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Token } from "../../types/types";
+import { OpenseaToken} from "../../types/types";
 export default defineComponent({
   props: {
-    token: Object as () => Token,
+    token: Object as () => OpenseaToken,
     selected: Boolean,
     in_playlist: Boolean,
   }

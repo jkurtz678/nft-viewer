@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { FirestoreDocument, Account, Token, AddressTokenPair } from "../types/types";
+import { FirestoreDocument, Account, Token, TokenMeta } from "../types/types";
 import * as account_api from "../api/account";
 import * as token_api from "../api/token";
 import { useStore } from "vuex";
@@ -33,9 +33,10 @@ export default function manageAccounts() {
     const loadTokens = async (address: string) => {
         tokens.value = await token_api.loadTokens(address)
         store.commit("setTokens", tokens.value)
-        const demo_token_ids  = await token_api.loadDemoTokenIDs();
-        const demo_tokens = await token_api.loadTokensByTokenIDAndAssetContract(demo_token_ids.map(t => t.entity))
-        store.commit("setDemoTokens", demo_tokens)
+        const demo_token_metas  = await token_api.loadDemoTokenMetas();
+        store.commit("setDemoTokenMetas", demo_token_metas)
+        /* const demo_tokens = await token_api.loadTokensByTokenIDAndAssetContract(demo_token_ids.map(t => t.entity))
+        store.commit("setDemoTokens", demo_tokens) */
     }
 
     return { account, loading_account, tokens, loadAccount, loadTokens }

@@ -39,10 +39,10 @@ export interface Display extends BaseDocument {
     asset_contract_address: string;
     token_id: string;
     plaque_dark_mode: boolean;
-    playlist_tokens: Array<AddressTokenPair>;
+    playlist_tokens: Array<TokenMeta>;
 }
 
-export interface Token {
+export interface OpenseaToken {
     image_url: string;
     image_thumbnail_url: string;
     animation_url: string;
@@ -59,7 +59,10 @@ export interface AssetContract {
     address: string;
 }
 
-export interface AddressTokenPair extends BaseDocument {
+export interface TokenMeta extends BaseDocument {
     token_id: string;
     asset_contract_address: string;
+    tag: string;
+    name: string;
+    // created_at: string;
 }

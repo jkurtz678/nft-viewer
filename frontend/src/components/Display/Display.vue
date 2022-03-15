@@ -51,7 +51,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken } from "@/api/token";
 import { getLocalFileURL, hasLocalFile } from "@/api/local-files";
-import { FirestoreDocument, Display, Token } from "@/types/types";
+import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
@@ -77,7 +77,7 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const display = ref<FirestoreDocument<Display> | null>();
-    const token = ref<Token | null>();
+    const token = ref<OpenseaToken | null>();
     const loading = ref(true);
     const show_video = ref(false);
     const viewer = ref<Viewer>();

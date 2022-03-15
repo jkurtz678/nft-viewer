@@ -62,7 +62,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { loadToken } from "@/api/token";
-import { FirestoreDocument, Display, Token } from "@/types/types";
+import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
 import Loading from "vue-loading-overlay";
 import QrcodeVue from "qrcode.vue";
 import { getDisplayByDisplayIDWithListener } from "@/api/display";
@@ -77,7 +77,7 @@ export default defineComponent({
   },
   setup() {
     const display = ref<FirestoreDocument<Display> | null>();
-    const token = ref<Token | null>();
+    const token = ref<OpenseaToken | null>();
     const loading = ref(false);
     const display_id = ref(window.localStorage.getItem("nft_display_id"));
     const show_text = ref(false);
