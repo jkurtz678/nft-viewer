@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { FirestoreDocument, Account, Token, TokenMeta } from "../types/types";
+import { FirestoreDocument, Account, OpenseaToken } from "../types/types";
 import * as account_api from "../api/account";
 import * as token_api from "../api/token";
 import { useStore } from "vuex";
@@ -7,7 +7,7 @@ import { useStore } from "vuex";
 export default function manageAccounts() {
     const loading_account = ref(false)
     const account = ref<FirestoreDocument<Account> | null>()
-    const tokens = ref<Array<Token>>()
+    const tokens = ref<Array<OpenseaToken>>()
 
     const store = useStore();
     // gets account for address, creating if it does not exist
