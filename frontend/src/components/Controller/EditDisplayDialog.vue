@@ -75,6 +75,7 @@
     </div>
     <TokenList
       v-model:selected_token_id="display.entity.token_id"
+      v-model:selected_asset_contract_address="display.entity.asset_contract_address"
       v-model:playlist_tokens="display.entity.playlist_tokens"
     ></TokenList>
     <template #footer>
@@ -94,7 +95,12 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
-import { Display, FirestoreDocument, Account } from "../../types/types";
+import {
+  Display,
+  FirestoreDocument,
+  Account,
+  TokenIDPair
+} from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
 import { updateAccount } from "../../api/account";
@@ -169,9 +175,14 @@ export default defineComponent({
       { immediate: true }
     );
 
-    const token_id = computed(() => {
-      return display.value.entity.token_id;
-    });
+   /*  const selected_token_id_pair = computed(
+      (): TokenIDPair => {
+        return {
+          token_id: display.value.entity.token_id,
+          asset_contract_address: display.value.entity.asset_contract_address
+        };
+      }
+    ); */
     /* const demo_token_playlist = computed({
       get(): boolean {
         if (!display.value.entity.playlist_tokens) {
@@ -193,27 +204,27 @@ export default defineComponent({
       }
     }); */
 
-    watch(token_id, v => {
-      if (!v) {
+    /* watch(selected_token_id_pair, id_pair => {
+      if (!id_pair) {
         display.value.entity.asset_contract_address = "";
         return;
       }
-      const token = store.getters.token(v);
+      const token = store.getters.demo_token_meta(id_pair.asset_contract_address, id_pair.token_id);
       // token may be null the display is set to the token the user does not have
       if (!token) {
-        console.log("TOKEN NOT FOUND FOR token_id = ", v);
+        console.log("TOKEN NOT FOUND FOR token_id = ", id_pair);
         return;
       }
       display.value.entity.asset_contract_address =
         token.asset_contract.address;
-    });
+    }); */
 
     return {
       handleSave,
       forgetDisplay,
       shareAndRemember,
       display,
-      openDisplayInBrowser,
+      openDisplayInBrowser
       //demo_token_playlist
     };
   }

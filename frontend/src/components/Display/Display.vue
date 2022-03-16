@@ -88,7 +88,7 @@ export default defineComponent({
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
     const media_is_video = computed((): boolean => {
-      return !!token.value?.animation_url;
+      return !!token.value?.animation_url && !token.value.animation_url.endsWith(".wav");
     });
 
     // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
@@ -104,7 +104,7 @@ export default defineComponent({
       if (has_local_file.value && token.value?.token_id) {
         return getLocalFileURL(token.value.token_id + ".mp4");
       }
-      if (token.value?.animation_url) {
+      if (media_is_video && token.value)  {
         return token.value.animation_url;
       }
       if (token.value?.image_url) {
@@ -134,6 +134,7 @@ export default defineComponent({
     /* START METHODS */
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
+      console.log("display", d)
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
       if(image_timer.value) {
@@ -209,6 +210,7 @@ export default defineComponent({
     };
 
     const displayImage = (image_url: string) => {
+      console.log("displayImage", image_url)
       viewer.value = viewerApi({
         images: [image_url],
         options: {

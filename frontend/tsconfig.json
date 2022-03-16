@@ -13,7 +13,9 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "reflect-metadata",
+      "jest"
     ],
     "paths": {
       "@/*": [
@@ -36,6 +38,6 @@
     "globals.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }

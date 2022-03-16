@@ -19,6 +19,9 @@ const store = createStore({
         demo_token_metas: state => {
             return state.demo_token_metas
         },
+        demo_token_meta: state => (asset_contract_address, token_id) =>  {
+            return state.demo_token_metas.find(t => t.asset_contract_address == asset_contract_address && t.token_id == token_id)
+        },
         tokens: state => {
             return state.tokens;
         },

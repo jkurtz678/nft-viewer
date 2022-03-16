@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, ref, watch, computed, onMounted } from "vue";
 import { loadToken } from "@/api/token";
 import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
 import Loading from "vue-loading-overlay";
@@ -81,6 +81,12 @@ export default defineComponent({
     const loading = ref(false);
     const display_id = ref(window.localStorage.getItem("nft_display_id"));
     const show_text = ref(false);
+
+    onMounted(() => {
+      if (display_id.value) {
+        show_text.value = true
+      } 
+    })
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       show_text.value = false;

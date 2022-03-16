@@ -19,10 +19,10 @@ export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<Toke
     }))
 }
 
-export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<TokenMeta>): Promise<Array<OpenseaToken>> => {
+export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
     let url = `https://api.opensea.io/api/v1/assets/?`
     tokens.forEach(t => {
-        url += `asset_contract_addresses=${t.asset_contract_address}&token_ids=${t.token_id}&`
+        url += `asset_contract_addresses=${t.entity.asset_contract_address}&token_ids=${t.entity.token_id}&`
     })
 
     url = url.substring(0, url.length - 1)
