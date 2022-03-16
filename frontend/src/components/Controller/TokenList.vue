@@ -1,33 +1,23 @@
 <template>
-  <div class="p-mt-4">
-    <TabView>
-      <TabPanel header="My tokens">
-        <template v-if="store.getters.tokens">
-          <TokenItem
-            v-for="token of user_tokens"
-            :key="token.name"
-            :token="token"
-            :selected="token.asset_contract.address == selected_asset_contract_address && token.token_id == selected_token_id"
-            :in_playlist="playlist_tokens.some(t => t.asset_contract_address == token.asset_contract.address && t.token_id == token.token_id)"
-            @click="selectToken(token.asset_contract.address, token.token_id)"
-            @togglePlaylistToken="togglePlaylistToken(token, $event)"
-          ></TokenItem>
-        </template>
-      </TabPanel>
-      <TabPanel header="Demo tokens">
-        <template v-if="page_tokens">
-          <TokenItem
-            v-for="token of page_tokens"
-            :key="token.name"
-            :token="token"
-            :selected="token.asset_contract.address == selected_asset_contract_address && token.token_id == selected_token_id"
-            :in_playlist="playlist_tokens.some(t => t.asset_contract_address == token.asset_contract.address && t.token_id == token.token_id)"
-            @click="selectToken(token.asset_contract.address, token.token_id)"
-            @togglePlaylistToken="togglePlaylistToken(token, $event)"
-          ></TokenItem>
-        </template>
-      </TabPanel>
-    </TabView>
+  <div class="p-mt-2">
+    <div style="display: flex;">
+      <Paginator
+        v-model:first="offset"
+        :rows="limit"
+        :totalRecords="total_records"
+        class="p-p-0"
+      ></Paginator>
+      <Button @click="clearPlaylist">{{"Clear playlist"}}</Button>
+    </div>
+    <TokenItem
+      v-for="token of page_tokens"
+      :key="token.name"
+      :token="token"
+      :selected="token.asset_contract.address == selected_asset_contract_address && token.token_id == selected_token_id"
+      :in_playlist="playlist_tokens.some(t => t.asset_contract_address == token.asset_contract.address && t.token_id == token.token_id)"
+      @click="selectToken(token.asset_contract.address, token.token_id)"
+      @togglePlaylistToken="togglePlaylistToken(token, $event)"
+    ></TokenItem>
   </div>
 </template>
 
@@ -45,35 +35,55 @@ export default defineComponent({
     playlist_tokens: {
       type: Array as PropType<Array<TokenIDPair>>,
       default: () => []
-    }
+    },
+    user_tokens: Boolean
   },
   setup(props, { emit }) {
     const store = useStore();
-    const page_tokens = ref<Array<OpenseaToken>>([]);
+    const demo_page_tokens = ref<Array<OpenseaToken>>([]);
     const limit = 10;
-    const page = ref<number>(1);
+    const offset = ref(0);
 
     const page_token_metas = computed(() => {
-      const page_index = (page.value - 1) * limit;
       const token_metas = store.getters.demo_token_metas.slice(
-        page_index,
-        limit
+        offset.value,
+        limit + offset.value
       );
       return token_metas;
     });
 
-    const user_tokens = computed(
-      (): OpenseaToken => {
-        return store.getters.tokens;
+    const user_page_tokens = computed(() => {
+      const user_tokens = store.getters.tokens.slice(
+        offset.value,
+        limit + offset.value
+      );
+      return user_tokens;
+    });
+
+    const page_tokens = computed(
+      (): Array<OpenseaToken> => {
+        if (props.user_tokens) {
+          return user_page_tokens.value;
+        }
+        return demo_page_tokens.value;
+      }
+    );
+
+    const total_records = computed(
+      (): Number => {
+        return props.user_tokens
+          ? store.getters.tokens.length
+          : store.getters.demo_token_metas.length;
       }
     );
 
     watch(
       page_token_metas,
       async v => {
-        page_tokens.value = await loadTokensByTokenIDAndAssetContract(v);
+        console.log("PAGE TOKEN METAS", v);
+        demo_page_tokens.value = await loadTokensByTokenIDAndAssetContract(v);
       },
-      { immediate: true }
+      { immediate: true, deep: true }
     );
 
     const selectToken = (asset_contract_address: string, token_id: string) => {
@@ -108,13 +118,20 @@ export default defineComponent({
       }
       emit("update:playlist_tokens", new_playlist);
     };
+    const clearPlaylist = () => {
+      emit("update:playlist_tokens", []);
+    };
 
     return {
       selectToken,
       store,
       togglePlaylistToken,
       page_tokens,
-      user_tokens
+      total_records,
+      limit,
+      offset,
+      user_page_tokens,
+      clearPlaylist
     };
   }
 });

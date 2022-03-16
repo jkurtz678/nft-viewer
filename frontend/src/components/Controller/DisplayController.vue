@@ -24,6 +24,7 @@
           :key="display.id"
           :name="display.entity.name"
           :token_id="display.entity.token_id"
+          :asset_contract_address="display.entity.asset_contract_address"
           @editDisplay="editDisplay(display.id)"
         ></DisplayItem>
       </div>

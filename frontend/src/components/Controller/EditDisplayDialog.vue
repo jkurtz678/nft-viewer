@@ -67,17 +67,31 @@
         <display-item
           :name="display.entity.name"
           :token_id="display.entity.token_id"
+          :asset_contract_address="display.entity.asset_contract_address"
         ></display-item>
         <div class="p-ml-2">
           {{`${display?.entity?.playlist_tokens?.length || 0} token${display?.entity?.playlist_tokens?.length == 1 ? '' : 's'} in playlist`}}
         </div>
       </div>
     </div>
-    <TokenList
-      v-model:selected_token_id="display.entity.token_id"
-      v-model:selected_asset_contract_address="display.entity.asset_contract_address"
-      v-model:playlist_tokens="display.entity.playlist_tokens"
-    ></TokenList>
+    <TabView>
+      <TabPanel header="My tokens">
+        <TokenList
+          v-model:selected_token_id="display.entity.token_id"
+          v-model:selected_asset_contract_address="display.entity.asset_contract_address"
+          v-model:playlist_tokens="display.entity.playlist_tokens"
+          :user_tokens="true"
+        ></TokenList>
+      </TabPanel>
+      <TabPanel header="Demo tokens">
+        <TokenList
+          v-model:selected_token_id="display.entity.token_id"
+          v-model:selected_asset_contract_address="display.entity.asset_contract_address"
+          v-model:playlist_tokens="display.entity.playlist_tokens"
+        ></TokenList>
+      </TabPanel>
+    </TabView>
+
     <template #footer>
       <Button
         label="Save"
@@ -99,7 +113,7 @@ import { Display, FirestoreDocument, Account } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
 import { updateAccount } from "../../api/account";
-import TokenList from "../Controller/TokenList.vue";
+import TokenList from "./TokenList.vue";
 
 export default defineComponent({
   components: { DisplayItem, TokenList },

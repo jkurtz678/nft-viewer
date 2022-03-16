@@ -3,14 +3,15 @@ package firestore
 import (
 	"context"
 
+	"cloud.google.com/go/firestore"
 	"google.golang.org/api/iterator"
 )
 
 const demoTokenCollection = "demo_tokens"
 
 // GetAllDemoTokens returns a list of all the demo tokens
-func (fc *FirestoreClient) GetAllDemoTokens(ctx context.Context) ([]DemoToken, error) {
-	var demoTokens []DemoToken
+func (fc *FirestoreClient) GetAllDemoTokens(ctx context.Context) ([]FirestoreToken, error) {
+	var demoTokens []FirestoreToken
 	iter := fc.Collection(demoTokenCollection).Documents(ctx)
 	defer iter.Stop()
 	for {
@@ -26,8 +27,12 @@ func (fc *FirestoreClient) GetAllDemoTokens(ctx context.Context) ([]DemoToken, e
 		if err := doc.DataTo(&dt); err != nil {
 			return nil, err
 		}
+		ft := FirestoreToken{
+			Token:      dt,
+			DocumentID: doc.Ref.ID,
+		}
 
-		demoTokens = append(demoTokens, dt)
+		demoTokens = append(demoTokens, ft)
 	}
 	return demoTokens, nil
 }
@@ -35,5 +40,10 @@ func (fc *FirestoreClient) GetAllDemoTokens(ctx context.Context) ([]DemoToken, e
 // AddDemoToken adds a demo token to firestore
 func (fc *FirestoreClient) AddDemoToken(ctx context.Context, demoToken *DemoToken) error {
 	_, _, err := fc.Collection(demoTokenCollection).Add(ctx, demoToken)
+	return err
+}
+
+func (fc *FirestoreClient) UpdateDemoTokenID(ctx context.Context, demoToken *FirestoreToken) error {
+	_, err := fc.Collection(demoTokenCollection).Doc(demoToken.DocumentID).Update(ctx, []firestore.Update{{Path: "token_id", Value: demoToken.Token.TokenID}})
 	return err
 }

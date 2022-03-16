@@ -6,7 +6,10 @@
           <div
             class="p-col-6"
             style="margin: auto; text-align: left; padding-left: 20px"
-          >{{token?.name}}</div>
+          >
+            <div>{{token?.name}}</div>
+            <div>{{token_meta?.entity?.tag}}</div>
+          </div>
           <div class="p-col-4">
             <img
               :src="token?.image_thumbnail_url"
@@ -39,13 +42,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { OpenseaToken} from "../../types/types";
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
+import { OpenseaToken } from "../../types/types";
 export default defineComponent({
   props: {
     token: Object as () => OpenseaToken,
     selected: Boolean,
-    in_playlist: Boolean,
+    in_playlist: Boolean
+  },
+  setup(props) {
+    const store = useStore();
+    const token_meta = computed(() => {
+      return store.getters.demo_token_meta(props.token?.asset_contract.address, props.token?.token_id)
+    });
+    return { token_meta };
   }
 });
 </script>

@@ -14,9 +14,10 @@ export const loadTokens = async (web3_account_id: string): Promise<Array<Opensea
 // loadDemoTokenMetas returns a list of demo tokens which all controllers have access to
 export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<TokenMeta>>> => {
     const query_snapshot = await db.collection("demo_tokens").get();
-    return query_snapshot.docs.map(s => ({
+    const metas = query_snapshot.docs.map(s => ({
         id: s.id, entity: s.data() as TokenMeta,
     }))
+    return metas.filter(m => m.entity.token_id && m.entity.asset_contract_address)
 }
 
 export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
