@@ -94,7 +94,7 @@ export default defineComponent({
     // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
     const display_controller_url = computed((): string => {
       if (display.value) {
-        return `${document.location.origin}${document.location.pathname}#/controller?display_id=${display.value.id}`;
+        return `https://jkurtz678.github.io/nft-viewer/${document.location.pathname}#/controller?display_id=${display.value.id}`;
       }
       return "";
     });
@@ -104,7 +104,7 @@ export default defineComponent({
       if (has_local_file.value && token.value?.token_id) {
         return getLocalFileURL(token.value.token_id + ".mp4");
       }
-      if (media_is_video && token.value)  {
+      if (media_is_video.value && token.value)  {
         return token.value.animation_url;
       }
       if (token.value?.image_url) {

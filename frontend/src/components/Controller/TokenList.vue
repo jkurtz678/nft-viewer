@@ -34,7 +34,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch, PropType } from "vue";
 import { useStore } from "vuex";
-import { OpenseaToken, TokenIDPair, TokenMeta } from "@/types/types";
+import { OpenseaToken, TokenIDPair } from "@/types/types";
 import TokenItem from "@/components/Controller/TokenItem.vue";
 import { loadTokensByTokenIDAndAssetContract } from "@/api/token";
 export default defineComponent({
@@ -89,7 +89,7 @@ export default defineComponent({
       }
     };
     const togglePlaylistToken = (token: OpenseaToken, toggle: boolean) => {
-      let new_playlist: Array<any> = [];
+      let new_playlist: Array<TokenIDPair> = [];
       if (props.playlist_tokens) {
         new_playlist = JSON.parse(JSON.stringify(props.playlist_tokens));
       }

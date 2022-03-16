@@ -93,14 +93,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
-import {
-  Display,
-  FirestoreDocument,
-  Account,
-  TokenIDPair
-} from "../../types/types";
+import { Display, FirestoreDocument, Account } from "../../types/types";
 import DisplayItem from "../Controller/DisplayItem.vue";
 import { getDisplayByDisplayID, updateDisplay } from "../../api/display";
 import { updateAccount } from "../../api/account";
@@ -175,7 +170,7 @@ export default defineComponent({
       { immediate: true }
     );
 
-   /*  const selected_token_id_pair = computed(
+    /*  const selected_token_id_pair = computed(
       (): TokenIDPair => {
         return {
           token_id: display.value.entity.token_id,
