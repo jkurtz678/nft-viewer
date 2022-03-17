@@ -66,6 +66,7 @@ export interface TokenMeta extends BaseDocument {
     name: string;
     platform: string;
     public_link: string;
+    description: string;
     // created_at: string;
 }
 

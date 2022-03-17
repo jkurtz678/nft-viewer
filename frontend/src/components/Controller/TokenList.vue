@@ -12,6 +12,7 @@
         :rows="limit"
         :pageLinkSize="3"
         :totalRecords="total_records"
+        :alwaysShow="false"
         class="p-p-0"
       >
         <template #FirstPageLink></template>
@@ -40,7 +41,7 @@ import {
   DropdownOption
 } from "@/types/types";
 import TokenItem from "@/components/Controller/TokenItem.vue";
-import { loadTokensByTokenIDAndAssetContract } from "@/api/token";
+import { convertTokensToOpenseaFormat } from "@/api/token";
 export default defineComponent({
   components: { TokenItem },
   props: {
@@ -126,7 +127,7 @@ export default defineComponent({
       page_token_metas,
       async v => {
         console.log("PAGE TOKEN METAS", v);
-        demo_page_tokens.value = await loadTokensByTokenIDAndAssetContract(v);
+        demo_page_tokens.value = await convertTokensToOpenseaFormat(v);
       },
       { immediate: true, deep: true }
     );

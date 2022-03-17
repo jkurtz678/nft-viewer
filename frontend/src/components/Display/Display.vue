@@ -49,9 +49,18 @@
 import { ref, computed, watch } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { loadToken } from "@/api/token";
-import { getLocalFileURL, hasLocalFile } from "@/api/local-files";
-import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
+import {
+  convertTokenMetaToOpensea,
+  loadDemoTokenMeta,
+  loadToken
+} from "@/api/token";
+import { getLocalFileURL, findLocalFile } from "@/api/local-files";
+import {
+  FirestoreDocument,
+  Display,
+  OpenseaToken,
+  TokenMeta
+} from "@/types/types";
 import {
   createDisplayWithListener,
   getDisplayByDisplayIDWithListener,
@@ -78,17 +87,21 @@ export default defineComponent({
     const router = useRouter();
     const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<OpenseaToken | null>();
+    const token_meta = ref<FirestoreDocument<TokenMeta> | null>();
     const loading = ref(true);
     const show_video = ref(false);
     const viewer = ref<Viewer>();
-    const has_local_file = ref<boolean>();
+    const local_file = ref<string>();
     const player = ref<HTMLVideoElement>();
     const image_timer = ref<ReturnType<typeof setTimeout>>();
 
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
     const media_is_video = computed((): boolean => {
-      return !!token.value?.animation_url && !token.value.animation_url.endsWith(".wav");
+      return (
+        !!token.value?.animation_url &&
+        !token.value.animation_url.endsWith(".wav")
+      );
     });
 
     // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
@@ -101,10 +114,10 @@ export default defineComponent({
 
     // media_url decides which url should be used for the media display
     const media_url = computed((): string | null => {
-      if (has_local_file.value && token.value?.token_id) {
-        return getLocalFileURL(token.value.token_id + ".mp4");
+      if (local_file.value && token.value?.token_id) {
+        return getLocalFileURL(local_file.value);
       }
-      if (media_is_video.value && token.value)  {
+      if (media_is_video.value && token.value) {
         return token.value.animation_url;
       }
       if (token.value?.image_url) {
@@ -130,15 +143,14 @@ export default defineComponent({
     });
     /* END WATCHERS */
 
-
     /* START METHODS */
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("display", d)
+      console.log("display", d);
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
-      if(image_timer.value) {
-        clearTimeout(image_timer.value)
+      if (image_timer.value) {
+        clearTimeout(image_timer.value);
       }
       await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
@@ -149,7 +161,7 @@ export default defineComponent({
       // to load a token, we need both the token id and the contract address. if the display is missing one of these, clear out the token from display
       if (!d.entity.token_id || !d.entity.asset_contract_address) {
         token.value = null;
-        has_local_file.value = false;
+        local_file.value = "";
         if (viewer.value) {
           viewer.value.hide();
         }
@@ -163,14 +175,25 @@ export default defineComponent({
 
     // showToken will load a token from opensea and display its associated media. Different behaviors for videos and images/gifs
     const showToken = async (contract_address: string, token_id: string) => {
-      const token_resp = await loadToken(contract_address, token_id);
+      try {
+        token_meta.value = await loadDemoTokenMeta(contract_address, token_id);
+      } catch {
+        console.log("No token meta found");
+        token_meta.value = null;
+      }
+      let token_resp: OpenseaToken;
+      if (!token_meta.value || token_meta.value.entity.platform == "opensea") {
+        token_resp = await loadToken(contract_address, token_id);
+      } else {
+        token_resp = convertTokenMetaToOpensea(token_meta.value);
+      }
       token.value = token_resp;
 
       try {
-        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+        local_file.value = await findLocalFile(token.value.token_id);
       } catch (err) {
-        has_local_file.value = false;
-        console.log(err)
+        local_file.value = "";
+        console.log(err);
       }
 
       // if token has no video media, display the image using viewer
@@ -180,10 +203,12 @@ export default defineComponent({
         }
         waitToShowVideo();
       } else {
-        displayImage(token_resp.image_url);
-        image_timer.value = setTimeout(() => {
-          nextPlaylistToken();
-        }, 1000 * 45)
+        if (media_url.value) {
+          displayImage(media_url.value);
+          image_timer.value = setTimeout(() => {
+            nextPlaylistToken();
+          }, 1000 * 45);
+        }
       }
       loading.value = false;
     };
@@ -210,7 +235,7 @@ export default defineComponent({
     };
 
     const displayImage = (image_url: string) => {
-      console.log("displayImage", image_url)
+      console.log("displayImage", image_url);
       viewer.value = viewerApi({
         images: [image_url],
         options: {
@@ -277,7 +302,8 @@ export default defineComponent({
       token,
       media_url,
       player,
-      video_should_loop
+      video_should_loop,
+      local_file
     };
   }
 });

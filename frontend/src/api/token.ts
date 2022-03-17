@@ -17,7 +17,19 @@ export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<Toke
     const metas = query_snapshot.docs.map(s => ({
         id: s.id, entity: s.data() as TokenMeta,
     }))
-    return metas.filter(m => m.entity.platform == "opensea")
+    return metas.filter(m => m.entity.token_id && m.entity.asset_contract_address)
+}
+
+// loadDemoTokenMeta returns a single demo token meta for a given asset_contract and token id
+export const loadDemoTokenMeta = async (asset_contract_address: string, token_id: string): Promise<FirestoreDocument<TokenMeta>> => {
+    const query_snapshot = await db.collection("demo_tokens").where("asset_contract_address", "==", asset_contract_address).where("token_id", "==", token_id).get()
+    if(query_snapshot.docs.length != 1) {
+        throw "Error - got duplicate token metas"
+    }
+    const doc = query_snapshot.docs[0]
+    return {
+        id: doc.id, entity: doc.data() as TokenMeta,
+    }
 }
 
 export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
@@ -32,7 +44,48 @@ export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<Firestor
     const res_json = await res.json();
 
     return res_json.assets;
-} 
+}
+
+// convertTokensToOpenseaFormat will take a list of tokens, fetching opensea tokens from the api, otherwise using local data if not opensea
+export const convertTokensToOpenseaFormat = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
+    const opensea_only_tokens: Array<FirestoreDocument<TokenMeta>> = [];
+    for (let i = 0; i < tokens.length; i++) {
+        if (tokens[i].entity.platform == "opensea") {
+            opensea_only_tokens.push(tokens[i])
+        }
+    }
+    const opensea_res = await loadTokensByTokenIDAndAssetContract(opensea_only_tokens)
+    const converted_tokens: Array<OpenseaToken> = [];
+    for (let i = 0; i < tokens.length; i++) {
+        const t = tokens[i]
+        // if token is opensea, add from api response
+        if (tokens[i].entity.platform == "opensea") {
+            const pop = opensea_res.shift()
+            if (pop) {
+                converted_tokens.push(pop)
+            }
+        } else { // otherwise convert token meta to a similar format
+            const converted: OpenseaToken = convertTokenMetaToOpensea(t)
+            converted_tokens.push(converted)
+        }
+    }
+    return converted_tokens
+}
+
+export const convertTokenMetaToOpensea = (t: FirestoreDocument<TokenMeta>): OpenseaToken => {
+    return {
+        name: t.entity.name,
+        asset_contract: { address: t.entity.asset_contract_address },
+        token_id: t.entity.token_id,
+        description: t.entity.description,
+        creator: { user: { username: t.entity.tag } },
+        image_url: "",
+        animation_url: "",
+        image_thumbnail_url: "",
+        orders: [],
+        permalink: ""
+    }
+}
 
 export const loadToken = async (asset_contract_address: string, token_id: string): Promise<OpenseaToken> => {
     const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)

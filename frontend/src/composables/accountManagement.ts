@@ -15,15 +15,13 @@ export default function manageAccounts() {
         loading_account.value = true
         const account_info = await account_api.getAccountByAddress(address)
 
-        if (account_info.length > 1) {
-            alert("Error! Multiple accounts for given address")
-        } else if (account_info.length == 0) {
+        if (account_info.length > 0) {
+            account.value = account_info[0]
+        } else {
             // create new account if one was not found in the database
             console.log("creating account since none exist in the database...");
             account.value = await account_api.createAccount(address, signature);
-        } else {
-            account.value = account_info[0]
-        }
+        } 
 
         store.commit("setAccount", account.value);
 

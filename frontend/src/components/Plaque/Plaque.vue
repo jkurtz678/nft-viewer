@@ -37,7 +37,10 @@
               style="min-width: 350px;"
             >
               <div style="margin-bottom: 8px">{{token?.creator?.user?.username}}</div>
-              <div v-if="top_bid" style="margin-bottom: 8px">{{top_bid}}</div>
+              <div
+                v-if="top_bid"
+                style="margin-bottom: 8px"
+              >{{top_bid}}</div>
               <div>{{token?.description}}</div>
             </div>
 
@@ -61,11 +64,18 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed, onMounted } from "vue";
-import { loadToken } from "@/api/token";
-import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
+import { loadToken, loadDemoTokenMeta, convertTokenMetaToOpensea} from "@/api/token";
+import {
+  FirestoreDocument,
+  Display,
+  OpenseaToken,
+  TokenMeta
+} from "@/types/types";
 import Loading from "vue-loading-overlay";
 import QrcodeVue from "qrcode.vue";
-import { getDisplayByDisplayIDWithListener } from "@/api/display";
+import {
+  getDisplayByDisplayIDWithListener,
+} from "@/api/display";
 
 export default defineComponent({
   props: {
@@ -78,15 +88,16 @@ export default defineComponent({
   setup() {
     const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<OpenseaToken | null>();
+    const token_meta = ref<FirestoreDocument<TokenMeta> | null>();
     const loading = ref(false);
     const display_id = ref(window.localStorage.getItem("nft_display_id"));
     const show_text = ref(false);
 
     onMounted(() => {
       if (display_id.value) {
-        show_text.value = true
-      } 
-    })
+        show_text.value = true;
+      }
+    });
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       show_text.value = false;
@@ -94,14 +105,25 @@ export default defineComponent({
 
       display.value = d;
       if (d.entity.token_id && d.entity.asset_contract_address) {
-        const token_resp = await loadToken(
-          d.entity.asset_contract_address,
-          d.entity.token_id
-        );
-        console.log("token_resp", token_resp);
-        token.value = token_resp;
+        await getPlaqueData(d.entity.asset_contract_address, d.entity.token_id);
       }
       loading.value = false;
+    };
+
+    const getPlaqueData = async (address: string, token_id: string) => {
+      try {
+        token_meta.value = await loadDemoTokenMeta(address, token_id);
+      } catch {
+        console.log("No token meta found");
+        token_meta.value = null;
+      }
+      let token_resp: OpenseaToken;
+      if (!token_meta.value || token_meta.value.entity.platform == "opensea") {
+        token_resp = await loadToken(address, token_id);
+      } else {
+        token_resp = convertTokenMetaToOpensea(token_meta.value);
+      }
+      token.value = token_resp;
     };
 
     const dark_mode = computed(() => {
@@ -115,15 +137,19 @@ export default defineComponent({
       }
       let highest_order = orders[0];
       orders.forEach(o => {
-        if(o.base_price > highest_order.base_price) {
+        if (o.base_price > highest_order.base_price) {
           highest_order = o;
         }
-      })
+      });
       //highest_order = orders[orders.length - 1];
-      const bid = highest_order.base_price / Math.pow(10, highest_order.payment_token_contract.decimals);
+      const bid =
+        highest_order.base_price /
+        Math.pow(10, highest_order.payment_token_contract.decimals);
 
-      return `Top bid: ${bid.toFixed(3)} ${highest_order.payment_token_contract.symbol}`
-    })
+      return `Top bid: ${bid.toFixed(3)} ${
+        highest_order.payment_token_contract.symbol
+      }`;
+    });
 
     watch(
       () => display_id.value,
@@ -141,7 +167,8 @@ export default defineComponent({
 
     window.addEventListener("storage", () => {
       display_id.value = window.localStorage.getItem("nft_display_id");
-      show_text.value = window.localStorage.getItem("nft_video_loaded") == 'true';
+      show_text.value =
+        window.localStorage.getItem("nft_video_loaded") == "true";
     });
     return { loading, token, display, dark_mode, show_text, top_bid };
   }
