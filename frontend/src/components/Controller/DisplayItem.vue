@@ -45,7 +45,7 @@ export default defineComponent({
         props.token_id
       );
       if (demo_token) {
-        return `${demo_token.entity.tag} demo token`;
+        return `${demo_token.entity.name} - ${demo_token.entity.tag}`;
       }
       return "No token";
     });

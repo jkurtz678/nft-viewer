@@ -71,3 +71,8 @@ export interface TokenIDPair {
     token_id: string;
     asset_contract_address: string;
 }
+
+export interface DropdownOption {
+	name: string;
+    value: string;
+}

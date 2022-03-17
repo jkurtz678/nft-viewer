@@ -69,25 +69,30 @@
           :token_id="display.entity.token_id"
           :asset_contract_address="display.entity.asset_contract_address"
         ></display-item>
-        <div class="p-ml-2">
+        <div style="display: flex; align-items: center;">
           {{`${display?.entity?.playlist_tokens?.length || 0} token${display?.entity?.playlist_tokens?.length == 1 ? '' : 's'} in playlist`}}
+          <Button
+            @click="display.entity.playlist_tokens = []"
+            icon="pi pi-times"
+            class="p-ml-2 p-button-rounded p-button-outlined"
+          ></Button>
         </div>
       </div>
     </div>
     <TabView>
+      <TabPanel header="Demo tokens">
+        <TokenList
+          v-model:selected_token_id="display.entity.token_id"
+          v-model:selected_asset_contract_address="display.entity.asset_contract_address"
+          v-model:playlist_tokens="display.entity.playlist_tokens"
+        ></TokenList>
+      </TabPanel>
       <TabPanel header="My tokens">
         <TokenList
           v-model:selected_token_id="display.entity.token_id"
           v-model:selected_asset_contract_address="display.entity.asset_contract_address"
           v-model:playlist_tokens="display.entity.playlist_tokens"
           :user_tokens="true"
-        ></TokenList>
-      </TabPanel>
-      <TabPanel header="Demo tokens">
-        <TokenList
-          v-model:selected_token_id="display.entity.token_id"
-          v-model:selected_asset_contract_address="display.entity.asset_contract_address"
-          v-model:playlist_tokens="display.entity.playlist_tokens"
         ></TokenList>
       </TabPanel>
     </TabView>

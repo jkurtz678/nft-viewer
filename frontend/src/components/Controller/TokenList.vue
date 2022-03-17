@@ -1,13 +1,20 @@
 <template>
   <div class="p-mt-2">
-    <div style="display: flex;">
+    <div style="display: flex; justify-content: space-between">
+      <Dropdown
+        v-if="!user_tokens"
+        v-model="tag_filter"
+        :options="tag_filter_options"
+        optionLabel="name"
+      />
       <Paginator
         v-model:first="offset"
         :rows="limit"
         :totalRecords="total_records"
         class="p-p-0"
-      ></Paginator>
-      <Button @click="clearPlaylist">{{"Clear playlist"}}</Button>
+      >
+        <template #FirstPageLink></template>
+      </Paginator>
     </div>
     <TokenItem
       v-for="token of page_tokens"
@@ -24,7 +31,13 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch, PropType } from "vue";
 import { useStore } from "vuex";
-import { OpenseaToken, TokenIDPair } from "@/types/types";
+import {
+  OpenseaToken,
+  TokenIDPair,
+  FirestoreDocument,
+  TokenMeta,
+  DropdownOption
+} from "@/types/types";
 import TokenItem from "@/components/Controller/TokenItem.vue";
 import { loadTokensByTokenIDAndAssetContract } from "@/api/token";
 export default defineComponent({
@@ -43,13 +56,44 @@ export default defineComponent({
     const demo_page_tokens = ref<Array<OpenseaToken>>([]);
     const limit = 10;
     const offset = ref(0);
+    const tag_filter = ref<DropdownOption>({ name: "All", value: "All" });
+
+    const filtered_token_metas = computed(
+      (): Array<FirestoreDocument<TokenMeta>> => {
+        let token_metas: Array<FirestoreDocument<TokenMeta>> =
+          store.getters.demo_token_metas;
+        if (!props.user_tokens && tag_filter.value.value != "All") {
+          token_metas = token_metas.filter(m => {
+            return m.entity.tag == tag_filter.value.value;
+          });
+        }
+        return token_metas;
+      }
+    );
+
+    const tag_filter_options = computed(
+      (): Array<DropdownOption> => {
+        let tag_map = new Map<string, boolean>();
+        store.getters.demo_token_metas.forEach(
+          (m: FirestoreDocument<TokenMeta>) => {
+            if (m.entity.tag) {
+              tag_map.set(m.entity.tag, true);
+            }
+          }
+        );
+        const tags: Array<DropdownOption> = Array.from(
+          tag_map.keys()
+        ).map(t => ({ name: t, value: t }));
+        return [{ name: "All", value: "All" }, ...tags];
+      }
+    );
 
     const page_token_metas = computed(() => {
-      const token_metas = store.getters.demo_token_metas.slice(
+      const paginated_metas = filtered_token_metas.value.slice(
         offset.value,
         limit + offset.value
       );
-      return token_metas;
+      return paginated_metas;
     });
 
     const user_page_tokens = computed(() => {
@@ -73,7 +117,7 @@ export default defineComponent({
       (): Number => {
         return props.user_tokens
           ? store.getters.tokens.length
-          : store.getters.demo_token_metas.length;
+          : filtered_token_metas.value.length;
       }
     );
 
@@ -118,9 +162,6 @@ export default defineComponent({
       }
       emit("update:playlist_tokens", new_playlist);
     };
-    const clearPlaylist = () => {
-      emit("update:playlist_tokens", []);
-    };
 
     return {
       selectToken,
@@ -131,7 +172,8 @@ export default defineComponent({
       limit,
       offset,
       user_page_tokens,
-      clearPlaylist
+      tag_filter,
+      tag_filter_options
     };
   }
 });
