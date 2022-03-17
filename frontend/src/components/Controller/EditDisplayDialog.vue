@@ -4,7 +4,7 @@
     :visible="display_id != null"
     :modal="true"
     @update:visible="$emit('update:display_id', null)"
-    style="width: 100%; max-width: 700px;"
+    style="width: 100%; max-width: 700px; max-height: 100%;"
   >
     <template #header>New Display</template>
     <div
@@ -74,7 +74,7 @@
           <Button
             @click="display.entity.playlist_tokens = []"
             icon="pi pi-times"
-            class="p-ml-2 p-button-rounded p-button-outlined"
+            class="p-ml-2 p-button-rounded"
           ></Button>
         </div>
       </div>
@@ -245,5 +245,11 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+.p-tabview :deep(.p-tabview-panels) {
+  padding: 10px 0px 0px 0px;
+}
+:deep(.p-dialog){
+  max-height: 100%;
+}
 </style>

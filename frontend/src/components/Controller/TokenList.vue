@@ -10,6 +10,7 @@
       <Paginator
         v-model:first="offset"
         :rows="limit"
+        :pageLinkSize="3"
         :totalRecords="total_records"
         class="p-p-0"
       >
@@ -179,8 +180,3 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.p-tabview :deep(.p-tabview-panels) {
-  padding: 10px 0px 0px 0px;
-}
-</style>

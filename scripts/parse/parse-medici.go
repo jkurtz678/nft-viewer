@@ -1,4 +1,4 @@
-package main
+package parse
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/jkurtz678/nft-viewer/firestore"
 )
 
-func main() {
+func parseMedici() {
 	ctx := context.Background()
 	/* records := ReadCsvFile("../demo-tokens/medici.csv")
 

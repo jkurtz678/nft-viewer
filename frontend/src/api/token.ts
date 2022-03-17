@@ -17,7 +17,7 @@ export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<Toke
     const metas = query_snapshot.docs.map(s => ({
         id: s.id, entity: s.data() as TokenMeta,
     }))
-    return metas.filter(m => m.entity.token_id && m.entity.asset_contract_address)
+    return metas.filter(m => m.entity.platform == "opensea")
 }
 
 export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {

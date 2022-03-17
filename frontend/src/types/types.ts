@@ -64,6 +64,8 @@ export interface TokenMeta extends BaseDocument {
     asset_contract_address: string;
     tag: string;
     name: string;
+    platform: string;
+    public_link: string;
     // created_at: string;
 }
 

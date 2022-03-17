@@ -1,4 +1,4 @@
-package firestore
+package fstore
 
 import (
 	"context"
@@ -43,7 +43,7 @@ func (fc *FirestoreClient) AddDemoToken(ctx context.Context, demoToken *DemoToke
 	return err
 }
 
-func (fc *FirestoreClient) UpdateDemoTokenID(ctx context.Context, demoToken *FirestoreToken) error {
-	_, err := fc.Collection(demoTokenCollection).Doc(demoToken.DocumentID).Update(ctx, []firestore.Update{{Path: "token_id", Value: demoToken.Token.TokenID}})
+func (fc *FirestoreClient) UpdateDemoToken(ctx context.Context, documentID string, update []firestore.Update) error {
+	_, err := fc.Collection(demoTokenCollection).Doc(documentID).Update(ctx, update)
 	return err
 }
