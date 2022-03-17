@@ -108,10 +108,13 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .controller-card {
   margin: 0 auto;
   max-width: 600px;
   box-shadow: none !important;
+}
+.p-card :deep(.p-card-body){
+  padding: 0;
 }
 </style>

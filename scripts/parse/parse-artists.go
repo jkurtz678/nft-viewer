@@ -7,14 +7,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jkurtz678/nft-viewer/firestore"
+	"github.com/jkurtz678/nft-viewer/fstore"
 )
 
 func ParseArtists() {
 	ctx := context.Background()
 	records := ReadCsvFile("../demo-tokens/artists.csv")
 
-	csvTokens := []firestore.DemoToken{}
+	csvTokens := []fstore.DemoToken{}
 	for _, row := range records[1:] {
 		tag := strings.Trim(row[0], " ")
 		name := strings.Trim(row[2], " ")
@@ -30,7 +30,7 @@ func ParseArtists() {
 			publicLink = strings.Split(publicLink, ",")[0]
 		}
 
-		dt := firestore.DemoToken{
+		dt := fstore.DemoToken{
 			Tag:         row[0],
 			Name:        row[2],
 			Description: row[3],
@@ -51,7 +51,7 @@ func ParseArtists() {
 	log.Println("CSV TOKENS", len(csvTokens))
 	fmt.Printf("%+v", csvTokens[5])
 
-	client, err := firestore.NewFirestoreClient()
+	client, err := fstore.NewFirestoreClient()
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -61,7 +61,7 @@ func ParseArtists() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	dtsMap := make(map[string]firestore.FirestoreToken)
+	dtsMap := make(map[string]fstore.FirestoreToken)
 	for _, t := range dts {
 		dtsMap[fmt.Sprintf("%s_%s", t.Token.Tag, t.Token.Name)] = t
 	}

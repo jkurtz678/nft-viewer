@@ -3,6 +3,12 @@ import firebase from "../firebaseConfig";
 
 const db = firebase.firestore();
 
+export const loadToken = async (asset_contract_address: string, token_id: string): Promise<OpenseaToken> => {
+    const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)
+    const res_json = await res.json()
+    return res_json;
+}
+
 // returns all tokens associated with this web3 account
 export const loadTokens = async (web3_account_id: string): Promise<Array<OpenseaToken>> => {
     const res = await fetch(`https://api.opensea.io/api/v1/assets/?owner=${web3_account_id}`);
@@ -46,8 +52,8 @@ export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<Firestor
     return res_json.assets;
 }
 
-// convertTokensToOpenseaFormat will take a list of tokens, fetching opensea tokens from the api, otherwise using local data if not opensea
-export const convertTokensToOpenseaFormat = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
+// loadAndConvertTokenMeta will take a list of token metas, fetching their data from respective apis (opensea), otherwise using local data on the meta
+export const loadAndConvertTokenMeta = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
     const opensea_only_tokens: Array<FirestoreDocument<TokenMeta>> = [];
     for (let i = 0; i < tokens.length; i++) {
         if (tokens[i].entity.platform == "opensea") {
@@ -72,6 +78,7 @@ export const convertTokensToOpenseaFormat = async (tokens: Array<FirestoreDocume
     return converted_tokens
 }
 
+// convertTokenMetaToOpensea will convert a token meta to the OpenseaToken format
 export const convertTokenMetaToOpensea = (t: FirestoreDocument<TokenMeta>): OpenseaToken => {
     return {
         name: t.entity.name,
@@ -87,11 +94,7 @@ export const convertTokenMetaToOpensea = (t: FirestoreDocument<TokenMeta>): Open
     }
 }
 
-export const loadToken = async (asset_contract_address: string, token_id: string): Promise<OpenseaToken> => {
-    const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)
-    const res_json = await res.json()
-    return res_json;
-}
+
 
 // loadArchiveMedia loads file url from firebase storage, returning null if not found
 export const loadArchiveMedia = async (file_name: string): Promise<string | null> => {

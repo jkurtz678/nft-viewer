@@ -93,7 +93,7 @@ export default defineComponent({
     const viewer = ref<Viewer>();
     const local_file = ref<string>();
     const player = ref<HTMLVideoElement>();
-    const image_timer = ref<ReturnType<typeof setTimeout>>();
+    const playlist_timer = ref<ReturnType<typeof setTimeout>>();
 
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
@@ -129,7 +129,7 @@ export default defineComponent({
     // video_should_loop will be true by default, false if any playlist tokens exist
     const video_should_loop = computed((): boolean => {
       const playlist_tokens = display.value?.entity?.playlist_tokens;
-      return playlist_tokens == null || playlist_tokens.length == 0;
+      return playlist_tokens == null || playlist_tokens.length == 0 || playlist_timer.value != null;
     });
     /* END COMPUTED */
 
@@ -137,8 +137,8 @@ export default defineComponent({
     // wait until html player loads to add the video ended event listener
     watch(player, v => {
       if (v) {
-        player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
-        player.value?.addEventListener("ended", nextPlaylistToken);
+        /* player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+        player.value?.addEventListener("ended", nextPlaylistToken); */
       }
     });
     /* END WATCHERS */
@@ -146,11 +146,11 @@ export default defineComponent({
     /* START METHODS */
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("display", d);
+      console.log("initDisplay", d);
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
-      if (image_timer.value) {
-        clearTimeout(image_timer.value);
+      if (playlist_timer.value) {
+        clearTimeout(playlist_timer.value);
       }
       await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
@@ -177,6 +177,7 @@ export default defineComponent({
     const showToken = async (contract_address: string, token_id: string) => {
       try {
         token_meta.value = await loadDemoTokenMeta(contract_address, token_id);
+        console.log("loadDemoTokenMeta", token_meta.value);
       } catch {
         console.log("No token meta found");
         token_meta.value = null;
@@ -188,6 +189,7 @@ export default defineComponent({
         token_resp = convertTokenMetaToOpensea(token_meta.value);
       }
       token.value = token_resp;
+      console.log("tokenValue", token.value);
 
       try {
         local_file.value = await findLocalFile(token.value.token_id);
@@ -205,7 +207,7 @@ export default defineComponent({
       } else {
         if (media_url.value) {
           displayImage(media_url.value);
-          image_timer.value = setTimeout(() => {
+          playlist_timer.value = setTimeout(() => {
             nextPlaylistToken();
           }, 1000 * 45);
         }
@@ -230,6 +232,17 @@ export default defineComponent({
           clearInterval(interval);
           show_video.value = true;
           window.localStorage.setItem("nft_video_loaded", "true");
+
+          // handle playlist cycling
+          player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+          console.log("video duration: ", player.value.duration)
+          if (player.value.duration && player.value.duration < 15) {
+            playlist_timer.value = setTimeout(() => {
+              nextPlaylistToken();
+            }, 1000 * 45);
+          } else {
+            player.value?.addEventListener("ended", nextPlaylistToken);
+          }
         }
       }
     };
@@ -259,6 +272,7 @@ export default defineComponent({
 
     // nextPlaylistToken will update the display to the next token in the playlist
     const nextPlaylistToken = () => {
+      console.log("nextPlaylistToken")
       if (!display.value?.entity?.playlist_tokens?.length) {
         return;
       }

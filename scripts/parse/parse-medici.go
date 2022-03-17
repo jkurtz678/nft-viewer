@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/jkurtz678/nft-viewer/firestore"
+	"github.com/jkurtz678/nft-viewer/fstore"
 )
 
 func parseMedici() {
@@ -31,7 +31,7 @@ func parseMedici() {
 		csvTokens = append(csvTokens, dt)
 	} */
 
-	client, err := firestore.NewFirestoreClient()
+	client, err := fstore.NewFirestoreClient()
 	if err != nil {
 		log.Fatalln(err)
 	}

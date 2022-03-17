@@ -11,7 +11,9 @@
             <div>{{token_meta?.entity?.tag}}</div>
           </div>
           <div class="p-col-4">
+            <template v-if="token_meta?.entity && token_meta?.entity?.platform != 'opensea'">Local only</template>
             <img
+              v-else
               :src="token?.image_thumbnail_url"
               style="height: 50px;"
             />
@@ -44,7 +46,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import { OpenseaToken } from "../../types/types";
+import { OpenseaToken, TokenMeta, FirestoreDocument } from "../../types/types";
 export default defineComponent({
   props: {
     token: Object as () => OpenseaToken,
@@ -53,9 +55,14 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const token_meta = computed(() => {
-      return store.getters.demo_token_meta(props.token?.asset_contract.address, props.token?.token_id)
-    });
+    const token_meta = computed(
+      (): FirestoreDocument<TokenMeta> => {
+        return store.getters.demo_token_meta(
+          props.token?.asset_contract.address,
+          props.token?.token_id
+        );
+      }
+    );
     return { token_meta };
   }
 });

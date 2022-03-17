@@ -41,7 +41,7 @@ import {
   DropdownOption
 } from "@/types/types";
 import TokenItem from "@/components/Controller/TokenItem.vue";
-import { convertTokensToOpenseaFormat } from "@/api/token";
+import { loadAndConvertTokenMeta } from "@/api/token";
 export default defineComponent({
   components: { TokenItem },
   props: {
@@ -127,7 +127,7 @@ export default defineComponent({
       page_token_metas,
       async v => {
         console.log("PAGE TOKEN METAS", v);
-        demo_page_tokens.value = await convertTokensToOpenseaFormat(v);
+        demo_page_tokens.value = await loadAndConvertTokenMeta(v);
       },
       { immediate: true, deep: true }
     );

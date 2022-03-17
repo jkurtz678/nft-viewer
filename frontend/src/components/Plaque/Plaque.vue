@@ -53,7 +53,10 @@
                 :size='200'
                 :level="'M'"
               />
-              <div style="font-size: 20px;">View on OpenSea</div>
+              <div style="font-size: 20px;">
+                <template v-if="!token_meta || token_meta.entity.platform == 'opensea'">View on OpenSea</template>
+                <template v-else>View online</template>
+              </div>
             </div>
           </div>
         </div>
@@ -64,7 +67,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed, onMounted } from "vue";
-import { loadToken, loadDemoTokenMeta, convertTokenMetaToOpensea} from "@/api/token";
+import {
+  loadToken,
+  loadDemoTokenMeta,
+  convertTokenMetaToOpensea
+} from "@/api/token";
 import {
   FirestoreDocument,
   Display,
@@ -73,9 +80,7 @@ import {
 } from "@/types/types";
 import Loading from "vue-loading-overlay";
 import QrcodeVue from "qrcode.vue";
-import {
-  getDisplayByDisplayIDWithListener,
-} from "@/api/display";
+import { getDisplayByDisplayIDWithListener } from "@/api/display";
 
 export default defineComponent({
   props: {
@@ -170,7 +175,15 @@ export default defineComponent({
       show_text.value =
         window.localStorage.getItem("nft_video_loaded") == "true";
     });
-    return { loading, token, display, dark_mode, show_text, top_bid };
+    return {
+      loading,
+      token,
+      display,
+      dark_mode,
+      show_text,
+      top_bid,
+      token_meta
+    };
   }
 });
 </script>
