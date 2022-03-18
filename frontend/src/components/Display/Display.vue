@@ -196,7 +196,7 @@ export default defineComponent({
       } catch (err) {
         local_file.value = "";
         nextPlaylistToken();
-        console.log(err);
+        return
       }
 
       // if token has no video media, display the image using viewer
