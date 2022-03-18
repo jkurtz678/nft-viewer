@@ -199,6 +199,10 @@ export default defineComponent({
         return
       }
 
+      if(local_file.value == "" && token_meta.value && token_meta.value?.entity.platform != "opensea"){
+        nextPlaylistToken();
+        return
+      }
       // if token has no video media, display the image using viewer
       if (media_is_video.value) {
         if (viewer.value) {
