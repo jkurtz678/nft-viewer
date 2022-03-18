@@ -7,7 +7,7 @@
     <template v-else>
       <template v-if="token">
         <div
-          v-if="token.animation_url"
+          v-if="media_is_video"
           class="video-container"
         >
           <video
@@ -98,10 +98,10 @@ export default defineComponent({
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
     const media_is_video = computed((): boolean => {
-      return (
-        !!token.value?.animation_url &&
+      const is_opensea_video = !!token.value?.animation_url &&
         !token.value.animation_url.endsWith(".wav")
-      );
+      const is_alt_video = !!token_meta?.value && !!local_file.value?.endsWith(".mp4")
+      return is_opensea_video || is_alt_video;
     });
 
     // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
@@ -317,7 +317,8 @@ export default defineComponent({
       media_url,
       player,
       video_should_loop,
-      local_file
+      local_file,
+      media_is_video
     };
   }
 });
