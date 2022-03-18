@@ -88,7 +88,10 @@ export default defineComponent({
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
     const media_is_video = computed((): boolean => {
-      return !!token.value?.animation_url && !token.value.animation_url.endsWith(".wav");
+      return (
+        !!token.value?.animation_url &&
+        !token.value.animation_url.endsWith(".wav")
+      );
     });
 
     // display_controller_url returns the url for the qrcode, which allows people to scan the display with their mobile phone and control it with the controller webapp
@@ -104,7 +107,7 @@ export default defineComponent({
       if (has_local_file.value && token.value?.token_id) {
         return getLocalFileURL(token.value.token_id + ".mp4");
       }
-      if (media_is_video.value && token.value)  {
+      if (media_is_video.value && token.value) {
         return token.value.animation_url;
       }
       if (token.value?.image_url) {
@@ -130,15 +133,14 @@ export default defineComponent({
     });
     /* END WATCHERS */
 
-
     /* START METHODS */
     // initDisplay will handle changes made to the data of a display, showing/hiding media
     const initDisplay = async (d: FirestoreDocument<Display>) => {
-      console.log("display", d)
+      console.log("display", d);
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
-      if(image_timer.value) {
-        clearTimeout(image_timer.value)
+      if (image_timer.value) {
+        clearTimeout(image_timer.value);
       }
       await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
@@ -170,20 +172,20 @@ export default defineComponent({
         has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
       } catch (err) {
         has_local_file.value = false;
-        console.log(err)
+        console.log(err);
+      }
+      if (viewer.value) {
+        viewer.value.hide();
       }
 
       // if token has no video media, display the image using viewer
       if (media_is_video.value) {
-        if (viewer.value) {
-          viewer.value.hide();
-        }
         waitToShowVideo();
       } else {
         displayImage(token_resp.image_url);
         image_timer.value = setTimeout(() => {
           nextPlaylistToken();
-        }, 1000 * 45)
+        }, 1000 * 45);
       }
       loading.value = false;
     };
@@ -210,7 +212,7 @@ export default defineComponent({
     };
 
     const displayImage = (image_url: string) => {
-      console.log("displayImage", image_url)
+      console.log("displayImage", image_url);
       viewer.value = viewerApi({
         images: [image_url],
         options: {
