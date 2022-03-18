@@ -165,6 +165,7 @@ export default defineComponent({
     const showToken = async (contract_address: string, token_id: string) => {
       const token_resp = await loadToken(contract_address, token_id);
       token.value = token_resp;
+      console.log("showToken", token.value.name);
 
       try {
         has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
@@ -172,12 +173,12 @@ export default defineComponent({
         has_local_file.value = false;
         console.log(err)
       }
+      if (viewer.value) {
+        viewer.value.hide();
+      }
 
       // if token has no video media, display the image using viewer
-      if (media_is_video.value) {
-        if (viewer.value) {
-          viewer.value.hide();
-        }
+      if (media_is_video.value) { 
         waitToShowVideo();
       } else {
         displayImage(token_resp.image_url);
@@ -234,6 +235,7 @@ export default defineComponent({
 
     // nextPlaylistToken will update the display to the next token in the playlist
     const nextPlaylistToken = () => {
+      console.log("nextPlaylistToken")
       if (!display.value?.entity?.playlist_tokens?.length) {
         return;
       }
