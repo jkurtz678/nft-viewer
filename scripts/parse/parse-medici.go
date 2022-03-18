@@ -2,10 +2,14 @@ package parse
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 	"strings"
 
+	"cloud.google.com/go/firestore"
 	"github.com/jkurtz678/nft-viewer/fstore"
+	"github.com/jkurtz678/nft-viewer/scripts/clean"
 )
 
 func parseMedici() {
@@ -66,4 +70,57 @@ func parseMedici() {
 			}
 		}
 	} */
+}
+
+func OrderMedici() {
+
+	records := ReadCsvFile("../demo-tokens/medici_new.csv")
+	ctx := context.Background()
+	_ = ctx
+
+	//log.Println(records[0][0])
+	//log.Println("len", len(records))
+
+	type csvMedici struct {
+		Num                  string
+		Name                 string
+		Link                 string
+		AssetContractAddress string
+		TokenID              string
+	}
+
+	csvMap := make(map[string]int)
+	for _, row := range records[2:] {
+		if !strings.Contains(row[2], "opensea") {
+			continue
+		}
+		log.Println("ROW", row)
+		t := csvMedici{
+			Num:                  row[0],
+			Name:                 row[1],
+			Link:                 row[2],
+			TokenID:              strings.Split(row[2], "/")[5],
+			AssetContractAddress: strings.Split(row[2], "/")[4],
+		}
+		num, err := strconv.Atoi(t.Num)
+		if err != nil {
+			continue
+		}
+		csvMap[fmt.Sprintf("%s_%s", t.AssetContractAddress, t.TokenID)] = num
+	}
+	log.Println("csvMAP", csvMap)
+
+	clean.TokenIterate(func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error {
+		num, ok := csvMap[fmt.Sprintf("%s_%s", dt.Token.AssetContractAddress, dt.Token.TokenID)]
+		if !ok {
+			return nil
+		}
+		err := client.UpdateDemoToken(ctx, dt.DocumentID, []firestore.Update{
+			{Path: "tag", Value: fmt.Sprintf("medici_%v", num)},
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		return nil
+	})
 }

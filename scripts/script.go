@@ -1,11 +1,11 @@
 package main
 
-import "github.com/jkurtz678/nft-viewer/scripts/clean"
+import "github.com/jkurtz678/nft-viewer/scripts/parse"
 
 func main() {
 	//clean.AddPlatform()
 	//clean.AddPublicLink()
 	//clean.ConvertNonOpensea()
 	//files.RenameByName()
-	clean.PrintTokenIDs()
+	parse.OrderMedici()
 }

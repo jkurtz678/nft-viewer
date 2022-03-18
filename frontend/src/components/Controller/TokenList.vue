@@ -83,9 +83,18 @@ export default defineComponent({
             }
           }
         );
-        const tags: Array<DropdownOption> = Array.from(
+        let tags: Array<DropdownOption> = Array.from(
           tag_map.keys()
         ).map(t => ({ name: t, value: t }));
+
+        tags.sort((a, b) => {
+          if (a.value < b.value) {
+            return -1
+          } else if (a.value > b.value) {
+            return 1
+          }
+          return 0
+        })
         return [{ name: "All", value: "All" }, ...tags];
       }
     );

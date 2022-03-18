@@ -9,7 +9,7 @@ import (
 func PrintTokenIDs() {
 	tagMap := make(map[string][]fstore.FirestoreToken)
 
-	tokenIterate(func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error {
+	TokenIterate(func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error {
 		tagMap[dt.Token.Tag] = append(tagMap[dt.Token.Tag], dt)
 		return nil
 	})

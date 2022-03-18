@@ -7,7 +7,7 @@ import (
 	"github.com/jkurtz678/nft-viewer/fstore"
 )
 
-func tokenIterate(callback func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error) {
+func TokenIterate(callback func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error) {
 	ctx := context.Background()
 	client, err := fstore.NewFirestoreClient()
 	if err != nil {

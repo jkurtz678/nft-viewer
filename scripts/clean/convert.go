@@ -12,7 +12,7 @@ func ConvertNonOpensea() {
 	ctx := context.Background()
 	_ = ctx
 	count := 0
-	tokenIterate(func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error {
+	TokenIterate(func(client *fstore.FirestoreClient, dt fstore.FirestoreToken) error {
 		if dt.Token.Platform != "opensea" && dt.Token.TokenID == "" && dt.Token.AssetContractAddress == "" {
 			count = count + 1
 			err := client.UpdateDemoToken(ctx, dt.DocumentID, []firestore.Update{

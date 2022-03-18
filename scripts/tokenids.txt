@@ -17,11 +17,11 @@ name                       Gaia, 🗝️ N°1: Love - token_id EkqKEJUFkVkkDUJ48
 name                    Gaia, 🔐 N°2: Health ☤ - token_id koDWSgf1Zlva0DhK28JT
 
 Nate Mohler
-name                            Venice Canals - token_id 1
-name                              Skate Faces - token_id 8Yo1VtkNbXKqARUIGYCx
-name                          Echo the Colors - token_id 8fnoCezEyJNQSLABFvjm
-name                              V E N I C E - token_id 23
-name                           Dirty Griffith - token_id rAs5T8JwhnsZxDsPW54D
+//name                            Venice Canals - token_id 1
+skipname                              Skate Faces - token_id 8Yo1VtkNbXKqARUIGYCx
+//name                          Echo the Colors - token_id 8fnoCezEyJNQSLABFvjm
+//name                              V E N I C E - token_id 23
+//name                           Dirty Griffith - token_id rAs5T8JwhnsZxDsPW54D
 name                             Skate Senses - token_id u72lNpNZAFSAToSu5lXK
 
 Smearballs
