@@ -195,6 +195,7 @@ export default defineComponent({
         local_file.value = await findLocalFile(token.value.token_id);
       } catch (err) {
         local_file.value = "";
+        nextPlaylistToken();
         console.log(err);
       }
 
