@@ -183,7 +183,7 @@ export default defineComponent({
         displayImage(token_resp.image_url);
         image_timer.value = setTimeout(() => {
           nextPlaylistToken();
-        }, 1000 * 45)
+        }, 1000 * 9)
       }
       loading.value = false;
     };
