@@ -1,183 +1,678 @@
-name                               WVRP #4941 - token_id 4941
-name                                𝔥𝔞𝔯𝔦𝔬𝔫𝔞𝔤𝔬 - token_id 0gBcuLWs1H4jtPBsKeY7
-name                              Soft Reaper - token_id 18iFgsKWltnT2wwAZORz
-name                       Caeruleus Orchitis - token_id 1ADJACDhG16p9tp5bs3s
-name                            Fluffus Algae - token_id 1H3H6R9A2rkR4G7mmtXg
-name                          CrypToadz #4488 - token_id 4488
-name                          CrypToadz #3985 - token_id 3985
-name                       Vocatio Strelitzia - token_id 2b6xTGSwxp2iImcAdE61
-name                            White Rabbit  - token_id 2u78Mon1XY7OHAaHHTt4
-name                               WVRP #8566 - token_id 8566
-name                               WVRP #9527 - token_id 9527
-name                           Dom Qwek: Flow - token_id 30665
-name                    Karl Roberts: Vessels - token_id 54497389240986861669850449456017497443730946051540329650364182066527121440769
-name                               WVRP #2759 - token_id 2759
-name                               WVRP #6694 - token_id 6694
-name                         Pilosus Torquent - token_id 4XklMnVuBHlDFHT71ZTh
-name                           Dom Qwek: Dawn - token_id 29946
-name                             Meebit #9716 - token_id 9716
-name                     World of Women #4045 - token_id 4045
-name                                Luna(r) 3 - token_id 5b10JSRu5YxTE9X3PKqA
-name                         CryptoPunk #8472 - token_id 8472
-name                                     Aiko - token_id 100939897029051551781619883256248715796355878270825055152392741801508783259649
-name               X Copy: Best-case Scenario - token_id 108062
-name                            Venice Canals - token_id 1
-name                            Skin & Bones  - token_id 6cBqGFrcEhGBAOn7STui
-name                    EsoTeros: Zarthrumach - token_id 56082833380999498738834699501670641061290376513638004776501255301530302545921
-name          X Copy : Last Human Police 2039 - token_id 380786389346189315
-name                               WVRP #8627 - token_id 8627
-name                       Rarepepe: Nakamoto - token_id 6461541
-name             Experiences by Laith Safa #7 - token_id 7
-name                              Skate Faces - token_id 8Yo1VtkNbXKqARUIGYCx
-name                          Echo the Colors - token_id 8fnoCezEyJNQSLABFvjm
-name                               WVRP #5321 - token_id 5321
-name                   Karl Roberts: Antidote - token_id 54497389240986861669850449456017497443730946051540329650364182059930051674113
-name                       Manumala Noxhydria - token_id 9tHhoy8Ye7cYx2LfA0Vo
-name                            Meridian #547 - token_id 163000547
-name                Sam Spratt: Birth of Luci - token_id 29436
-name                              V E N I C E - token_id 23
-name                               WVRP #9979 - token_id 9979
-name                            Toxic Exaryum - token_id CRFd2svYCewPFuXD7GbG
-name                           Niveus Scalae  - token_id Cfwp2sSr2HbPvYsNrwlZ
-name          Just Another Day At the Office  - token_id Cl2ErtYHVHciIZhRhB5z
-name                 Deekay: Lets Walk Cozomo - token_id 10076
-name                         Women by Yam #15 - token_id 110027376344877295909482727134025826413318235053321483633059000160056374198273
-name                         Transvaal Rubrum - token_id DUUibBQCCd60kcfx0ZHY
-name                              s u n s e t - token_id DXJcj3qPKY1seafV8zre
-name                                MMHB: 001 - token_id DlYEV1XFxLVUAcLyFDBK
-name                   CryptoPunk #3831Cozomo - token_id 3831
-name                            Meridian #680 - token_id 163000680
-name                       Gaia, 🗝️ N°1: Love - token_id EkqKEJUFkVkkDUJ48Mqf
-name                            Transcendence - token_id 1
-name                        Tenebris Veratrum - token_id G80wqOViw3nTz4ItJBWG
-name                             Fidenza #135 - token_id 78000135
-name                     The Cliff By The Sea - token_id GjZLuXRZTm2at0KgcuwF
-name Luis Ponce: We have lost the ways of Simplicity - token_id 106592
-name                               WVRP #2263 - token_id 2263
-name                            CloneX #13135 - token_id 7211
-name                            Vomitus Flos  - token_id IXKn8HSBoETYwARD7Q9d
-name            Experiences by Laith Safa #26 - token_id 26
-name                             Rain Village - token_id IfdKDmjmOQDFrZR1MUPJ
-name                         Dom Qwek: Origin - token_id 30441
-name                          Women by Yam #1 - token_id 110027376344877295909482727134025826413318235053321483633059000150160769548289
-name                          Dom Qwek: Evoke - token_id 30312
-name                                 Tethered - token_id KXwSfrzIyM2dgMx4253v
-name             Experiences by Laith Safa #1 - token_id 1
-name                              X Copy: RCS - token_id 1154
-name                        Dom Qwek: Glimmer - token_id 30135
-name                              Degradation - token_id M9QSTT1fRM3tbQOFBzPM
-name                                High Rise - token_id MEAGIUMjug89IOzFewGD
-name                               WVRP #5470 - token_id 5470
-name                                      AVA - token_id NlM1J1RDeYP80p3UOSg4
-name                            Glitch Walker - token_id 4959
-name            Experiences by Laith Safa #13 - token_id 13
-name                              A Mad World - token_id OQHQYhynBVfLIMPFxxnb
-name                               WVRP #6052 - token_id 6052
-name                       Resource Within Us - token_id 82989683886505032237786428641413995690157286721568482068271926158211606904833
-name                             Meebit #9020 - token_id 9020
-name                             Meebit #4570 - token_id 4570
-name                            The Crossover - token_id PyBHudHAHKzl6DSe3wbe
-name            Experiences by Laith Safa #49 - token_id 49
-name                                     Juno - token_id QFyp0Pe4pZROrHEBuLHM
-name                          Beyond One Self - token_id 82989683886505032237786428641413995690157286721568482068271926157112095277057
-name                         CryptoPunk #8620 - token_id 8620
-name                 X Copy: The Doomed (red) - token_id 219185
-name                               WVRP #7072 - token_id 7072
-name                              Meta-Fields - token_id RVHFboUhXiYtX1L73lq4
-name                              Soft Reaper - token_id RpsPYuwJ6VpX97DP8Nqh
-name                                 Phantith - token_id RqJKvmfdJ3ojEN12NuKi
-name                       Rarepepe: Pepalisa - token_id 7234749692889281
-name                            Meebit #15264 - token_id 15264
-name                             PANIC ATTACK - token_id SSjz5dKUFwuXQyVb6iZv
-name                               WVRP #2720 - token_id 2720
-name                               Balance II - token_id 11
-name                     World of Women #8570 - token_id 8570
-name                         Cynara Serpentes - token_id SrxIEFqSMTX0DUVG7G4x
-name                            Single Dutch  - token_id TV5QpK8janRb9fTtEGFJ
-name            Experiences by Laith Safa #24 - token_id 24
-name                               WVRP #6837 - token_id 6837
-name                               WVRP #7430 - token_id 7430
-name                           keep me within - token_id VTs9IzAcLkbEwp6G4Hnz
-name                   X Copy: Hackproof 2049 - token_id 380785988123262980
-name          Luis Ponce: Syncretism overload - token_id 31401
-name                               WVRP #1128 - token_id 1128
-name                        Mindzeye: Firenze - token_id 29937
-name                             Fidenza #351 - token_id 78000351
-name                          Lilium Custodia - token_id XbSLma2SWjPwGYCjIIIC
-name                               WVRP #6494 - token_id 6494
-name                          CrypToadz #2872 - token_id 2872
-name                            Glitch Walker - token_id 4959
-name                           Nodatus Tulipa - token_id YDxJqg8E8xd0UJ81ef5j
-name                         CryptoPunk #5017 - token_id 5017
-name                               Synth Love - token_id YaVoL8FeGLB8Da7WONP0
-name                               Your Grace - token_id Yzyfcvl2jb15x2SLRjqG
-name                    Tom Sachs: Hail Satan - token_id 192
-name                        Simulation_Engine - token_id ZDsxK8vpmVsmrWXF5G8h
-name      Bacon Studio: Take Orca to the Moon - token_id 66035
-name                                Handyman  - token_id 55810185507890595350579633415671348746626627242311513506152445684833312571393
-name             Mindzeye: Rue De l'Abreuvoir - token_id 29402
-name                         CryptoPunk #1961 - token_id 1961
-name                     World of Women #7242 - token_id 7242
-name            Experiences by Laith Safa #28 - token_id 28
-name                         CryptoPunk #7388 - token_id 7338
-name                               WVRP #8728 - token_id 8728
-name                     X Copy: Grifter #515 - token_id 518
-name                                 War Girl - token_id dl01rLUh4XrkH7RhqEt1
-name                               WVRP #3238 - token_id 3238
-name                             Primula Bros - token_id ejuiX5SLf5n8u7fTn2du
-name                                Symbiosis - token_id fAZF1lBlfPNO5v0FowPH
-name                               WVRP #8846 - token_id 8846
-name             Adam Swaab: Two SImple Rules - token_id 30763
-name                           Being Together - token_id 82989683886505032237786428641413995690157286721568482068271926156012583649281
-name                            Meridian #324 - token_id 163000324
-name                           Takoyaki Stand - token_id hhgDulJnNkYGa7cLJMw9
-name                      Mindzeye: Dark Days - token_id 29851
-name                         CryptoPunk #5640 - token_id 5640
-name                               WVRP #1130 - token_id 1130
-name          EXPERIENTIAL AWAKENING (ENCORE) - token_id jFilTrp2AYjwskEr5Kgf
-name                   Tom Sachs: Dawn of Man - token_id 190
-name                           CrypToadz #157 - token_id 157
-name                              World#31415 - token_id jkZ0DKqGWb3E7bzAK9Dh
-name                    Gaia, 🔐 N°2: Health ☤ - token_id koDWSgf1Zlva0DhK28JT
-name          EsoTeros: B l a c k s w a n e r - token_id 56082833380999498738834699501670641061290376513638004776501255304828837429249
-name                             Fidenza #473 - token_id 78000473
-name                     X Copy: Some Asshole - token_id 7
-name            Experiences by Laith Safa #23 - token_id 23
-name                               Balance VI - token_id 29
-name                               WVRP #2911 - token_id 2911
-name                          Deekay: Destiny - token_id 29095
-name                         CryptoPunk #5069 - token_id 5069
-name                   X Copy: New Teeth 2033 - token_id 380786771184582657
-name                             Meebit #9141 - token_id 9141
-name                                   Growth - token_id palXZWNWjzx51zt9Ipe3
-name                         DeeKay GM (1/25) - token_id 55811192886479495603030323861809408160447344717954815709476291685049503318041
-name                               WVRP #8418 - token_id 8418
-name                               WVRP #5104 - token_id 5104
-name                           Dirty Griffith - token_id rAs5T8JwhnsZxDsPW54D
-name                             Space Cowboy - token_id 97869798444724883384927327569229813102508220427212553862986279206649881165825
-name                           Bellus Spinae  - token_id rZqpCM68saoCqFsqdDGO
-name                               WVRP #6566 - token_id 6566
-name                               WVRP #3563 - token_id 3563
-name                             Your Majesty - token_id sz5wgaUdIuFGBblJBOSq
-name                             Meebit #4095 - token_id 4095
-name                  Invisible Friends #1394 - token_id 1394
-name                          CrypToadz #4236 - token_id 4236
-name                             Meebit #9677 - token_id 9677
-name                               WVRP #6799 - token_id 6799
-name                             Skate Senses - token_id u72lNpNZAFSAToSu5lXK
-name                             Luna Stipula - token_id uUEYKcK07njlgTJeaa9C
-name                            Taraxacum Fam - token_id vHQgiolDTL9JPSmQkZI9
-name                       Punctatum Capillum - token_id vWKCHCkYmZfgywilth68
-name                               WVRP #9841 - token_id 9841
-name                             Fidenza #305 - token_id 78000305
-name                          CrypToadz #5980 - token_id 5980
-name                     Botto: Scene Precede - token_id 29922
-name                            Ramen Village - token_id xdSPbyMF7V2woXQsTZRs
-name                             Fidenza #841 - token_id 78000841
-name            Experiences by Laith Safa #36 - token_id 36
-name                                 Phantith - token_id yU3tHrzYNCSAn3LmXsEX
-name                                     OP-1 - token_id yUAYzNgOJkhYMPy2K5Ai
-name                        Adamo Periculosum - token_id zDoMXyvFcBQRAl82gVXS
-name                           Odorata Cinere - token_id zZVdlQ9ChGir7YpN63rd
-name                               WVRP #1129 - token_id 1129
-name                               Flophouse  - token_id zpHaHGWjcb7qr2cJSjPM
+Tag medici
+name                               WVRP #4941 - token_id medici
+name                          CrypToadz #4488 - token_id medici
+name                          CrypToadz #3985 - token_id medici
+name                               WVRP #8566 - token_id medici
+name                               WVRP #9527 - token_id medici
+name                           Dom Qwek: Flow - token_id medici
+name                    Karl Roberts: Vessels - token_id medici
+name                               WVRP #2759 - token_id medici
+name                               WVRP #6694 - token_id medici
+name                           Dom Qwek: Dawn - token_id medici
+name                             Meebit #9716 - token_id medici
+name                     World of Women #4045 - token_id medici
+name                         CryptoPunk #8472 - token_id medici
+name               X Copy: Best-case Scenario - token_id medici
+name                    EsoTeros: Zarthrumach - token_id medici
+name          X Copy : Last Human Police 2039 - token_id medici
+name                               WVRP #8627 - token_id medici
+name                       Rarepepe: Nakamoto - token_id medici
+name             Experiences by Laith Safa #7 - token_id medici
+name                               WVRP #5321 - token_id medici
+name                   Karl Roberts: Antidote - token_id medici
+name                            Meridian #547 - token_id medici
+name                Sam Spratt: Birth of Luci - token_id medici
+name                               WVRP #9979 - token_id medici
+name                 Deekay: Lets Walk Cozomo - token_id medici
+name                         Women by Yam #15 - token_id medici
+name                   CryptoPunk #3831Cozomo - token_id medici
+name                            Meridian #680 - token_id medici
+name                             Fidenza #135 - token_id medici
+name Luis Ponce: We have lost the ways of Simplicity - token_id medici
+name                               WVRP #2263 - token_id medici
+name                            CloneX #13135 - token_id medici
+name            Experiences by Laith Safa #26 - token_id medici
+name                         Dom Qwek: Origin - token_id medici
+name                          Women by Yam #1 - token_id medici
+name                          Dom Qwek: Evoke - token_id medici
+name             Experiences by Laith Safa #1 - token_id medici
+name                              X Copy: RCS - token_id medici
+name                        Dom Qwek: Glimmer - token_id medici
+name                               WVRP #5470 - token_id medici
+name            Experiences by Laith Safa #13 - token_id medici
+name                               WVRP #6052 - token_id medici
+name                             Meebit #9020 - token_id medici
+name                             Meebit #4570 - token_id medici
+name            Experiences by Laith Safa #49 - token_id medici
+name                         CryptoPunk #8620 - token_id medici
+name                 X Copy: The Doomed (red) - token_id medici
+name                               WVRP #7072 - token_id medici
+name                       Rarepepe: Pepalisa - token_id medici
+name                            Meebit #15264 - token_id medici
+name                               WVRP #2720 - token_id medici
+name                     World of Women #8570 - token_id medici
+name            Experiences by Laith Safa #24 - token_id medici
+name                               WVRP #6837 - token_id medici
+name                               WVRP #7430 - token_id medici
+name                   X Copy: Hackproof 2049 - token_id medici
+name          Luis Ponce: Syncretism overload - token_id medici
+name                               WVRP #1128 - token_id medici
+name                        Mindzeye: Firenze - token_id medici
+name                             Fidenza #351 - token_id medici
+name                               WVRP #6494 - token_id medici
+name                          CrypToadz #2872 - token_id medici
+name                         CryptoPunk #5017 - token_id medici
+name                    Tom Sachs: Hail Satan - token_id medici
+name      Bacon Studio: Take Orca to the Moon - token_id medici
+name             Mindzeye: Rue De l'Abreuvoir - token_id medici
+name                         CryptoPunk #1961 - token_id medici
+name                     World of Women #7242 - token_id medici
+name            Experiences by Laith Safa #28 - token_id medici
+name                         CryptoPunk #7388 - token_id medici
+name                               WVRP #8728 - token_id medici
+name                     X Copy: Grifter #515 - token_id medici
+name                               WVRP #3238 - token_id medici
+name                               WVRP #8846 - token_id medici
+name             Adam Swaab: Two SImple Rules - token_id medici
+name                            Meridian #324 - token_id medici
+name                      Mindzeye: Dark Days - token_id medici
+name                         CryptoPunk #5640 - token_id medici
+name                               WVRP #1130 - token_id medici
+name                   Tom Sachs: Dawn of Man - token_id medici
+name                           CrypToadz #157 - token_id medici
+name          EsoTeros: B l a c k s w a n e r - token_id medici
+name                             Fidenza #473 - token_id medici
+name                     X Copy: Some Asshole - token_id medici
+name            Experiences by Laith Safa #23 - token_id medici
+name                               WVRP #2911 - token_id medici
+name                          Deekay: Destiny - token_id medici
+name                         CryptoPunk #5069 - token_id medici
+name                   X Copy: New Teeth 2033 - token_id medici
+name                             Meebit #9141 - token_id medici
+name                         DeeKay GM (1/25) - token_id medici
+name                               WVRP #8418 - token_id medici
+name                               WVRP #5104 - token_id medici
+name                               WVRP #6566 - token_id medici
+name                               WVRP #3563 - token_id medici
+name                             Meebit #4095 - token_id medici
+name                  Invisible Friends #1394 - token_id medici
+name                          CrypToadz #4236 - token_id medici
+name                             Meebit #9677 - token_id medici
+name                               WVRP #6799 - token_id medici
+name                               WVRP #9841 - token_id medici
+name                             Fidenza #305 - token_id medici
+name                          CrypToadz #5980 - token_id medici
+name                     Botto: Scene Precede - token_id medici
+name                             Fidenza #841 - token_id medici
+name            Experiences by Laith Safa #36 - token_id medici
+name                               WVRP #1129 - token_id medici
+
+Tag Smearballs
+name                            Skin & Bones  - token_id Smearballs
+name                            Single Dutch  - token_id Smearballs
+name                                Handyman  - token_id Smearballs
+
+Tag Smearballs
+name          Just Another Day At the Office  - token_id Smearballs
+name                               Flophouse  - token_id Smearballs
+
+Tag Seerlight
+name                     The Cliff By The Sea - token_id Seerlight
+name                             Rain Village - token_id Seerlight
+name                                High Rise - token_id Seerlight
+name                           Takoyaki Stand - token_id Seerlight
+name                             Space Cowboy - token_id Seerlight
+name                            Ramen Village - token_id Seerlight
+
+Tag Ash Thorp
+name                              Degradation - token_id Ash Thorp
+
+Tag David Oreilley
+name                                   Growth - token_id David Oreilley
+
+Tag Ada Sokol
+name                                Luna(r) 3 - token_id Ada Sokol
+name                       Gaia, 🗝️ N°1: Love - token_id Ada Sokol
+name                    Gaia, 🔐 N°2: Health ☤ - token_id Ada Sokol
+
+Tag Isabella Addison
+name                                     Aiko - token_id Isabella Addison
+name                                 War Girl - token_id Isabella Addison
+
+Tag Ondrej Zunka
+name                            Vomitus Flos  - token_id Ondrej Zunka
+
+Tag Yugal Odhrani
+name                                      AVA - token_id Yugal Odhrani
+name                              A Mad World - token_id Yugal Odhrani
+
+Tag Alec Maassen
+name                            Glitch Walker - token_id Alec Maassen
+name                                     Juno - token_id Alec Maassen
+name                              Soft Reaper - token_id Alec Maassen
+name                               Synth Love - token_id Alec Maassen
+name                                 Phantith - token_id Alec Maassen
+name                                     OP-1 - token_id Alec Maassen
+
+Tag LOOOP
+name                       Resource Within Us - token_id LOOOP
+name                          Beyond One Self - token_id LOOOP
+name                              Meta-Fields - token_id LOOOP
+name                        Simulation_Engine - token_id LOOOP
+name                           Being Together - token_id LOOOP
+name                              World#31415 - token_id LOOOP
+
+Tag Aeforia
+name                                Symbiosis - token_id Aeforia
+
+Tag Alec Massen
+name                              Soft Reaper - token_id Alec Massen
+name                                 Phantith - token_id Alec Massen
+name                            Glitch Walker - token_id Alec Massen
+
+Tag Ondrej Zunka
+name                       Caeruleus Orchitis - token_id Ondrej Zunka
+name                            Fluffus Algae - token_id Ondrej Zunka
+name                       Vocatio Strelitzia - token_id Ondrej Zunka
+name                         Pilosus Torquent - token_id Ondrej Zunka
+name                       Manumala Noxhydria - token_id Ondrej Zunka
+name                            Toxic Exaryum - token_id Ondrej Zunka
+name                           Niveus Scalae  - token_id Ondrej Zunka
+name                         Transvaal Rubrum - token_id Ondrej Zunka
+name                        Tenebris Veratrum - token_id Ondrej Zunka
+name                         Cynara Serpentes - token_id Ondrej Zunka
+name                          Lilium Custodia - token_id Ondrej Zunka
+name                           Nodatus Tulipa - token_id Ondrej Zunka
+name                             Primula Bros - token_id Ondrej Zunka
+name                           Bellus Spinae  - token_id Ondrej Zunka
+name                             Luna Stipula - token_id Ondrej Zunka
+name                            Taraxacum Fam - token_id Ondrej Zunka
+name                       Punctatum Capillum - token_id Ondrej Zunka
+name                        Adamo Periculosum - token_id Ondrej Zunka
+name                           Odorata Cinere - token_id Ondrej Zunka
+
+Tag Tyloord
+name                                MMHB: 001 - token_id Tyloord
+name          EXPERIENTIAL AWAKENING (ENCORE) - token_id Tyloord
+
+Tag X Sullo
+name                                 Tethered - token_id X Sullo
+name                            The Crossover - token_id X Sullo
+name                             PANIC ATTACK - token_id X Sullo
+
+Tag Yulia Shur
+name                                𝔥𝔞𝔯𝔦𝔬𝔫𝔞𝔤𝔬 - token_id Yulia Shur
+name                              s u n s e t - token_id Yulia Shur
+name                           keep me within - token_id Yulia Shur
+
+Tag Maciej Kuciara
+name                            White Rabbit  - token_id Maciej Kuciara
+
+Tag Nate Mohler
+name                            Venice Canals - token_id Nate Mohler
+name                              Skate Faces - token_id Nate Mohler
+name                          Echo the Colors - token_id Nate Mohler
+name                              V E N I C E - token_id Nate Mohler
+name                           Dirty Griffith - token_id Nate Mohler
+name                             Skate Senses - token_id Nate Mohler
+
+Tag Billelis
+name                            Transcendence - token_id Billelis
+name                               Balance II - token_id Billelis
+name                               Your Grace - token_id Billelis
+name                               Balance VI - token_id Billelis
+name                             Your Majesty - token_id Billelis
+jacksonkurtz@Jacksons-MacBook-Pro scripts % clear
+jacksonkurtz@Jacksons-MacBook-Pro scripts % go run script.go
+
+Ondrej Zunka
+name                       Caeruleus Orchitis - token_id Ondrej Zunka
+name                            Fluffus Algae - token_id Ondrej Zunka
+name                       Vocatio Strelitzia - token_id Ondrej Zunka
+name                         Pilosus Torquent - token_id Ondrej Zunka
+name                       Manumala Noxhydria - token_id Ondrej Zunka
+name                            Toxic Exaryum - token_id Ondrej Zunka
+name                           Niveus Scalae  - token_id Ondrej Zunka
+name                         Transvaal Rubrum - token_id Ondrej Zunka
+name                        Tenebris Veratrum - token_id Ondrej Zunka
+name                         Cynara Serpentes - token_id Ondrej Zunka
+name                          Lilium Custodia - token_id Ondrej Zunka
+name                           Nodatus Tulipa - token_id Ondrej Zunka
+name                             Primula Bros - token_id Ondrej Zunka
+name                           Bellus Spinae  - token_id Ondrej Zunka
+name                             Luna Stipula - token_id Ondrej Zunka
+name                            Taraxacum Fam - token_id Ondrej Zunka
+name                       Punctatum Capillum - token_id Ondrej Zunka
+name                        Adamo Periculosum - token_id Ondrej Zunka
+name                           Odorata Cinere - token_id Ondrej Zunka
+
+Aeforia
+name                                Symbiosis - token_id Aeforia
+
+David Oreilley
+name                                   Growth - token_id David Oreilley
+
+Nate Mohler
+name                            Venice Canals - token_id Nate Mohler
+name                              Skate Faces - token_id Nate Mohler
+name                          Echo the Colors - token_id Nate Mohler
+name                              V E N I C E - token_id Nate Mohler
+name                           Dirty Griffith - token_id Nate Mohler
+name                             Skate Senses - token_id Nate Mohler
+
+Smearballs
+name                            Skin & Bones  - token_id Smearballs
+name                            Single Dutch  - token_id Smearballs
+name                                Handyman  - token_id Smearballs
+
+Seerlight
+name                     The Cliff By The Sea - token_id Seerlight
+name                             Rain Village - token_id Seerlight
+name                                High Rise - token_id Seerlight
+name                           Takoyaki Stand - token_id Seerlight
+name                             Space Cowboy - token_id Seerlight
+name                            Ramen Village - token_id Seerlight
+
+Ondrej Zunka
+name                            Vomitus Flos  - token_id Ondrej Zunka
+
+X Sullo
+name                                 Tethered - token_id X Sullo
+name                            The Crossover - token_id X Sullo
+name                             PANIC ATTACK - token_id X Sullo
+
+Ash Thorp
+name                              Degradation - token_id Ash Thorp
+
+LOOOP
+name                       Resource Within Us - token_id LOOOP
+name                          Beyond One Self - token_id LOOOP
+name                              Meta-Fields - token_id LOOOP
+name                        Simulation_Engine - token_id LOOOP
+name                           Being Together - token_id LOOOP
+name                              World#31415 - token_id LOOOP
+
+medici
+name                               WVRP #4941 - token_id medici
+name                          CrypToadz #4488 - token_id medici
+name                          CrypToadz #3985 - token_id medici
+name                               WVRP #8566 - token_id medici
+name                               WVRP #9527 - token_id medici
+name                           Dom Qwek: Flow - token_id medici
+name                    Karl Roberts: Vessels - token_id medici
+name                               WVRP #2759 - token_id medici
+name                               WVRP #6694 - token_id medici
+name                           Dom Qwek: Dawn - token_id medici
+name                             Meebit #9716 - token_id medici
+name                     World of Women #4045 - token_id medici
+name                         CryptoPunk #8472 - token_id medici
+name               X Copy: Best-case Scenario - token_id medici
+name                    EsoTeros: Zarthrumach - token_id medici
+name          X Copy : Last Human Police 2039 - token_id medici
+name                               WVRP #8627 - token_id medici
+name                       Rarepepe: Nakamoto - token_id medici
+name             Experiences by Laith Safa #7 - token_id medici
+name                               WVRP #5321 - token_id medici
+name                   Karl Roberts: Antidote - token_id medici
+name                            Meridian #547 - token_id medici
+name                Sam Spratt: Birth of Luci - token_id medici
+name                               WVRP #9979 - token_id medici
+name                 Deekay: Lets Walk Cozomo - token_id medici
+name                         Women by Yam #15 - token_id medici
+name                   CryptoPunk #3831Cozomo - token_id medici
+name                            Meridian #680 - token_id medici
+name                             Fidenza #135 - token_id medici
+name Luis Ponce: We have lost the ways of Simplicity - token_id medici
+name                               WVRP #2263 - token_id medici
+name                            CloneX #13135 - token_id medici
+name            Experiences by Laith Safa #26 - token_id medici
+name                         Dom Qwek: Origin - token_id medici
+name                          Women by Yam #1 - token_id medici
+name                          Dom Qwek: Evoke - token_id medici
+name             Experiences by Laith Safa #1 - token_id medici
+name                              X Copy: RCS - token_id medici
+name                        Dom Qwek: Glimmer - token_id medici
+name                               WVRP #5470 - token_id medici
+name            Experiences by Laith Safa #13 - token_id medici
+name                               WVRP #6052 - token_id medici
+name                             Meebit #9020 - token_id medici
+name                             Meebit #4570 - token_id medici
+name            Experiences by Laith Safa #49 - token_id medici
+name                         CryptoPunk #8620 - token_id medici
+name                 X Copy: The Doomed (red) - token_id medici
+name                               WVRP #7072 - token_id medici
+name                       Rarepepe: Pepalisa - token_id medici
+name                            Meebit #15264 - token_id medici
+name                               WVRP #2720 - token_id medici
+name                     World of Women #8570 - token_id medici
+name            Experiences by Laith Safa #24 - token_id medici
+name                               WVRP #6837 - token_id medici
+name                               WVRP #7430 - token_id medici
+name                   X Copy: Hackproof 2049 - token_id medici
+name          Luis Ponce: Syncretism overload - token_id medici
+name                               WVRP #1128 - token_id medici
+name                        Mindzeye: Firenze - token_id medici
+name                             Fidenza #351 - token_id medici
+name                               WVRP #6494 - token_id medici
+name                          CrypToadz #2872 - token_id medici
+name                         CryptoPunk #5017 - token_id medici
+name                    Tom Sachs: Hail Satan - token_id medici
+name      Bacon Studio: Take Orca to the Moon - token_id medici
+name             Mindzeye: Rue De l'Abreuvoir - token_id medici
+name                         CryptoPunk #1961 - token_id medici
+name                     World of Women #7242 - token_id medici
+name            Experiences by Laith Safa #28 - token_id medici
+name                         CryptoPunk #7388 - token_id medici
+name                               WVRP #8728 - token_id medici
+name                     X Copy: Grifter #515 - token_id medici
+name                               WVRP #3238 - token_id medici
+name                               WVRP #8846 - token_id medici
+name             Adam Swaab: Two SImple Rules - token_id medici
+name                            Meridian #324 - token_id medici
+name                      Mindzeye: Dark Days - token_id medici
+name                         CryptoPunk #5640 - token_id medici
+name                               WVRP #1130 - token_id medici
+name                   Tom Sachs: Dawn of Man - token_id medici
+name                           CrypToadz #157 - token_id medici
+name          EsoTeros: B l a c k s w a n e r - token_id medici
+name                             Fidenza #473 - token_id medici
+name                     X Copy: Some Asshole - token_id medici
+name            Experiences by Laith Safa #23 - token_id medici
+name                               WVRP #2911 - token_id medici
+name                          Deekay: Destiny - token_id medici
+name                         CryptoPunk #5069 - token_id medici
+name                   X Copy: New Teeth 2033 - token_id medici
+name                             Meebit #9141 - token_id medici
+name                         DeeKay GM (1/25) - token_id medici
+name                               WVRP #8418 - token_id medici
+name                               WVRP #5104 - token_id medici
+name                               WVRP #6566 - token_id medici
+name                               WVRP #3563 - token_id medici
+name                             Meebit #4095 - token_id medici
+name                  Invisible Friends #1394 - token_id medici
+name                          CrypToadz #4236 - token_id medici
+name                             Meebit #9677 - token_id medici
+name                               WVRP #6799 - token_id medici
+name                               WVRP #9841 - token_id medici
+name                             Fidenza #305 - token_id medici
+name                          CrypToadz #5980 - token_id medici
+name                     Botto: Scene Precede - token_id medici
+name                             Fidenza #841 - token_id medici
+name            Experiences by Laith Safa #36 - token_id medici
+name                               WVRP #1129 - token_id medici
+
+Yulia Shur
+name                                𝔥𝔞𝔯𝔦𝔬𝔫𝔞𝔤𝔬 - token_id Yulia Shur
+name                              s u n s e t - token_id Yulia Shur
+name                           keep me within - token_id Yulia Shur
+
+Alec Massen
+name                              Soft Reaper - token_id Alec Massen
+name                                 Phantith - token_id Alec Massen
+name                            Glitch Walker - token_id Alec Massen
+
+Ada Sokol
+name                                Luna(r) 3 - token_id Ada Sokol
+name                       Gaia, 🗝️ N°1: Love - token_id Ada Sokol
+name                    Gaia, 🔐 N°2: Health ☤ - token_id Ada Sokol
+
+Billelis
+name                            Transcendence - token_id Billelis
+name                               Balance II - token_id Billelis
+name                               Your Grace - token_id Billelis
+name                               Balance VI - token_id Billelis
+name                             Your Majesty - token_id Billelis
+
+Yugal Odhrani
+name                                      AVA - token_id Yugal Odhrani
+name                              A Mad World - token_id Yugal Odhrani
+
+Alec Maassen
+name                            Glitch Walker - token_id Alec Maassen
+name                                     Juno - token_id Alec Maassen
+name                              Soft Reaper - token_id Alec Maassen
+name                               Synth Love - token_id Alec Maassen
+name                                 Phantith - token_id Alec Maassen
+name                                     OP-1 - token_id Alec Maassen
+
+Maciej Kuciara
+name                            White Rabbit  - token_id Maciej Kuciara
+
+Isabella Addison
+name                                     Aiko - token_id Isabella Addison
+name                                 War Girl - token_id Isabella Addison
+
+Smearballs
+name          Just Another Day At the Office  - token_id Smearballs
+name                               Flophouse  - token_id Smearballs
+
+Tyloord
+name                                MMHB: 001 - token_id Tyloord
+name          EXPERIENTIAL AWAKENING (ENCORE) - token_id Tyloord
+jacksonkurtz@Jacksons-MacBook-Pro scripts % clear
+jacksonkurtz@Jacksons-MacBook-Pro scripts % go run script.go
+
+medici
+name                               WVRP #4941 - token_id medici
+name                          CrypToadz #4488 - token_id medici
+name                          CrypToadz #3985 - token_id medici
+name                               WVRP #8566 - token_id medici
+name                               WVRP #9527 - token_id medici
+name                           Dom Qwek: Flow - token_id medici
+name                    Karl Roberts: Vessels - token_id medici
+name                               WVRP #2759 - token_id medici
+name                               WVRP #6694 - token_id medici
+name                           Dom Qwek: Dawn - token_id medici
+name                             Meebit #9716 - token_id medici
+name                     World of Women #4045 - token_id medici
+name                         CryptoPunk #8472 - token_id medici
+name               X Copy: Best-case Scenario - token_id medici
+name                    EsoTeros: Zarthrumach - token_id medici
+name          X Copy : Last Human Police 2039 - token_id medici
+name                               WVRP #8627 - token_id medici
+name                       Rarepepe: Nakamoto - token_id medici
+name             Experiences by Laith Safa #7 - token_id medici
+name                               WVRP #5321 - token_id medici
+name                   Karl Roberts: Antidote - token_id medici
+name                            Meridian #547 - token_id medici
+name                Sam Spratt: Birth of Luci - token_id medici
+name                               WVRP #9979 - token_id medici
+name                 Deekay: Lets Walk Cozomo - token_id medici
+name                         Women by Yam #15 - token_id medici
+name                   CryptoPunk #3831Cozomo - token_id medici
+name                            Meridian #680 - token_id medici
+name                             Fidenza #135 - token_id medici
+name Luis Ponce: We have lost the ways of Simplicity - token_id medici
+name                               WVRP #2263 - token_id medici
+name                            CloneX #13135 - token_id medici
+name            Experiences by Laith Safa #26 - token_id medici
+name                         Dom Qwek: Origin - token_id medici
+name                          Women by Yam #1 - token_id medici
+name                          Dom Qwek: Evoke - token_id medici
+name             Experiences by Laith Safa #1 - token_id medici
+name                              X Copy: RCS - token_id medici
+name                        Dom Qwek: Glimmer - token_id medici
+name                               WVRP #5470 - token_id medici
+name            Experiences by Laith Safa #13 - token_id medici
+name                               WVRP #6052 - token_id medici
+name                             Meebit #9020 - token_id medici
+name                             Meebit #4570 - token_id medici
+name            Experiences by Laith Safa #49 - token_id medici
+name                         CryptoPunk #8620 - token_id medici
+name                 X Copy: The Doomed (red) - token_id medici
+name                               WVRP #7072 - token_id medici
+name                       Rarepepe: Pepalisa - token_id medici
+name                            Meebit #15264 - token_id medici
+name                               WVRP #2720 - token_id medici
+name                     World of Women #8570 - token_id medici
+name            Experiences by Laith Safa #24 - token_id medici
+name                               WVRP #6837 - token_id medici
+name                               WVRP #7430 - token_id medici
+name                   X Copy: Hackproof 2049 - token_id medici
+name          Luis Ponce: Syncretism overload - token_id medici
+name                               WVRP #1128 - token_id medici
+name                        Mindzeye: Firenze - token_id medici
+name                             Fidenza #351 - token_id medici
+name                               WVRP #6494 - token_id medici
+name                          CrypToadz #2872 - token_id medici
+name                         CryptoPunk #5017 - token_id medici
+name                    Tom Sachs: Hail Satan - token_id medici
+name      Bacon Studio: Take Orca to the Moon - token_id medici
+name             Mindzeye: Rue De l'Abreuvoir - token_id medici
+name                         CryptoPunk #1961 - token_id medici
+name                     World of Women #7242 - token_id medici
+name            Experiences by Laith Safa #28 - token_id medici
+name                         CryptoPunk #7388 - token_id medici
+name                               WVRP #8728 - token_id medici
+name                     X Copy: Grifter #515 - token_id medici
+name                               WVRP #3238 - token_id medici
+name                               WVRP #8846 - token_id medici
+name             Adam Swaab: Two SImple Rules - token_id medici
+name                            Meridian #324 - token_id medici
+name                      Mindzeye: Dark Days - token_id medici
+name                         CryptoPunk #5640 - token_id medici
+name                               WVRP #1130 - token_id medici
+name                   Tom Sachs: Dawn of Man - token_id medici
+name                           CrypToadz #157 - token_id medici
+name          EsoTeros: B l a c k s w a n e r - token_id medici
+name                             Fidenza #473 - token_id medici
+name                     X Copy: Some Asshole - token_id medici
+name            Experiences by Laith Safa #23 - token_id medici
+name                               WVRP #2911 - token_id medici
+name                          Deekay: Destiny - token_id medici
+name                         CryptoPunk #5069 - token_id medici
+name                   X Copy: New Teeth 2033 - token_id medici
+name                             Meebit #9141 - token_id medici
+name                         DeeKay GM (1/25) - token_id medici
+name                               WVRP #8418 - token_id medici
+name                               WVRP #5104 - token_id medici
+name                               WVRP #6566 - token_id medici
+name                               WVRP #3563 - token_id medici
+name                             Meebit #4095 - token_id medici
+name                  Invisible Friends #1394 - token_id medici
+name                          CrypToadz #4236 - token_id medici
+name                             Meebit #9677 - token_id medici
+name                               WVRP #6799 - token_id medici
+name                               WVRP #9841 - token_id medici
+name                             Fidenza #305 - token_id medici
+name                          CrypToadz #5980 - token_id medici
+name                     Botto: Scene Precede - token_id medici
+name                             Fidenza #841 - token_id medici
+name            Experiences by Laith Safa #36 - token_id medici
+name                               WVRP #1129 - token_id medici
+
+Ada Sokol
+name                                Luna(r) 3 - token_id Ada Sokol
+name                       Gaia, 🗝️ N°1: Love - token_id Ada Sokol
+name                    Gaia, 🔐 N°2: Health ☤ - token_id Ada Sokol
+
+Nate Mohler
+name                            Venice Canals - token_id Nate Mohler
+name                              Skate Faces - token_id Nate Mohler
+name                          Echo the Colors - token_id Nate Mohler
+name                              V E N I C E - token_id Nate Mohler
+name                           Dirty Griffith - token_id Nate Mohler
+name                             Skate Senses - token_id Nate Mohler
+
+Ash Thorp
+name                              Degradation - token_id Ash Thorp
+
+Ondrej Zunka
+name                       Caeruleus Orchitis - token_id Ondrej Zunka
+name                            Fluffus Algae - token_id Ondrej Zunka
+name                       Vocatio Strelitzia - token_id Ondrej Zunka
+name                         Pilosus Torquent - token_id Ondrej Zunka
+name                       Manumala Noxhydria - token_id Ondrej Zunka
+name                            Toxic Exaryum - token_id Ondrej Zunka
+name                           Niveus Scalae  - token_id Ondrej Zunka
+name                         Transvaal Rubrum - token_id Ondrej Zunka
+name                        Tenebris Veratrum - token_id Ondrej Zunka
+name                         Cynara Serpentes - token_id Ondrej Zunka
+name                          Lilium Custodia - token_id Ondrej Zunka
+name                           Nodatus Tulipa - token_id Ondrej Zunka
+name                             Primula Bros - token_id Ondrej Zunka
+name                           Bellus Spinae  - token_id Ondrej Zunka
+name                             Luna Stipula - token_id Ondrej Zunka
+name                            Taraxacum Fam - token_id Ondrej Zunka
+name                       Punctatum Capillum - token_id Ondrej Zunka
+name                        Adamo Periculosum - token_id Ondrej Zunka
+name                           Odorata Cinere - token_id Ondrej Zunka
+
+Tyloord
+name                                MMHB: 001 - token_id Tyloord
+name          EXPERIENTIAL AWAKENING (ENCORE) - token_id Tyloord
+
+Billelis
+name                            Transcendence - token_id Billelis
+name                               Balance II - token_id Billelis
+name                               Your Grace - token_id Billelis
+name                               Balance VI - token_id Billelis
+name                             Your Majesty - token_id Billelis
+
+Ondrej Zunka
+name                            Vomitus Flos  - token_id Ondrej Zunka
+
+Yugal Odhrani
+name                                      AVA - token_id Yugal Odhrani
+name                              A Mad World - token_id Yugal Odhrani
+
+LOOOP
+name                       Resource Within Us - token_id LOOOP
+name                          Beyond One Self - token_id LOOOP
+name                              Meta-Fields - token_id LOOOP
+name                        Simulation_Engine - token_id LOOOP
+name                           Being Together - token_id LOOOP
+name                              World#31415 - token_id LOOOP
+
+David Oreilley
+name                                   Growth - token_id David Oreilley
+
+Yulia Shur
+name                                𝔥𝔞𝔯𝔦𝔬𝔫𝔞𝔤𝔬 - token_id Yulia Shur
+name                              s u n s e t - token_id Yulia Shur
+name                           keep me within - token_id Yulia Shur
+
+Smearballs
+name          Just Another Day At the Office  - token_id Smearballs
+name                               Flophouse  - token_id Smearballs
+
+Seerlight
+name                     The Cliff By The Sea - token_id Seerlight
+name                             Rain Village - token_id Seerlight
+name                                High Rise - token_id Seerlight
+name                           Takoyaki Stand - token_id Seerlight
+name                             Space Cowboy - token_id Seerlight
+name                            Ramen Village - token_id Seerlight
+
+X Sullo
+name                                 Tethered - token_id X Sullo
+name                            The Crossover - token_id X Sullo
+name                             PANIC ATTACK - token_id X Sullo
+
+Alec Massen
+name                              Soft Reaper - token_id Alec Massen
+name                                 Phantith - token_id Alec Massen
+name                            Glitch Walker - token_id Alec Massen
+
+Maciej Kuciara
+name                            White Rabbit  - token_id Maciej Kuciara
+
+Isabella Addison
+name                                     Aiko - token_id Isabella Addison
+name                                 War Girl - token_id Isabella Addison
+
+Smearballs
+name                            Skin & Bones  - token_id Smearballs
+name                            Single Dutch  - token_id Smearballs
+name                                Handyman  - token_id Smearballs
+
+Alec Maassen
+name                            Glitch Walker - token_id Alec Maassen
+name                                     Juno - token_id Alec Maassen
+name                              Soft Reaper - token_id Alec Maassen
+name                               Synth Love - token_id Alec Maassen
+name                                 Phantith - token_id Alec Maassen
+name                                     OP-1 - token_id Alec Maassen
+
+Aeforia
+name                                Symbiosis - token_id Aeforia
