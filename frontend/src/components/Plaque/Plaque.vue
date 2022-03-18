@@ -68,8 +68,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed, onMounted } from "vue";
 import {
-  loadToken,
-  loadDemoTokenMeta,
+  loadDemoTokenMetaWithListener,
   convertTokenMetaToOpensea
 } from "@/api/token";
 import {
@@ -99,9 +98,11 @@ export default defineComponent({
     const show_text = ref(false);
 
     onMounted(() => {
-      if (display_id.value) {
+      display_id.value = window.localStorage.getItem("nft_display_id");
+      //show_text.value = true
+      /* if (display_id.value) {
         show_text.value = true;
-      }
+      } */
     });
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
@@ -110,24 +111,15 @@ export default defineComponent({
 
       display.value = d;
       if (d.entity.token_id && d.entity.asset_contract_address) {
-        await getPlaqueData(d.entity.asset_contract_address, d.entity.token_id);
+        await loadDemoTokenMetaWithListener(d.entity.asset_contract_address, d.entity.token_id, getPlaqueData);
       }
+      show_text.value = true;
       loading.value = false;
     };
 
-    const getPlaqueData = async (address: string, token_id: string) => {
-      try {
-        token_meta.value = await loadDemoTokenMeta(address, token_id);
-      } catch {
-        console.log("No token meta found");
-        token_meta.value = null;
-      }
-      let token_resp: OpenseaToken;
-      if (!token_meta.value || token_meta.value.entity.platform == "opensea") {
-        token_resp = await loadToken(address, token_id);
-      } else {
-        token_resp = convertTokenMetaToOpensea(token_meta.value);
-      }
+    const getPlaqueData = async (t: FirestoreDocument<TokenMeta>) => {
+      token_meta.value = t
+      let token_resp = convertTokenMetaToOpensea(t);
       token.value = token_resp;
     };
 
@@ -135,8 +127,13 @@ export default defineComponent({
       return display?.value?.entity.plaque_dark_mode;
     });
 
-    const top_bid = computed(() => {
-      const orders = token?.value?.orders;
+    const top_bid = computed((): string => {
+      if(token_meta.value?.entity.top_bid) {
+        return `Top bid: ${token_meta.value.entity.top_bid}`
+      }
+
+      return ""
+      /* const orders = token?.value?.orders;
       if (orders == null || orders?.length == 0) {
         return "";
       }
@@ -153,7 +150,7 @@ export default defineComponent({
 
       return `Top bid: ${bid.toFixed(3)} ${
         highest_order.payment_token_contract.symbol
-      }`;
+      }`; */
     });
 
     watch(
@@ -172,8 +169,8 @@ export default defineComponent({
 
     window.addEventListener("storage", () => {
       display_id.value = window.localStorage.getItem("nft_display_id");
-      show_text.value =
-        window.localStorage.getItem("nft_video_loaded") == "true";
+      /* show_text.value =
+        window.localStorage.getItem("nft_video_loaded") == "true"; */
     });
     return {
       loading,

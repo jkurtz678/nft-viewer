@@ -68,6 +68,7 @@ export interface TokenMeta extends BaseDocument {
     public_link: string;
     description: string;
     skip: boolean;
+    top_bid?: string;
     // created_at: string;
 }
 

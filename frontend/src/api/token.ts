@@ -38,6 +38,19 @@ export const loadDemoTokenMeta = async (asset_contract_address: string, token_id
     }
 }
 
+// loadDemoTokenMeta returns a single demo token meta for a given asset_contract and token id
+export const loadDemoTokenMetaWithListener = async (asset_contract_address: string, token_id: string, onChange: (t : FirestoreDocument<TokenMeta>) => void) => {
+    const query_snapshot = await db.collection("demo_tokens").where("asset_contract_address", "==", asset_contract_address).where("token_id", "==", token_id).get()
+    if(query_snapshot.docs.length != 1) {
+        throw "Error - got duplicate token metas"
+    }
+    await query_snapshot.docs[0].ref.onSnapshot((doc) => {
+        onChange( {
+            id: doc.id, entity: doc.data() as TokenMeta,
+        })
+    });
+}
+
 export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<FirestoreDocument<TokenMeta>>): Promise<Array<OpenseaToken>> => {
     let url = `https://api.opensea.io/api/v1/assets/?`
     tokens.forEach(t => {

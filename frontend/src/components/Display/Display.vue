@@ -98,9 +98,11 @@ export default defineComponent({
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
     const media_is_video = computed((): boolean => {
-      const is_opensea_video = !!token.value?.animation_url &&
-        !token.value.animation_url.endsWith(".wav")
-      const is_alt_video = !!token_meta?.value && !!local_file.value?.endsWith(".mp4")
+      const is_opensea_video =
+        !!token.value?.animation_url &&
+        !token.value.animation_url.endsWith(".wav");
+      const is_alt_video =
+        !!token_meta?.value && !!local_file.value?.endsWith(".mp4");
       return is_opensea_video || is_alt_video;
     });
 
@@ -129,7 +131,11 @@ export default defineComponent({
     // video_should_loop will be true by default, false if any playlist tokens exist
     const video_should_loop = computed((): boolean => {
       const playlist_tokens = display.value?.entity?.playlist_tokens;
-      return playlist_tokens == null || playlist_tokens.length == 0 || playlist_timer.value != null;
+      return (
+        playlist_tokens == null ||
+        playlist_tokens.length == 0 ||
+        playlist_timer.value != null
+      );
     });
     /* END COMPUTED */
 
@@ -197,12 +203,14 @@ export default defineComponent({
         local_file.value = "";
         console.log(err);
       }
+      
+      // fix viewer not hiding
+      if (viewer.value) {
+        viewer.value.hide();
+      }
 
       // if token has no video media, display the image using viewer
       if (media_is_video.value) {
-        if (viewer.value) {
-          viewer.value.hide();
-        }
         waitToShowVideo();
       } else {
         if (media_url.value) {
@@ -235,7 +243,7 @@ export default defineComponent({
 
           // handle playlist cycling
           player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
-          console.log("video duration: ", player.value.duration)
+          console.log("video duration: ", player.value.duration);
           if (player.value.duration && player.value.duration < 15) {
             playlist_timer.value = setTimeout(() => {
               nextPlaylistToken();
@@ -272,7 +280,7 @@ export default defineComponent({
 
     // nextPlaylistToken will update the display to the next token in the playlist
     const nextPlaylistToken = () => {
-      console.log("nextPlaylistToken")
+      console.log("nextPlaylistToken");
       if (!display.value?.entity?.playlist_tokens?.length) {
         return;
       }
