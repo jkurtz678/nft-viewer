@@ -23,7 +23,7 @@ export const loadDemoTokenMetas = async (): Promise<Array<FirestoreDocument<Toke
     const metas = query_snapshot.docs.map(s => ({
         id: s.id, entity: s.data() as TokenMeta,
     }))
-    return metas.filter(m => m.entity.token_id && m.entity.asset_contract_address)
+    return metas.filter(m => m.entity.token_id && m.entity.asset_contract_address && !m.entity.skip)
 }
 
 // loadDemoTokenMeta returns a single demo token meta for a given asset_contract and token id
