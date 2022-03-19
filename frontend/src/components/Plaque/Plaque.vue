@@ -3,22 +3,13 @@
     style="width: 100%; height: 100%; position: fixed;"
     :style="dark_mode ? 'background-color: #000000; color: #FFFFFF' : null"
   >
-    <loading
-      v-if="loading"
-      active
-    />
+
     <div
-      v-else
       style="transition: opacity ease-in 0.8s;"
       :class="show_text ? 'show-opacity' : 'hide-opacity'"
     >
       <div
-        v-if="!display"
-        class="center"
-        style="font-size: 40px;"
-      >No display found</div>
-      <div
-        v-else-if="display && !display.entity.token_id"
+        v-if="!token"
         class="center"
         style="font-size: 40px;"
       >No media loaded</div>
@@ -82,36 +73,13 @@ export default defineComponent({
     Loading
   },
   setup() {
-    const display = ref<FirestoreDocument<Display> | null>();
     const token = ref<OpenseaToken | null>();
-    const loading = ref(false);
-    const display_id = ref(window.localStorage.getItem("nft_display_id"));
     const show_text = ref(false);
 
-    onMounted(() => {
-      if (display_id.value) {
-        show_text.value = true;
-      }
-    });
-
-    const initDisplay = async (d: FirestoreDocument<Display>) => {
-      show_text.value = false;
-      await new Promise(r => setTimeout(r, 800));
-
-      display.value = d;
-      if (d.entity.token_id && d.entity.asset_contract_address) {
-        const token_resp = await loadToken(
-          d.entity.asset_contract_address,
-          d.entity.token_id
-        );
-        console.log("token_resp", token_resp);
-        token.value = token_resp;
-      }
-      loading.value = false;
-    };
+    const initDisplay = async (d: FirestoreDocument<Display>) => {};
 
     const dark_mode = computed(() => {
-      return display?.value?.entity.plaque_dark_mode;
+      return true;
     });
 
     const top_bid = computed(() => {
@@ -136,29 +104,25 @@ export default defineComponent({
     });
 
     watch(
-      () => display_id.value,
+      () => token.value,
       async () => {
-        loading.value = true;
-        if (!window.navigator.onLine && display_id.value) {
-          getDisplayByDisplayID(display_id.value).then(r => {
-            initDisplay(r);
-          });
-        } else if (display_id.value) {
-          getDisplayByDisplayIDWithListener(display_id.value, initDisplay);
-        } else {
-          display.value = null;
-          loading.value = false;
-        }
+        show_text.value = false;
+        await new Promise(r => setTimeout(r, 800));
+
+        show_text.value = true;
       },
       { immediate: true }
     );
 
     window.addEventListener("storage", () => {
-      display_id.value = window.localStorage.getItem("nft_display_id");
+      const token_data = window.localStorage.getItem("nft_token_data");
+      if (token_data != null) {
+        token.value = JSON.parse(token_data);
+      }
       show_text.value =
         window.localStorage.getItem("nft_video_loaded") == "true";
     });
-    return { loading, token, display, dark_mode, show_text, top_bid };
+    return { token, dark_mode, show_text, top_bid };
   }
 });
 </script>

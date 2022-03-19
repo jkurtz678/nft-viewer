@@ -84,7 +84,7 @@ export default defineComponent({
     const viewer = ref<Viewer>();
     const has_local_file = ref<boolean>();
     const player = ref<HTMLVideoElement>();
-    const image_timer = ref<ReturnType<typeof setTimeout>>();
+    const playlist_timer = ref<ReturnType<typeof setTimeout>>();
 
     /* START COMPUTED */
     // media_is_video determines if token media is video (true) or an image/gif (false)
@@ -126,7 +126,11 @@ export default defineComponent({
     // video_should_loop will be true by default, false if any playlist tokens exist
     const video_should_loop = computed((): boolean => {
       const playlist_tokens = display.value?.entity?.playlist_tokens;
-      return playlist_tokens == null || playlist_tokens.length == 0;
+      return (
+        playlist_tokens == null ||
+        playlist_tokens.length == 0 ||
+        playlist_timer.value != null
+      );
     });
     /* END COMPUTED */
 
@@ -134,8 +138,8 @@ export default defineComponent({
     // wait until html player loads to add the video ended event listener
     watch(player, v => {
       if (v) {
-        player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
-        player.value?.addEventListener("ended", nextPlaylistToken);
+        /*  player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+        player.value?.addEventListener("ended", nextPlaylistToken); */
       }
     });
     /* END WATCHERS */
@@ -146,8 +150,8 @@ export default defineComponent({
       console.log("display", d);
       show_video.value = false; // tells display to start fade out
       window.localStorage.setItem("nft_video_loaded", "false"); // use local storage to tell the plaque to fade out text
-      if (image_timer.value) {
-        clearTimeout(image_timer.value);
+      if (playlist_timer.value) {
+        clearTimeout(playlist_timer.value);
       }
       await new Promise(r => setTimeout(r, 800)); // wait so previous video has time to fade out
 
@@ -174,6 +178,7 @@ export default defineComponent({
     const showToken = async (contract_address: string, token_id: string) => {
       const token_resp = await loadToken(contract_address, token_id);
       token.value = token_resp;
+      window.localStorage.setItem("nft_token_data", JSON.stringify(token_resp));
 
       const media_file_name = media_url.value.substring(
         media_url.value.lastIndexOf("/") + 1
@@ -199,7 +204,7 @@ export default defineComponent({
         waitToShowVideo();
       } else {
         displayImage(token_resp.image_url);
-        image_timer.value = setTimeout(() => {
+        playlist_timer.value = setTimeout(() => {
           nextPlaylistToken();
         }, 1000 * 45);
       }
@@ -223,6 +228,17 @@ export default defineComponent({
           clearInterval(interval);
           show_video.value = true;
           window.localStorage.setItem("nft_video_loaded", "true");
+
+          // handle playlist cycling
+          player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+          console.log("video duration: ", player.value.duration);
+          if (player.value.duration && player.value.duration < 15) {
+            playlist_timer.value = setTimeout(() => {
+              nextPlaylistToken();
+            }, 1000 * 45);
+          } else {
+            player.value?.addEventListener("ended", nextPlaylistToken);
+          }
         }
       }
     };
@@ -272,17 +288,17 @@ export default defineComponent({
       display.value.entity.asset_contract_address =
         display.value.entity.playlist_tokens[new_index].asset_contract_address;
 
-      if(!window.navigator.onLine) {
-        initDisplay(display.value)
-       return  
+      if (!window.navigator.onLine) {
+        initDisplay(display.value);
+        return;
       }
       updateDisplay(display.value);
     };
     /* END METHODS */
-    if(!window.navigator.onLine && props.display_id) {
+    if (!window.navigator.onLine && props.display_id) {
       getDisplayByDisplayID(props.display_id).then(r => {
-        initDisplay(r)
-      })
+        initDisplay(r);
+      });
     } else if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
