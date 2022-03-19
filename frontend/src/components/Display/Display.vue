@@ -126,10 +126,11 @@ export default defineComponent({
     // video_should_loop will be true by default, false if any playlist tokens exist
     const video_should_loop = computed((): boolean => {
       const playlist_tokens = display.value?.entity?.playlist_tokens;
+      console.log("PLAYLIST TOKENS", playlist_tokens);
+      console.log("TiMER", playlist_timer.value);
       return (
         playlist_tokens == null ||
-        playlist_tokens.length == 0 ||
-        playlist_timer.value != null
+        playlist_tokens.length == 0
       );
     });
     /* END COMPUTED */
@@ -138,8 +139,8 @@ export default defineComponent({
     // wait until html player loads to add the video ended event listener
     watch(player, v => {
       if (v) {
-        /*  player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
-        player.value?.addEventListener("ended", nextPlaylistToken); */
+         player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+        player.value?.addEventListener("ended", nextPlaylistToken);
       }
     });
     /* END WATCHERS */
@@ -203,6 +204,7 @@ export default defineComponent({
       if (media_is_video.value) {
         waitToShowVideo();
       } else {
+        console.log("SETTING IMAGE TIMER", playlist_timer)
         displayImage(token_resp.image_url);
         playlist_timer.value = setTimeout(() => {
           nextPlaylistToken();
@@ -229,16 +231,6 @@ export default defineComponent({
           show_video.value = true;
           window.localStorage.setItem("nft_video_loaded", "true");
 
-          // handle playlist cycling
-          player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
-          console.log("video duration: ", player.value.duration);
-          if (player.value.duration && player.value.duration < 15) {
-            playlist_timer.value = setTimeout(() => {
-              nextPlaylistToken();
-            }, 1000 * 45);
-          } else {
-            player.value?.addEventListener("ended", nextPlaylistToken);
-          }
         }
       }
     };
@@ -287,7 +279,6 @@ export default defineComponent({
         display.value.entity.playlist_tokens[new_index].token_id;
       display.value.entity.asset_contract_address =
         display.value.entity.playlist_tokens[new_index].asset_contract_address;
-
       if (!window.navigator.onLine) {
         initDisplay(display.value);
         return;
@@ -318,7 +309,9 @@ export default defineComponent({
       token,
       player,
       video_should_loop,
-      display_media_url
+      display_media_url,
+      playlist_timer,
+      media_is_video
     };
   }
 });

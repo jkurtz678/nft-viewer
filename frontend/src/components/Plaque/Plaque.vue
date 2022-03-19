@@ -54,29 +54,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, onMounted } from "vue";
-import { loadToken } from "@/api/token";
-import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
-import Loading from "vue-loading-overlay";
+import { defineComponent, ref, watch, computed} from "vue";
+import { OpenseaToken } from "@/types/types";
 import QrcodeVue from "qrcode.vue";
-import {
-  getDisplayByDisplayIDWithListener,
-  getDisplayByDisplayID
-} from "@/api/display";
 
 export default defineComponent({
   props: {
     display_id: String
   },
   components: {
-    QrcodeVue,
-    Loading
+    QrcodeVue
   },
   setup() {
     const token = ref<OpenseaToken | null>();
     const show_text = ref(false);
-
-    const initDisplay = async (d: FirestoreDocument<Display>) => {};
 
     const dark_mode = computed(() => {
       return true;
