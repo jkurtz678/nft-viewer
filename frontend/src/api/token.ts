@@ -32,11 +32,37 @@ export const loadTokensByTokenIDAndAssetContract = async (tokens: Array<Firestor
     const res_json = await res.json();
 
     return res_json.assets;
-} 
+}
 
 export const loadToken = async (asset_contract_address: string, token_id: string): Promise<OpenseaToken> => {
-    const res = await fetch(`https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`)
+    const req_url = `https://api.opensea.io/api/v1/asset/${asset_contract_address}/${token_id}?include_orders=true`;
+
+    try {
+        const cache_res = await fetch(`http://localhost:8081/api/cache?req=${encodeURIComponent(req_url)}`)
+        if (cache_res.status < 400) {
+            const json_cache_res = await cache_res.json()
+            return json_cache_res.data
+        }
+    } catch (err) {
+        console.log("no cached data found")
+    }
+
+    const res = await fetch(req_url)
     const res_json = await res.json()
+
+    // write cached data
+    try {
+        await fetch(`http://localhost:8081/api/cache`, {
+            method: "POST",
+            body: JSON.stringify({
+                req: req_url,
+                res: res_json
+            })
+        })
+    } catch (err) {
+        console.error(err)
+    }
+
     return res_json;
 }
 

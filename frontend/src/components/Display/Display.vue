@@ -17,7 +17,7 @@
             autoplay
             muted
             :loop="video_should_loop"
-            :src="media_url"
+            :src="display_media_url"
           ></video>
         </div>
       </template>
@@ -50,10 +50,11 @@ import { ref, computed, watch } from "vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { loadToken } from "@/api/token";
-import { getLocalFileURL, hasLocalFile } from "@/api/local-files";
+import { downloadFile, getLocalFileURL, hasLocalFile } from "@/api/local-files";
 import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
 import {
   createDisplayWithListener,
+  getDisplayByDisplayID,
   getDisplayByDisplayIDWithListener,
   updateDisplay
 } from "@/api/display";
@@ -102,18 +103,24 @@ export default defineComponent({
       return "";
     });
 
-    // media_url decides which url should be used for the media display
-    const media_url = computed((): string | null => {
-      if (has_local_file.value && token.value?.token_id) {
-        return getLocalFileURL(token.value.token_id + ".mp4");
+    const display_media_url = computed((): string => {
+      if (has_local_file.value) {
+        return getLocalFileURL(
+          media_url.value.substring(media_url.value.lastIndexOf("/") + 1)
+        );
       }
+      return media_url.value;
+    });
+
+    // media_url decides which url should be used for the media display
+    const media_url = computed((): string => {
       if (media_is_video.value && token.value) {
         return token.value.animation_url;
       }
       if (token.value?.image_url) {
         return token.value.image_url;
       }
-      return null;
+      return "";
     });
 
     // video_should_loop will be true by default, false if any playlist tokens exist
@@ -168,12 +175,21 @@ export default defineComponent({
       const token_resp = await loadToken(contract_address, token_id);
       token.value = token_resp;
 
+      const media_file_name = media_url.value.substring(
+        media_url.value.lastIndexOf("/") + 1
+      );
+
       try {
-        has_local_file.value = await hasLocalFile(token_resp.token_id + ".mp4");
+        has_local_file.value = await hasLocalFile(media_file_name);
       } catch (err) {
         has_local_file.value = false;
         console.log(err);
       }
+
+      if (!has_local_file.value) {
+        await downloadFile(media_url.value);
+      }
+
       if (viewer.value) {
         viewer.value.hide();
       }
@@ -256,11 +272,18 @@ export default defineComponent({
       display.value.entity.asset_contract_address =
         display.value.entity.playlist_tokens[new_index].asset_contract_address;
 
+      if(!window.navigator.onLine) {
+        initDisplay(display.value)
+       return  
+      }
       updateDisplay(display.value);
     };
     /* END METHODS */
-
-    if (props.display_id) {
+    if(!window.navigator.onLine && props.display_id) {
+      getDisplayByDisplayID(props.display_id).then(r => {
+        initDisplay(r)
+      })
+    } else if (props.display_id) {
       getDisplayByDisplayIDWithListener(props.display_id, initDisplay);
     } else {
       const nft_display_id = localStorage.getItem("nft_display_id");
@@ -277,9 +300,9 @@ export default defineComponent({
       show_video,
       display_controller_url,
       token,
-      media_url,
       player,
-      video_should_loop
+      video_should_loop,
+      display_media_url
     };
   }
 });

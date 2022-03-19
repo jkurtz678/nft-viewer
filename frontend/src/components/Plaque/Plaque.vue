@@ -37,7 +37,10 @@
               style="min-width: 350px;"
             >
               <div style="margin-bottom: 8px">{{token?.creator?.user?.username}}</div>
-              <div v-if="top_bid" style="margin-bottom: 8px">{{top_bid}}</div>
+              <div
+                v-if="top_bid"
+                style="margin-bottom: 8px"
+              >{{top_bid}}</div>
               <div>{{token?.description}}</div>
             </div>
 
@@ -65,7 +68,10 @@ import { loadToken } from "@/api/token";
 import { FirestoreDocument, Display, OpenseaToken } from "@/types/types";
 import Loading from "vue-loading-overlay";
 import QrcodeVue from "qrcode.vue";
-import { getDisplayByDisplayIDWithListener } from "@/api/display";
+import {
+  getDisplayByDisplayIDWithListener,
+  getDisplayByDisplayID
+} from "@/api/display";
 
 export default defineComponent({
   props: {
@@ -84,9 +90,9 @@ export default defineComponent({
 
     onMounted(() => {
       if (display_id.value) {
-        show_text.value = true
-      } 
-    })
+        show_text.value = true;
+      }
+    });
 
     const initDisplay = async (d: FirestoreDocument<Display>) => {
       show_text.value = false;
@@ -115,21 +121,29 @@ export default defineComponent({
       }
       let highest_order = orders[0];
       orders.forEach(o => {
-        if(o.base_price > highest_order.base_price) {
+        if (o.base_price > highest_order.base_price) {
           highest_order = o;
         }
-      })
+      });
       //highest_order = orders[orders.length - 1];
-      const bid = highest_order.base_price / Math.pow(10, highest_order.payment_token_contract.decimals);
+      const bid =
+        highest_order.base_price /
+        Math.pow(10, highest_order.payment_token_contract.decimals);
 
-      return `Top bid: ${bid.toFixed(3)} ${highest_order.payment_token_contract.symbol}`
-    })
+      return `Top bid: ${bid.toFixed(3)} ${
+        highest_order.payment_token_contract.symbol
+      }`;
+    });
 
     watch(
       () => display_id.value,
       async () => {
         loading.value = true;
-        if (display_id.value) {
+        if (!window.navigator.onLine && display_id.value) {
+          getDisplayByDisplayID(display_id.value).then(r => {
+            initDisplay(r);
+          });
+        } else if (display_id.value) {
           getDisplayByDisplayIDWithListener(display_id.value, initDisplay);
         } else {
           display.value = null;
@@ -141,7 +155,8 @@ export default defineComponent({
 
     window.addEventListener("storage", () => {
       display_id.value = window.localStorage.getItem("nft_display_id");
-      show_text.value = window.localStorage.getItem("nft_video_loaded") == 'true';
+      show_text.value =
+        window.localStorage.getItem("nft_video_loaded") == "true";
     });
     return { loading, token, display, dark_mode, show_text, top_bid };
   }

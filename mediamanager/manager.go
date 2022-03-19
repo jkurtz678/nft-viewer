@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"strings"
 )
 
 type MediaManager struct {
@@ -22,7 +23,7 @@ func NewMediaManager(storageBucketURL, credentialsFile, mediaDir string) *MediaM
 	}
 
 	// start one worker who will wait on the downloadQueue
-	go manager.downloadFromQueue()
+	go manager.handleQueue()
 
 	return manager
 }
@@ -42,6 +43,25 @@ func (fm *MediaManager) AttemptDownloadFromFirebase(fileURI string) (bool, error
 	}
 
 	fm.downloadQueue <- fileURI
+
+	return true, nil
+}
+
+// AttemptDownloadFromURL will insert a url into the download queue
+func (fm *MediaManager) AttemptDownloadFromURL(url string) (bool, error) {
+	splitURL := strings.Split(url, "/")
+	fileName := splitURL[len(splitURL)-1]
+	localPath := filepath.Join(fm.mediaDir, fileName)
+	exists, err := fileExists(localPath)
+	if err != nil {
+		return false, err
+	}
+	if exists {
+		fmt.Println("File already exists, skipping download")
+		return false, nil
+	}
+
+	fm.downloadQueue <- url
 
 	return true, nil
 }

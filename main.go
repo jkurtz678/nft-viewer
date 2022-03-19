@@ -19,9 +19,13 @@ func main() {
 	log.Println("Starting server...")
 	mediaManager := mediamanager.NewMediaManager("nft-viewer.appspot.com", "./serviceAccountKey.json", "./media")
 	mediaAPIHandler := api.NewMediaAPIHandler(mediaManager)
+	cacheAPIHandler := api.NewCacheAPIHandler()
 
 	router := httprouter.New()
-	router.GET("/api/media/download/:file_url", mediaAPIHandler.DownloadMedia)
+	router.GET("/api/media/download/:file_url", mediaAPIHandler.DownloadFirebaseMedia)
+	router.POST("/api/media/download", mediaAPIHandler.DownloadFile)
+	router.GET("/api/cache", cacheAPIHandler.ReadCacheData)
+	router.POST("/api/cache", cacheAPIHandler.WriteCacheData)
 	router.ServeFiles("/media/*filepath", http.Dir("media"))
 
 	static := httprouter.New()
