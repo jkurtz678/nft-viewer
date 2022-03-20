@@ -128,10 +128,7 @@ export default defineComponent({
       const playlist_tokens = display.value?.entity?.playlist_tokens;
       console.log("PLAYLIST TOKENS", playlist_tokens);
       console.log("TiMER", playlist_timer.value);
-      return (
-        playlist_tokens == null ||
-        playlist_tokens.length == 0
-      );
+      return playlist_tokens == null || playlist_tokens.length == 0;
     });
     /* END COMPUTED */
 
@@ -139,7 +136,7 @@ export default defineComponent({
     // wait until html player loads to add the video ended event listener
     watch(player, v => {
       if (v) {
-         player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
+        player.value?.removeEventListener("ended", nextPlaylistToken); // remove any existing listener if it exists
         player.value?.addEventListener("ended", nextPlaylistToken);
       }
     });
@@ -177,7 +174,13 @@ export default defineComponent({
 
     // showToken will load a token from opensea and display its associated media. Different behaviors for videos and images/gifs
     const showToken = async (contract_address: string, token_id: string) => {
-      const token_resp = await loadToken(contract_address, token_id);
+      let token_resp;
+      try {
+        token_resp = await loadToken(contract_address, token_id);
+      } catch (err) {
+        nextPlaylistToken();
+        return;
+      }
       token.value = token_resp;
       window.localStorage.setItem("nft_token_data", JSON.stringify(token_resp));
 
@@ -204,7 +207,7 @@ export default defineComponent({
       if (media_is_video.value) {
         waitToShowVideo();
       } else {
-        console.log("SETTING IMAGE TIMER", playlist_timer)
+        console.log("SETTING IMAGE TIMER", playlist_timer);
         displayImage(token_resp.image_url);
         playlist_timer.value = setTimeout(() => {
           nextPlaylistToken();
@@ -230,7 +233,6 @@ export default defineComponent({
           clearInterval(interval);
           show_video.value = true;
           window.localStorage.setItem("nft_video_loaded", "true");
-
         }
       }
     };
